@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Map from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
+import { formatPrice } from "@/lib/utils";
 
 function Order() {
   const dispatch = useDispatch();
@@ -59,20 +60,81 @@ function Order() {
       <Navbar navbarClass="w-full py-6 px-24 flex justify-between items-center bg-earth" />
       <div className="p-10">
         <Tabs
-          defaultValue="account"
+          defaultValue="pending"
           className="w-full"
           onValueChange={(value) => setIsOpenTab(value)}
         >
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="pending">Pending</TabsTrigger>
-            <TabsTrigger value="account">On-going</TabsTrigger>
-            <TabsTrigger value="password">Finish</TabsTrigger>
+            <TabsTrigger value="succed">Succed</TabsTrigger>
+            <TabsTrigger value="failed">Failed</TabsTrigger>
           </TabsList>
           {orderById?.Order?.map((item, index) => {
             if (item.or_status_payment === "Pending") {
               const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
               return (
                 <TabsContent value="pending" key={index}>
+                  <Accordion
+                    type="single"
+                    collapsible
+                    onValueChange={(value) => setIsOpenTab(value === "item-1")}
+                  >
+                    <AccordionItem value="item-1">
+                      <AccordionTrigger>
+                        <div className="flex justify-between items-center w-full">
+                          <h1 className="text-3xl">ORDER-{item.or_id}</h1>
+                          <p>{item.createdAt}</p>
+                        </div>
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div className="flex">
+                          <div className="w-1/2 rounded-md" ref={mapRef}></div>
+                          <div className="w-1/2 p-10 flex flex-col justify-between">
+                            <ul className="overflow-y-auto h-[300px]">
+                              {menus.map((menu, index) => {
+                                return (
+                                  <li
+                                    key={index}
+                                    className="flex justify-between items-center mb-4"
+                                  >
+                                    <div className="flex items-center gap-4">
+                                      <img
+                                        className="w-[100px]"
+                                        src={`${BASE_URL}/${menu?.image}`}
+                                        alt="heroImage"
+                                      />
+                                      <h1 className="text-3xl">{menu?.name}</h1>
+                                    </div>
+                                    <p className="text-xl">
+                                      {formatPrice(menu?.price)} x
+                                      {menu?.quantity}
+                                    </p>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                            <div>
+                              <h1 className="text-3xl">
+                                Total Price: {formatPrice(item?.or_total_price)}
+                              </h1>
+                              <h1 className="text-3xl">
+                                Delivery on: {item?.or_site}
+                              </h1>
+                            </div>
+                          </div>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </TabsContent>
+              );
+            }
+          })}
+          {orderById?.Order?.map((item, index) => {
+            if (item.or_status_payment === "Succed") {
+              const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
+              return (
+                <TabsContent value="succed" key={index}>
                   <Accordion
                     type="single"
                     collapsible
@@ -128,88 +190,66 @@ function Order() {
               );
             }
           })}
-          <TabsContent value="account">
-            <Accordion type="single" collapsible>
-              <AccordionItem value="item-1">
-                <AccordionTrigger>
-                  <div className="flex justify-between items-center w-full">
-                    <h1 className="text-3xl">ORDER-1902</h1>
-                    <p>20 November 2024 17:00</p>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="flex">
-                    <img
-                      className="w-1/2 text-center rounded-md"
-                      src={heroImage}
-                      alt="heroImage"
-                    />
-                    <div className="w-1/2 p-10 flex flex-col justify-between">
-                      <ul className="overflow-y-auto h-[300px]">
-                        <li className="flex justify-between items-center mb-4">
-                          <div className="flex items-center gap-4">
-                            <img
-                              className="w-[100px]"
-                              src={heroImage}
-                              alt="heroImage"
-                            />
-                            <h1 className="text-3xl">Cappucino</h1>
+          {orderById?.Order?.map((item, index) => {
+            if (item.or_status_payment === "Failed") {
+              const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
+              return (
+                <TabsContent value="failed" key={index}>
+                  <Accordion
+                    type="single"
+                    collapsible
+                    onValueChange={(value) => setIsOpenTab(value === "item-1")}
+                  >
+                    <AccordionItem value="item-1">
+                      <AccordionTrigger>
+                        <div className="flex justify-between items-center w-full">
+                          <h1 className="text-3xl">ORDER-{item.or_id}</h1>
+                          <p>{item.createdAt}</p>
+                        </div>
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div className="flex">
+                          <div className="w-1/2 rounded-md" ref={mapRef}></div>
+                          <div className="w-1/2 p-10 flex flex-col justify-between">
+                            <ul className="overflow-y-auto h-[300px]">
+                              {menus.map((menu, index) => {
+                                return (
+                                  <li
+                                    key={index}
+                                    className="flex justify-between items-center mb-4"
+                                  >
+                                    <div className="flex items-center gap-4">
+                                      <img
+                                        className="w-[100px]"
+                                        src={`${BASE_URL}/${menu?.image}`}
+                                        alt="heroImage"
+                                      />
+                                      <h1 className="text-3xl">{menu?.name}</h1>
+                                    </div>
+                                    <p className="text-xl">
+                                      {menu?.price} x {menu?.quantity}
+                                    </p>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                            <div>
+                              <h1 className="text-3xl">
+                                Total Price: {formatPrice(item?.or_total_price)}
+                              </h1>
+                              <h1 className="text-3xl">
+                                Delivery on: {item?.or_site}
+                              </h1>
+                            </div>
                           </div>
-                          <p className="text-xl">Rp. 100.000 x 1</p>
-                        </li>
-                        <li className="flex justify-between items-center mb-4">
-                          <div className="flex items-center gap-4">
-                            <img
-                              className="w-[100px]"
-                              src={heroImage}
-                              alt="heroImage"
-                            />
-                            <h1 className="text-3xl">Cappucino</h1>
-                          </div>
-                          <p className="text-xl">Rp. 100.000 x 1</p>
-                        </li>
-                        <li className="flex justify-between items-center mb-4">
-                          <div className="flex items-center gap-4">
-                            <img className="w-[100px]" src={heroImage} alt="" />
-                            <h1 className="text-3xl">Cappucino</h1>
-                          </div>
-                          <p className="text-xl">Rp. 100.000 x 1</p>
-                        </li>
-                        <li className="flex justify-between items-center mb-4">
-                          <div className="flex items-center gap-4">
-                            <img className="w-[100px]" src={heroImage} alt="" />
-                            <h1 className="text-3xl">Cappucino</h1>
-                          </div>
-                          <p className="text-xl">Rp. 100.000 x 1</p>
-                        </li>
-                        <li className="flex justify-between items-center mb-">
-                          <div className="flex items-center gap-4">
-                            <img className="w-[100px]" src={heroImage} alt="" />
-                            <h1 className="text-3xl">Cappucino</h1>
-                          </div>
-                          <p className="text-xl">Rp. 100.000 x 1</p>
-                        </li>
-                      </ul>
-                      <div>
-                        <h1 className="text-3xl">Total Price: Rp. 200.000</h1>
-                        <h1 className="text-3xl">Dine in on table 38</h1>
-                      </div>
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </TabsContent>
-          <TabsContent value="password">
-            <Accordion type="single" collapsible>
-              <AccordionItem value="item-1">
-                <AccordionTrigger>Cappucino</AccordionTrigger>
-                <AccordionContent>
-                  Yes. It adheres to the WAI-ARIA design pattern.
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </TabsContent>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </TabsContent>
+              );
+            }
+          })}
         </Tabs>
       </div>
     </>
