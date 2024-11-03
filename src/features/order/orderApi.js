@@ -29,4 +29,16 @@ const fetchAllOrder = async (id) => {
   return await response.json();
 };
 
-export { fetchCreateOrder, fetchAllOrder };
+const fetchCoordinates = async (data) => {
+  const response = await fetch(`${BASE_URL}/maps/create-polyline`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify(data),
+  });
+  return await response.json();
+};
+
+export { fetchCreateOrder, fetchAllOrder, fetchCoordinates };

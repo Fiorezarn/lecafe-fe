@@ -63,6 +63,7 @@ function MenuList() {
     });
     e.target.reset();
   };
+  console.log(menu);
 
   const clickDetail = (id) => {
     dispatch({ type: "menu/getMenuById", payload: id });
@@ -75,7 +76,7 @@ function MenuList() {
   return (
     <div className="flex flex-col">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {menu?.map((item) => (
+        {menu?.data?.map((item) => (
           <Card
             key={item.mn_id}
             className="shadow-md border border-gray-200 rounded-lg overflow-hidden bg-earth4"

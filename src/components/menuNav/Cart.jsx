@@ -1,5 +1,4 @@
 "use client";
-import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Sheet,
@@ -7,7 +6,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ShoppingBasket, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,7 +28,7 @@ function CartNav() {
   const { cookie } = useSelector((state) => state.auth);
   const { order } = useSelector((state) => state.order);
   const userId = cookie?.us_id;
-  const [typeOrder, setTypeOrder] = React.useState("");
+  const [typeOrder, setTypeOrder] = useState("");
   const totalPrice = cart?.Menu?.reduce((acc, item) => {
     return acc + item.mn_price * item.Cart?.cr_quantity;
   }, 0);

@@ -6,7 +6,7 @@ export const authSlice = createSlice({
     user: null,
     cookie: null,
     loading: false,
-    isAutenticated: false,
+    isAuthenticated: false,
     error: null,
   },
   reducers: {
@@ -29,24 +29,15 @@ export const authSlice = createSlice({
     loginSuccess: (state, action) => {
       state.loading = false;
       state.user = action.payload;
-      state.isAutenticated = true;
+      state.isAuthenticated = true;
     },
     loginFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
-    getCookieRequest: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    getCookieSuccess: (state, action) => {
-      state.loading = false;
+    setCookie: (state, action) => {
       state.isAuthenticated = true;
       state.cookie = action.payload;
-    },
-    getCookieFailure: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
     },
     setLoading: (state, action) => {
       state.loading = action.payload;
@@ -61,9 +52,7 @@ export const {
   loginRequest,
   loginSuccess,
   loginFailure,
-  getCookieRequest,
-  getCookieSuccess,
-  getCookieFailure,
+  setCookie,
   setLoading,
 } = authSlice.actions;
 

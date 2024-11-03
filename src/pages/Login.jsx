@@ -40,6 +40,8 @@ function Login() {
         });
       } else if (user.type === "invalidpassword" || user?.code !== 200) {
         toast.error(user?.message);
+      } else if (user?.data?.us_role === "ADMIN") {
+        navigate("/dashboard");
       } else {
         navigate("/");
       }

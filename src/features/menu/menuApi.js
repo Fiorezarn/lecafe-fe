@@ -13,4 +13,20 @@ const fetchMenuById = async (id) => {
   return await response.json();
 };
 
-export { fetchAllMenu, fetchMenuById };
+const fetchcreateMenu = async (formData) => {
+  const response = await fetch(`${BASE_URL}/menu`, {
+    method: "POST",
+    body: formData,
+  });
+  return await response.json();
+};
+
+const fetchEditMenu = async (id, formData) => {
+  const response = await fetch(`${BASE_URL}/menu/${id}`, {
+    method: "PUT",
+    body: formData,
+  });
+  return await response.json();
+};
+
+export { fetchAllMenu, fetchMenuById, fetchcreateMenu, fetchEditMenu };

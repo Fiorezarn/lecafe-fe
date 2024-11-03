@@ -1,13 +1,6 @@
 import Navbar from "@/components/navbar/Navbar";
 import heroImage from "../assets/images/hero.jpg";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -31,6 +24,11 @@ function Home() {
   const dispatch = useDispatch();
   const { menu, loading, error } = useSelector((state) => state.menu);
   const BASE_URL = import.meta.env.VITE_BASE_URL_BE;
+  const { cookie } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    dispatch({ type: "auth/getCookie" });
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch({ type: "menu/getAllMenu" });
@@ -47,7 +45,7 @@ function Home() {
         <Navbar navbarClass="w-full py-6 px-24 flex justify-between items-center" />
         <div className="absolute top-56 left-24">
           <h1 className="font-semibold text-5xl text-white">
-            Welcome to Le Café Billy!
+            Welcome to Le Café {cookie?.us_username}!
           </h1>
           <p className="text-white mt-4">
             We have the best coffee in the town!
@@ -73,7 +71,7 @@ function Home() {
             className="w-full max-w-screen-xl"
           >
             <CarouselContent>
-              {menu?.map((item) => {
+              {menu?.data?.map((item) => {
                 return (
                   <CarouselItem
                     key={item.mn_id}

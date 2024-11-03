@@ -4,6 +4,7 @@ export const orderSlice = createSlice({
   name: "order",
   initialState: {
     order: null,
+    coordinates: null,
     orderById: null,
     loading: false,
     error: null,
@@ -33,6 +34,9 @@ export const orderSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    setCoordinates: (state, action) => {
+      state.coordinates = action.payload;
+    },
   },
 });
 
@@ -43,6 +47,7 @@ export const {
   fetchAllOrderRequest,
   fetchAllOrderSuccess,
   fetchAllOrderFailure,
+  setCoordinates,
 } = orderSlice.actions;
 
 export default orderSlice.reducer;

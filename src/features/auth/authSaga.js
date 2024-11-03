@@ -5,8 +5,7 @@ import {
   setLoading,
   loginSuccess,
   loginFailure,
-  getCookieSuccess,
-  getCookieFailure,
+  setCookie,
 } from "./authSlice";
 import { fetchlogin, fetchRegister } from "./authApi";
 import Cookies from "js-cookie";
@@ -32,13 +31,12 @@ function* login(action) {
 }
 
 function* getCookie() {
-  try {
-    const cookie = yield Cookies.get("user");
-    const userData = JSON.parse(cookie);
-    yield put(getCookieSuccess(userData));
-  } catch (error) {
-    yield put(getCookieFailure(error.message));
+  const cookie = yield Cookies.get("user");
+  if (!cookie) {
+    return;
   }
+  const userData = JSON.parse(cookie);
+  yield put(setCookie(userData));
 }
 
 export default function* authSaga() {
