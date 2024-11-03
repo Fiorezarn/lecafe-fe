@@ -44,8 +44,6 @@ function ModalCreateMenu() {
     formData.append("price", data.price);
     formData.append("category", data.category);
 
-    console.log(formData);
-
     if (data.image && data.image[0]) {
       formData.append("image", data.image[0]);
     } else {

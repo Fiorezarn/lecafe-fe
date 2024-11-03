@@ -20,6 +20,7 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { Pen } from "lucide-react";
 
 function ModalEditMenu({ menuId }) {
   const dispatch = useDispatch();
@@ -73,12 +74,8 @@ function ModalEditMenu({ menuId }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          className="mb-4"
-          variant="destructive"
-          onClick={handleEditClick}
-        >
-          Edit
+        <Button className="mb-4" variant="primary" onClick={handleEditClick}>
+          <Pen />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

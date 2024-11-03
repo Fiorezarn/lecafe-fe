@@ -8,7 +8,9 @@ import SendEmail from "./pages/SendEmail";
 import ForgotPassword from "./pages/ForgotPassword";
 import Order from "./pages/Order";
 import { useDispatch, useSelector } from "react-redux";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/DashboardMenu";
+import DashboardMenu from "./pages/DashboardMenu";
+import DashboardUser from "./pages/DashboardUser";
 
 function App() {
   // const dispatch = useDispatch();
@@ -89,7 +91,8 @@ function App() {
         <Route path="/send-email" element={<SendEmail />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="order" element={<Order />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard/menu" element={<DashboardMenu />} />
+        <Route path="/dashboard/user" element={<DashboardUser />} />
       </Routes>
     </Router>
   );

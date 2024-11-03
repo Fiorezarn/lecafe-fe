@@ -29,4 +29,17 @@ const fetchEditMenu = async (id, formData) => {
   return await response.json();
 };
 
-export { fetchAllMenu, fetchMenuById, fetchcreateMenu, fetchEditMenu };
+const fetchDeleteMenu = async (id) => {
+  const response = await fetch(`${BASE_URL}/menu/${id}`, {
+    method: "PATCH",
+  });
+  return await response.json();
+};
+
+export {
+  fetchAllMenu,
+  fetchMenuById,
+  fetchcreateMenu,
+  fetchEditMenu,
+  fetchDeleteMenu,
+};

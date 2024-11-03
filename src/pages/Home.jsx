@@ -23,7 +23,6 @@ import { useEffect } from "react";
 function Home() {
   const dispatch = useDispatch();
   const { menu, loading, error } = useSelector((state) => state.menu);
-  const BASE_URL = import.meta.env.VITE_BASE_URL_BE;
   const { cookie } = useSelector((state) => state.auth);
 
   useEffect(() => {
@@ -81,7 +80,7 @@ function Home() {
                       <CardHeader>
                         <img
                           className="rounded-lg"
-                          src={`${BASE_URL}/${item.mn_image}`}
+                          src={`${item.mn_image}`}
                           alt=""
                         />
                       </CardHeader>

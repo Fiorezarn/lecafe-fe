@@ -1,19 +1,23 @@
 import { put, takeLatest } from "redux-saga/effects";
 import {
   fetchFailureGetAllMenu,
-  fetchRequestGetAllMenu,
   fetchSuccessGetAllMenu,
-  fetchRequestGetByIdMenu,
   fetchSuccessGetByIdMenu,
   fetchFailurGetByIdMenu,
-  createMenuRequest,
   createMenuSuccess,
   createMenuFailure,
   setLoading,
   updateMenuSuccess,
   updateMenuFailure,
+  deleteMenuSuccess,
+  deleteMenuFailure,
 } from "@/features/menu/menuSlice";
-import { fetchAllMenu, fetchMenuById, fetchcreateMenu } from "./menuApi";
+import {
+  fetchAllMenu,
+  fetchMenuById,
+  fetchcreateMenu,
+  fetchDeleteMenu,
+} from "./menuApi";
 
 function* getAllMenu() {
   try {
@@ -61,9 +65,21 @@ function* updateMenu(action) {
   }
 }
 
+function* DeleteMenu(action) {
+  try {
+    yield put(setLoading(true));
+    yield fetchDeleteMenu(action.payload);
+    const responseGet = yield fetchAllMenu();
+    yield put(deleteMenuSuccess(responseGet));
+  } catch (error) {
+    yield put(deleteMenuFailure(error.message));
+  }
+}
+
 export default function* menuSaga() {
   yield takeLatest("menu/getAllMenu", getAllMenu);
   yield takeLatest("menu/getMenuById", getMenuById);
   yield takeLatest("menu/createMenu", createMenu);
   yield takeLatest("menu/updateMenu", updateMenu);
+  yield takeLatest("menu/deleteMenu", DeleteMenu);
 }

@@ -29,7 +29,6 @@ function MenuList() {
   const { menu, error } = useSelector((state) => state.menu);
   const { cookie } = useSelector((state) => state.auth);
   const { message, errorCart } = useSelector((state) => state.cart);
-  const BASE_URL = import.meta.env.VITE_BASE_URL_BE;
 
   useEffect(() => {
     dispatch({ type: "auth/getCookie" });
@@ -91,7 +90,7 @@ function MenuList() {
               >
                 <img
                   className="w-full h-full object-cover"
-                  src={`${BASE_URL}/${item.mn_image}`}
+                  src={`${item.mn_image}`}
                   alt={item.mn_name}
                 />
               </CardHeader>
