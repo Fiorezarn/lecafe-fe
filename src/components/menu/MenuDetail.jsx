@@ -11,7 +11,6 @@ function MenuDetail() {
   const { cookie } = useSelector((state) => state.auth);
   const { message, errorCart, count } = useSelector((state) => state.cart);
 
-  const BASE_URL = import.meta.env.VITE_BASE_URL_BE;
   const handleSubmit = () => {
     const quantity = count;
     const userId = cookie?.us_id;
@@ -49,7 +48,7 @@ function MenuDetail() {
     <div className="border-4 border-black flex rounded-xl">
       <img
         className="w-1/2 rounded-l-md"
-        src={`${BASE_URL}/${menuById?.mn_image}`}
+        src={`${menuById?.mn_image}`}
         alt={`${menuById?.mn_image}`}
       />
 
