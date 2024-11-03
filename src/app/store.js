@@ -19,7 +19,12 @@ export const store = configureStore({
     order: orderReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware),
+    getDefaultMiddleware({
+      thunk: false,
+      serializableCheck: {
+        ignoredActions: ["menu/createMenu"],
+      },
+    }).concat(sagaMiddleware),
 });
 
 [menuSaga, authSaga, cartSaga, orderSaga].map((saga) => {

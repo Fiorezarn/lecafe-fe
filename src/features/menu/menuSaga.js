@@ -10,6 +10,8 @@ import {
   createMenuSuccess,
   createMenuFailure,
   setLoading,
+  updateMenuSuccess,
+  updateMenuFailure,
 } from "@/features/menu/menuSlice";
 import { fetchAllMenu, fetchMenuById, fetchcreateMenu } from "./menuApi";
 
@@ -34,11 +36,28 @@ function* getMenuById(action) {
 function* createMenu(action) {
   try {
     yield put(setLoading(true));
-    yield fetchcreateMenu(action.payload);
+    const responseAdd = yield fetchcreateMenu(action.payload);
     const responseGet = yield fetchAllMenu();
-    yield put(createMenuSuccess(responseGet));
+    yield put(
+      createMenuSuccess({
+        data: responseGet.data,
+        message: responseAdd.message,
+        code: responseAdd.code,
+      })
+    );
   } catch (error) {
     yield put(createMenuFailure(error.message));
+  }
+}
+
+function* updateMenu(action) {
+  try {
+    const { id, formData } = action.payload;
+    yield fetchEditMenu(id, formData);
+    const responseGet = yield fetchAllMenu();
+    yield put(updateMenuSuccess(responseGet));
+  } catch (error) {
+    yield put(updateMenuFailure(error.message));
   }
 }
 
@@ -46,4 +65,5 @@ export default function* menuSaga() {
   yield takeLatest("menu/getAllMenu", getAllMenu);
   yield takeLatest("menu/getMenuById", getMenuById);
   yield takeLatest("menu/createMenu", createMenu);
+  yield takeLatest("menu/updateMenu", updateMenu);
 }

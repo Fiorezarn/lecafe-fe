@@ -29,6 +29,7 @@ function ModalCreateMenu() {
     handleSubmit,
     formState: { errors },
     setValue,
+    reset,
   } = useForm();
 
   const onSubmit = async (data) => {
@@ -42,6 +43,8 @@ function ModalCreateMenu() {
     formData.append("description", data.description);
     formData.append("price", data.price);
     formData.append("category", data.category);
+
+    console.log(formData);
 
     if (data.image && data.image[0]) {
       formData.append("image", data.image[0]);
@@ -58,6 +61,7 @@ function ModalCreateMenu() {
 
   const handleOpen = () => {
     dispatch(setIsOpen(true));
+    reset();
   };
 
   const handleClose = () => {

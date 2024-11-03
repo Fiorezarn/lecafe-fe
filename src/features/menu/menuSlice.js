@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { set } from "react-hook-form";
 
 export const menuSlice = createSlice({
   name: "menu",
@@ -9,6 +8,8 @@ export const menuSlice = createSlice({
     loading: false,
     error: null,
     isOpen: false,
+    message: null,
+    code: null,
   },
   reducers: {
     fetchRequestGetAllMenu: (state) => {
@@ -42,7 +43,13 @@ export const menuSlice = createSlice({
     createMenuSuccess: (state, action) => {
       state.loading = false;
       state.menu = action.payload;
+      state.message = action.payload.message;
+      state.code = action.payload.code;
       state.isOpen = false;
+    },
+    createMenuFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
     },
     setIsOpen: (state, action) => {
       state.isOpen = action.payload;
@@ -50,7 +57,11 @@ export const menuSlice = createSlice({
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
-    createMenuFailure: (state, action) => {
+    updateMenuSuccess: (state, action) => {
+      state.loading = false;
+      state.menu = action.payload;
+    },
+    updateMenuFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
@@ -69,6 +80,8 @@ export const {
   createMenuFailure,
   setIsOpen,
   setLoading,
+  updateMenuSuccess,
+  updateMenuFailure,
 } = menuSlice.actions;
 
 export default menuSlice.reducer;

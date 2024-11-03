@@ -39,14 +39,28 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import ModalCreateMenu from "@/components/modal/createMenu";
+import ModalEditMenu from "@/components/modal/editMenu";
+import { toast } from "sonner";
 const BASE_URL = import.meta.env.VITE_BASE_URL_BE;
 
 function Dashboard() {
   const dispatch = useDispatch();
-  const { menu, error } = useSelector((state) => state.menu);
+  const { menu, message, code } = useSelector((state) => state.menu);
   useEffect(() => {
-    dispatch({ type: "menu/getAllMenu" });
+    if (!menu) {
+      dispatch({ type: "menu/getAllMenu" });
+    }
   }, [dispatch]);
+
+  useEffect(() => {
+    if (code) {
+      if (code === 201) {
+        toast.success(message);
+      } else {
+        toast.error(message);
+      }
+    }
+  }, [code, message]);
 
   const items = [
     {
@@ -95,11 +109,6 @@ function Dashboard() {
       sortable: true,
     },
     {
-      name: "Description",
-      selector: (row) => row.mn_desc,
-      sortable: true,
-    },
-    {
       name: "Category",
       selector: (row) => row.mn_category,
       sortable: true,
@@ -111,15 +120,7 @@ function Dashboard() {
     },
     {
       name: "Action",
-      selector: (row) => {
-        return (
-          <>
-            <div className="flex gap-2">
-              <Button variant="destructive">Edit</Button>
-            </div>
-          </>
-        );
-      },
+      selector: (row) => <ModalEditMenu menuId={row.mn_id} />,
     },
   ];
 
