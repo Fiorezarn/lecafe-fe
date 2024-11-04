@@ -42,12 +42,12 @@ function SendEmail() {
 
   return (
     <div className="flex h-screen justify-between items-center">
-      <img className="w-1/2 h-full" src={heroImage} alt="" />
-      <div className="w-1/2 p-10 flex flex-col justify-center gap-6">
-        <h1 className="text-3xl font-semibold">
+      <img className="w-1/2 hidden lg:block h-full" src={heroImage} alt="" />
+      <div className="w-full lg:w-1/2 p-10 flex flex-col justify-center gap-6">
+        <h1 className="text-3xl text-earth font-semibold">
           {action === "verify-email" ? "Verify Email" : "Forgot your password?"}
         </h1>
-        <p>
+        <p className="text-earth2">
           {action === "verify-email"
             ? "Enter the email address associated with your account, and we'll send you a link to verify your email"
             : "Enter the email address associated with your account, and we'll send you a link to reset your password"}
@@ -55,11 +55,11 @@ function SendEmail() {
         <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
           <Input
             id="email"
-            className="w-full mt-4 "
+            className="w-full mt-4"
             type="email"
             placeholder="Email"
           />
-          <Button type="submit" disabled={loading}>
+          <Button className="w-full bg-earth" type="submit" disabled={loading}>
             {loading ? "Loading..." : "Send Email"}
           </Button>
         </form>

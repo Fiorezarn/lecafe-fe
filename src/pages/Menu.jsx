@@ -108,7 +108,7 @@ function Menu() {
             </div>
             <div className="flex items-center gap-6">
               <AvatarNav />
-              <CartNav />
+              <CartNav cartClass="text-black cursor-pointer" />
             </div>
           </div>
           <main className="px-10 py-6">

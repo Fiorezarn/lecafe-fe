@@ -31,7 +31,7 @@ function* login(action) {
 }
 
 function* getCookie() {
-  const cookie = yield Cookies.get("user");
+  const cookie = Cookies.get("user");
   if (!cookie) {
     return;
   }

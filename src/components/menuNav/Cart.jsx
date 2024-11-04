@@ -7,7 +7,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import React, { useEffect, useState } from "react";
-import { ShoppingBasket, Trash2 } from "lucide-react";
+import { ShoppingBasket, ShoppingCart, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -21,11 +21,11 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { formatPrice } from "@/lib/utils";
 
-function CartNav() {
+function CartNav({ cartClass }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { cart } = useSelector((state) => state.cart);
-  const { cookie } = useSelector((state) => state.auth);
+  const { cookie, isAuthenticated } = useSelector((state) => state.auth);
   const { order } = useSelector((state) => state.order);
   const userId = cookie?.us_id;
   const [typeOrder, setTypeOrder] = useState("");
@@ -73,11 +73,7 @@ function CartNav() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <ShoppingBasket
-          className="text-muted-foreground hover:text-black cursor-pointer"
-          size={28}
-          strokeWidth={1.75}
-        />
+        <ShoppingCart className={cartClass} size={24} strokeWidth={1.75} />
       </SheetTrigger>
       <SheetContent className="flex justify-between flex-col gap-6">
         <SheetTitle>Cart</SheetTitle>
@@ -89,7 +85,7 @@ function CartNav() {
               return (
                 <li
                   className="flex justify-between bg-earth4 p-4 rounded-lg"
-                  key={index}
+                  key={item.mn_id}
                 >
                   <div>
                     <h1>{item.mn_name}</h1>

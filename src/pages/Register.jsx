@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import heroImage from "../assets/images/hero.jpg";
 import { FcGoogle } from "react-icons/fc";
-import { MoveLeft } from "lucide-react";
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import firebaseConfig from "../../firebaseconfig.json";
@@ -9,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { Input } from "@/components/ui/input";
 
 function Register() {
   const navigate = useNavigate();
@@ -29,6 +29,7 @@ function Register() {
       type: "auth/registerRequest",
       payload: { fullname, username, email, phonenumber, password },
     });
+    e.target.reset();
   };
 
   useEffect(() => {
@@ -68,54 +69,73 @@ function Register() {
   };
   return (
     <div className="flex h-screen justify-between items-center">
-      <img className="w-1/2 h-full" src={heroImage} alt="" />
-      <div className="w-1/2 p-10">
-        <Button className="w-full mt-4 bg-[#4B332B]" onClick={loginWithGoogle}>
-          Register with google <FcGoogle />
-        </Button>
-        <div className="my-5 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300">
-          <p className="mx-4 mb-0 text-center font-semibold text-slate-500">
-            Or
+      <img className="w-1/2 hidden lg:block h-full" src={heroImage} alt="" />
+      <div className="w-full lg:w-1/2 p-10 lg:p-20">
+        <div className="text-center mb-6">
+          <h1 className="text-4xl font-bold text-earth mb-2">
+            Become a Part of Le Café
+          </h1>
+          <p className="text-lg text-earth2 italic">
+            Create your account and start your journey with us.
           </p>
         </div>
+
         <form onSubmit={handleSubmit}>
-          <input
+          <Input
             id="fullname"
-            className="text-sm w-full px-4 py-2 border border-solid border-gray-300 rounded"
-            type="text"
+            className="mt-2"
+            type="fullname"
             placeholder="Full Name"
+            required
           />
-          <input
+          <Input
             id="username"
-            className="text-sm w-full px-4 py-2 border border-solid border-gray-300 rounded mt-4"
-            type="text"
+            className="mt-2"
+            type="username"
             placeholder="Username"
+            required
           />
-          <input
+          <Input
             id="phonenumber"
-            className="text-sm w-full px-4 py-2 border border-solid border-gray-300 rounded mt-4"
+            className="mt-2"
             type="text"
             placeholder="Phone Number"
+            required
           />
-          <input
+          <Input
             id="email"
-            className="text-sm w-full px-4 py-2 border border-solid border-gray-300 rounded mt-4"
+            className="mt-2"
             type="email"
             placeholder="Email Address"
+            required
           />
-          <input
+          <Input
             id="password"
-            className="text-sm w-full px-4 py-2 border border-solid border-gray-300 rounded mt-4"
+            className="mt-2"
+            isPassword
             type="password"
             placeholder="Password"
+            required
           />
-          <div className="text-center md:text-left">
+          <div className="mt-4">
             <Button
-              className=" mt-4 bg-[#4B332B]"
+              className="w-full bg-[#4B332B]"
               type="submit"
               disabled={loading}
             >
               {loading ? "Loading..." : "Register"}
+            </Button>
+            <div className="my-5 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300">
+              <p className="mx-4 mb-0 text-center font-semibold text-slate-500">
+                Or
+              </p>
+            </div>
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={loginWithGoogle}
+            >
+              Register with google <FcGoogle />
             </Button>
           </div>
         </form>
@@ -127,7 +147,7 @@ function Register() {
             Already have an account?
           </a>
           <a className="text-slate-500 flex gap-2" href="/">
-            <MoveLeft /> Back
+            Back
           </a>
         </div>
       </div>

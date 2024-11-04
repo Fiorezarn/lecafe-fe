@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import Cookies from "js-cookie";
 
 export const authSlice = createSlice({
   name: "auth",
@@ -6,7 +7,7 @@ export const authSlice = createSlice({
     user: null,
     cookie: null,
     loading: false,
-    isAuthenticated: false,
+    isAuthenticated: !!Cookies.get("user"),
     error: null,
   },
   reducers: {
@@ -29,14 +30,12 @@ export const authSlice = createSlice({
     loginSuccess: (state, action) => {
       state.loading = false;
       state.user = action.payload;
-      state.isAuthenticated = true;
     },
     loginFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
     setCookie: (state, action) => {
-      state.isAuthenticated = true;
       state.cookie = action.payload;
     },
     setLoading: (state, action) => {

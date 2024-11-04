@@ -1,7 +1,7 @@
 const BASE_API = import.meta.env.VITE_BASE_URL_BE;
 
 const fetchAddCart = async ({ userId, menuId, quantity }) => {
-  const response = await fetch(`${BASE_API}/cart/add-cart`, {
+  const response = await fetch(`${BASE_API}/cart`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

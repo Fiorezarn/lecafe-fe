@@ -23,11 +23,13 @@ import { ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 import { Input } from "../ui/input";
 import { formatPrice } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 function MenuList() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { menu, error } = useSelector((state) => state.menu);
-  const { cookie } = useSelector((state) => state.auth);
+  const { cookie, isAutenticated } = useSelector((state) => state.auth);
   const { message, errorCart } = useSelector((state) => state.cart);
 
   useEffect(() => {
@@ -53,16 +55,18 @@ function MenuList() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const quantity = 1;
-    const userId = cookie?.us_id;
     const menuId = e.target.menuId.value;
+    const userId = cookie?.us_id;
 
-    dispatch({
-      type: "cart/addCart",
-      payload: { userId, menuId, quantity },
-    });
-    e.target.reset();
+    if (!cookie) {
+      navigate("/login");
+    } else {
+      dispatch({
+        type: "cart/addCart",
+        payload: { userId, menuId, quantity },
+      });
+    }
   };
-  console.log(menu);
 
   const clickDetail = (id) => {
     dispatch({ type: "menu/getMenuById", payload: id });

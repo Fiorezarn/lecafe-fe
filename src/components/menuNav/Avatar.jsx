@@ -19,6 +19,7 @@ function AvatarNav() {
   useEffect(() => {
     dispatch({ type: "auth/getCookie" });
   }, [dispatch]);
+
   const handleLogout = async () => {
     try {
       const response = await fetch(`${BASE_URL}/auth/logout`, {

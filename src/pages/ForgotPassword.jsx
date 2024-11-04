@@ -47,29 +47,33 @@ function ForgotPassword() {
   };
   return (
     <div className="flex h-screen justify-between items-center">
-      <img className="w-1/2 h-full" src={heroImage} alt="" />
-      <div className="w-1/2 p-10 flex flex-col justify-center gap-6">
-        <h1 className="text-3xl font-semibold">Forgot your password?</h1>
-        <p>
+      <img className="w-1/2 hidden lg:block h-full" src={heroImage} alt="" />
+      <div className="w-full lg:w-1/2 p-10 flex flex-col justify-center gap-6">
+        <h1 className="text-3xl font-semibold text-earth">
+          Forgot your password?
+        </h1>
+        <p className="text-earth2">
           Enter your new password. Your new password must be different from
           previous used password.
         </p>
         <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
           <Input
             id="password"
-            className="w-full mt-4 "
+            className="w-full"
             type="password"
             placeholder="Password"
             required
           />
           <Input
             id="repeatpassword"
-            className="w-full mt-4 "
+            className="w-full"
             type="password"
             placeholder="Repeat Password"
             required
           />
-          <Button type="submit">{loading ? "Loading..." : "Submit"}</Button>
+          <Button className="w-full bg-earth" type="submit">
+            {loading ? "Loading..." : "Submit"}
+          </Button>
         </form>
       </div>
     </div>

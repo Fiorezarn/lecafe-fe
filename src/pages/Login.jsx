@@ -40,8 +40,6 @@ function Login() {
         });
       } else if (user.type === "invalidpassword" || user?.code !== 200) {
         toast.error(user?.message);
-      } else if (user?.data?.us_role === "ADMIN") {
-        navigate("/dashboard");
       } else {
         navigate("/");
       }
@@ -71,14 +69,19 @@ function Login() {
   };
   return (
     <div className="flex h-screen justify-between items-center">
-      <img className="w-1/2 h-full" src={heroImage} alt="hero" />
-      <div className="w-1/2 p-10">
-        <Button className="w-full mt-4 bg-[#4B332B]" onClick={loginWithGoogle}>
-          Login with google <FcGoogle />
-        </Button>
-        <div className="my-5 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300">
-          <p className="mx-4 mb-0 text-center font-semibold text-slate-500">
-            Or
+      <img
+        className="w-1/2 h-full hidden lg:block"
+        src={heroImage}
+        alt="hero"
+      />
+      <div className="w-full lg:w-1/2 p-24 lg:p-20">
+        <div className="text-center mb-6">
+          <h1 className="text-4xl font-bold text-earth mb-2">
+            Welcome Back to Le Café
+          </h1>
+          <p className="text-lg text-earth2 italic">
+            "Discover a world of flavors with just a click. Your next favorite
+            coffee awaits!"
           </p>
         </div>
         <form onSubmit={handlelogin}>
@@ -109,13 +112,25 @@ function Login() {
               Forgot Password?
             </a>
           </div>
-          <div className="text-center md:text-left">
+          <div className="mt-4">
             <Button
               type="submit"
-              className=" mt-4 bg-[#4B332B]"
+              className="w-full bg-[#4B332B]"
               disabled={loading}
             >
               {loading ? "Loading..." : "Login"}
+            </Button>
+            <div className="my-5 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300">
+              <p className="mx-4 mb-0 text-center font-semibold text-slate-500">
+                Or
+              </p>
+            </div>
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={loginWithGoogle}
+            >
+              Login with google <FcGoogle />
             </Button>
           </div>
         </form>
@@ -124,10 +139,10 @@ function Login() {
             className="text-[#C0AF90] hover:underline hover:underline-offset-4"
             href="/register"
           >
-            Don&apos;t have an account? Register
+            Don&apos;t have an account?
           </a>
           <a className="text-slate-500 flex gap-2" href="/">
-            <MoveLeft /> Back
+            Back
           </a>
         </div>
       </div>

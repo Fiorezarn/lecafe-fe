@@ -26,22 +26,18 @@ function Home() {
   const { cookie } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch({ type: "auth/getCookie" });
-  }, [dispatch]);
-
-  useEffect(() => {
     dispatch({ type: "menu/getAllMenu" });
   }, [dispatch]);
 
   return (
     <>
       <section
-        className="relative h-[84vh] w-full bg-cover bg-center bg-fixed"
+        className="relative h-[84vh] w-full bg-cover bg-center"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${heroImage})`,
         }}
       >
-        <Navbar navbarClass="w-full py-6 px-24 flex justify-between items-center" />
+        <Navbar isFixed={true} />
         <div className="absolute top-56 left-24">
           <h1 className="font-semibold text-5xl text-white">
             Welcome to Le Café {cookie?.us_username}!
@@ -52,12 +48,6 @@ function Home() {
           <Button className="mt-4 bg-white text-black">Order Now</Button>
         </div>
       </section>
-      <div className="bg-[#C0AF90] p-10 flex justify-center text-5xl gap-32">
-        <img className="w-[45px] h-[80px]" src={Coffee} alt="" />
-        <img className="w-[45px] h-[80px]" src={Cake} alt="" />
-        <img className="w-[45px] h-[80px]" src={Bag} alt="" />
-        <img className="w-[45px] h-[80px]" src={Milkshake} alt="" />
-      </div>
       <section className="bg-[#F6EEE8] p-10">
         <h1 className="text-3xl text-center font-bold text-[#83704d]">
           OUR SPECIAL MENU
@@ -107,15 +97,25 @@ function Home() {
           </Carousel>
         </div>
       </section>
-      <section className="bg-[#C0AF90] flex justify-between items-center">
-        <img className="w-[300px]" src={flyingCoffee} alt="" />
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-[#4B332B]">
-            Check out our best coffee betans here
+      <section className="bg-[#C0AF90] flex flex-col lg:flex-row justify-between items-center p-6 lg:p-12">
+        <img
+          className="w-[200px] lg:w-[300px] mb-4 lg:mb-0"
+          src={flyingCoffee}
+          alt="Flying Coffee"
+        />
+        <div className="text-center lg:text-left mx-4 lg:mx-0">
+          <h1 className="text-2xl lg:text-3xl font-bold text-[#4B332B]">
+            Check out our best coffee beans here
           </h1>
-          <Button className="mt-4 bg-[#4B332B] text-white">Order Now</Button>
+          <Button className="mt-4 bg-[#4B332B] text-white px-4 py-2">
+            Order Now
+          </Button>
         </div>
-        <img className="w-[300px]" src={Beans} alt="" />
+        <img
+          className="w-[200px] lg:w-[300px] mt-4 lg:mt-0"
+          src={Beans}
+          alt="Coffee Beans"
+        />
       </section>
       <section className="">
         <section className="bg-[#F6EEE8]">

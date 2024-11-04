@@ -18,13 +18,19 @@ import Extent from "@arcgis/core/geometry/Extent";
 function Order() {
   const dispatch = useDispatch();
   const { orderById, coordinates } = useSelector((state) => state.order);
-  const { cookie } = useSelector((state) => state.auth);
+  const { cookie, isAuthenticated } = useSelector((state) => state.auth);
   const mapRef = useRef(null);
   const [view, setView] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenTab, setIsOpenTab] = useState(false);
   const id = cookie?.us_id;
   const BASE_URL = import.meta.env.VITE_BASE_URL_BE;
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      console.log(isAuthenticated);
+    }
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (mapRef.current) {
@@ -68,6 +74,7 @@ function Order() {
       dispatch({ type: "map/fetchCoordinates", payload: orderCoordinates });
     }
   }, [orderById]);
+
   useEffect(() => {
     if (coordinates && view) {
       view.when(() => {
@@ -152,7 +159,7 @@ function Order() {
 
   return (
     <>
-      <Navbar navbarClass="w-full py-6 px-24 flex justify-between items-center bg-earth" />
+      <Navbar isFixed={false} />
       <div className="p-10">
         <Tabs
           defaultValue="pending"
