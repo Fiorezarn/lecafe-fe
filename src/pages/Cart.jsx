@@ -11,13 +11,22 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useDispatch, useSelector } from "react-redux";
-import { Minus, Plus, Trash } from "lucide-react"; // Ikon untuk increment, decrement, dan delete
+import { Minus, Plus, Trash } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { formatPrice } from "@/lib/utils";
+import { Textarea } from "@/components/ui/textarea";
 
 function Cart() {
   const dispatch = useDispatch();
-  const { cart } = useSelector((state) => state.cart);
+  const [orderType, setOrderType] = useState("Dine In");
+  const [address, setAddress] = useState("");
+  const [tableNumber, setTableNumber] = useState("");
+  const { cart, count } = useSelector((state) => state.cart);
   const { cookie } = useSelector((state) => state.auth);
   const userId = cookie?.us_id;
+  const totalPrice = cart?.Menu?.reduce((acc, item) => {
+    return acc + item.mn_price * item.Cart?.cr_quantity;
+  }, 0);
 
   useEffect(() => {
     if (!cookie) {
@@ -31,24 +40,6 @@ function Cart() {
     }
   }, [userId, dispatch]);
 
-  useEffect(() => {
-    if (cart) {
-      console.log(cart);
-    }
-  }, [cart]);
-
-  const [orderType, setOrderType] = useState("Dine In");
-  const [address, setAddress] = useState("");
-  const [tableNumber, setTableNumber] = useState("");
-
-  const calculateTotal = () => {
-    return cart?.Menu?.reduce(
-      (total, item) => total + item.mn_price * item.Cart.cr_quantity,
-      0
-    ).toFixed(2);
-  };
-
-  // Fungsi untuk mengubah kuantitas item
   const handleDecrement = (itemId) => {
     dispatch({ type: "cart/decrement", payload: itemId });
   };
@@ -57,14 +48,28 @@ function Cart() {
     dispatch({ type: "cart/increment", payload: itemId });
   };
 
-  const handleDelete = (itemId) => {
-    dispatch({ type: "cart/deleteItem", payload: itemId });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const site = e.target.site.value;
+    const totalPrice = e.target.totalPrice.value;
+    const menuJson = JSON.stringify(
+      cart?.Menu?.map((item) => ({
+        id: item.mn_id,
+        name: item.mn_name,
+        image: item.mn_image,
+        price: item.mn_price,
+        quantity: item.Cart?.cr_quantity,
+      }))
+    );
+    dispatch({
+      type: "order/createOrder",
+      payload: { userId, site, typeOrder, totalPrice, menuJson },
+    });
   };
 
   return (
     <>
       <Navbar />
-
       <div className="flex flex-col md:flex-row pt-32 h-[100vh] p-8 gap-8 bg-earth3">
         <section className="flex-1">
           <h2 className="text-2xl font-bold mb-4 text-earth">Your Cart</h2>
@@ -82,15 +87,15 @@ function Cart() {
                 <div className="flex-1 ml-4">
                   <h3 className="text-xl font-semibold">{item.mn_name}</h3>
                   <p className="text-sm text-gray-300">
-                    Rp {item.mn_price.toLocaleString()} each
+                    {formatPrice(item.mn_price)}
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="bg-white justify-between flex items-center border border-black rounded-md p-1">
                   <Button
                     variant="transparant"
                     size="xs"
                     className="flex items-center justify-center h-full text-black"
-                    onClick={() => handleDecrement(item.mn_id)}
+                    onClick={handleDecrement}
                   >
                     <Minus className="h-[80%] w-[80%]" />
                   </Button>
@@ -99,30 +104,30 @@ function Cart() {
                     type="number"
                     className="placeholder:leading-loose text-black w-[30%] h-full font-mono mx-2 placeholder:text-center focus:outline-none focus:border-none focus:ring-0 text-center [&::-webkit-inner-spin-button]:appearance-none"
                     placeholder="0"
-                    value={item.Cart.cr_quantity}
-                    readOnly
+                    value={count}
+                    onChange={handleIncrement}
                   />
                   <Button
                     variant="transparant"
                     size="xs"
                     className="flex items-center justify-center h-full text-black"
-                    onClick={() => handleIncrement(item.mn_id)}
+                    onClick={handleIncrement}
                   >
                     <Plus className="h-[80%] w-[80%]" />
                   </Button>
-                  <span className="font-bold ml-2">
-                    Rp{" "}
-                    {(item.mn_price * item.Cart.cr_quantity).toLocaleString()}
-                  </span>
-                  <Button
-                    variant="danger"
-                    size="xs"
-                    className="flex items-center justify-center h-full text-red-600 ml-4"
-                    onClick={() => handleDelete(item.mn_id)}
-                  >
-                    <Trash className="h-[80%] w-[80%]" />
-                  </Button>
                 </div>
+                <Button
+                  variant="destructive"
+                  className="flex items-center justify-center h-full ml-4"
+                  onClick={() =>
+                    dispatch({
+                      type: "cart/deleteCart",
+                      payload: { userId, menuId: item.mn_id },
+                    })
+                  }
+                >
+                  <Trash className="h-[80%] w-[80%]" />
+                </Button>
               </div>
             ))}
           </div>
@@ -132,16 +137,15 @@ function Cart() {
           <h3 className="text-2xl font-bold mb-4">Order Summary</h3>
           <div className="flex justify-between font-bold text-lg mt-4">
             <span>Total</span>
-            <span>Rp {calculateTotal()}</span>
+            <span>{formatPrice(totalPrice)}</span>
           </div>
 
-          {/* Order Type Selection */}
           <div className="mt-6">
             <label className="block text-lg font-semibold mb-2">
               Order Type
             </label>
             <Select onValueChange={(value) => setOrderType(value)}>
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="w-full text-black">
                 <SelectValue placeholder="Select Order Type" />
               </SelectTrigger>
               <SelectContent>
@@ -154,19 +158,32 @@ function Cart() {
             </Select>
           </div>
 
-          {/* Conditional Inputs */}
           {orderType === "Dine In" && (
             <div className="mt-4">
               <label className="block text-lg font-semibold mb-2">
                 Table Number
               </label>
-              <input
-                type="number"
-                value={tableNumber}
+              <Select
+                id="typeOrder"
                 onChange={(e) => setTableNumber(e.target.value)}
-                className="w-full p-2 rounded-lg bg-brown-700 text-white"
-                placeholder="Enter table number"
-              />
+                value={tableNumber}
+              >
+                <SelectTrigger className="w-full mb-4 text-black">
+                  <SelectValue placeholder="Type Order" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">1</SelectItem>
+                  <SelectItem value="2">2</SelectItem>
+                  <SelectItem value="3">3</SelectItem>
+                  <SelectItem value="4">4</SelectItem>
+                  <SelectItem value="5">5</SelectItem>
+                  <SelectItem value="6">6</SelectItem>
+                  <SelectItem value="7">7</SelectItem>
+                  <SelectItem value="8">8</SelectItem>
+                  <SelectItem value="9">9</SelectItem>
+                  <SelectItem value="10">10</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           )}
 
@@ -175,11 +192,11 @@ function Cart() {
               <label className="block text-lg font-semibold mb-2">
                 Address
               </label>
-              <textarea
+              <Textarea
                 type="text"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                className="w-full p-2 rounded-lg bg-brown-700 text-white"
+                className="w-full p-2 rounded-lg bg-brown-700 text-black"
                 placeholder="Enter delivery address"
               />
             </div>

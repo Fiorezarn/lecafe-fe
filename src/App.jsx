@@ -11,11 +11,13 @@ import DashboardUser from "./pages/DashboardUser";
 import { ProtectedRoute, ProtectedRole } from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
 import Cart from "./pages/Cart";
+import DetailMenu from "./pages/DetailMenu";
 
 function App() {
   return (
     <Routes>
       <Route path="/menu" element={<Menu />} />
+      <Route path="/menu/:id" element={<DetailMenu />} />
       <Route path="/" element={<Home />} />
       <Route path="/cart" element={<Cart />} />
       <Route element={<PublicRoute />}>

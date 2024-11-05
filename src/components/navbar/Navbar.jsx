@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, ShoppingCart, X } from "lucide-react";
 import AvatarNav from "../menuNav/Avatar";
-import CartNav from "../menuNav/Cart";
 
 function Navbar({ isFixed = true }) {
   const [navbar, setNavbar] = useState(false);
@@ -41,9 +40,10 @@ function Navbar({ isFixed = true }) {
     >
       <h1 className="text-white text-3xl">Le Café</h1>
 
-      {/* Hamburger Icon and Cart for Mobile */}
       <div className="flex items-center gap-4 md:hidden">
-        <CartNav cartClass="text-white cursor-pointer" />
+        <a href="/cart">
+          <ShoppingCart size={24} strokeWidth={1.75} />
+        </a>
         <button onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
           {menuOpen ? (
             <X className="text-white" size={30} />
@@ -53,7 +53,6 @@ function Navbar({ isFixed = true }) {
         </button>
       </div>
 
-      {/* Navigation Links */}
       <div
         className={`${
           menuOpen ? "flex" : "hidden"
@@ -75,7 +74,9 @@ function Navbar({ isFixed = true }) {
 
       <div className="hidden md:flex items-center gap-8 text-white">
         <AvatarNav />
-        <CartNav cartClass="text-white cursor-pointer" />
+        <a href="/cart">
+          <ShoppingCart size={24} strokeWidth={1.75} />
+        </a>
       </div>
     </nav>
   );

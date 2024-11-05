@@ -1,10 +1,21 @@
 const BASE_URL = import.meta.env.VITE_BASE_URL_BE;
 
-const fetchAllMenu = async () => {
-  const response = await fetch(`${BASE_URL}/menu`);
+const fetchAllMenu = async (data) => {
+  const { limit, page, search, category } = data;
+  let query = "";
+  query += limit ? "limit=" + limit + "&" : "";
+  query += page ? "page=" + page + "&" : "";
+  query += search ? "search=" + search + "&" : "";
+  query += category ? "category=" + category + "&" : "";
+  const response = await fetch(`${BASE_URL}/menu${query ? "?" + query : ""}`);
   if (!response.ok) {
     throw new Error(`${response.status} ${response.statusText}`);
   }
+  return await response.json();
+};
+
+const fetchMenuRecommended = async () => {
+  const response = await fetch(`${BASE_URL}/menu/recommended`);
   return await response.json();
 };
 
@@ -42,4 +53,5 @@ export {
   fetchcreateMenu,
   fetchEditMenu,
   fetchDeleteMenu,
+  fetchMenuRecommended,
 };

@@ -1,122 +1,54 @@
 // Menu.js
 "use client";
 import * as React from "react";
-import MenuList from "@/components/menu/MenuList";
-import { Input } from "@/components/ui/input";
-import {
-  SidebarProvider,
-  SidebarTrigger,
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-} from "@/components/ui/sidebar";
-import { Slider } from "@/components/ui/slider";
+import MenuList from "@/components/menu/CardList";
 import { useSelector } from "react-redux";
-import MenuDetail from "@/components/menu/MenuDetail";
+import MenuDetail from "@/components/menu/CardDetail";
+import Navbar from "@/components/navbar/Navbar";
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-  BreadcrumbPage,
-} from "@/components/ui/breadcrumb";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import AvatarNav from "@/components/menuNav/Avatar";
-import CartNav from "@/components/menuNav/Cart";
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { Card, CardContent } from "@/components/ui/card";
+import CardList from "@/components/menu/CardList";
 
 function Menu() {
-  const { menuById } = useSelector((state) => state.menu);
-
   return (
-    <div className="flex bg-[#C0AF90]">
-      <SidebarProvider
-        style={{
-          "--sidebar-width": "20rem",
-          "--sidebar-width-mobile": "20rem",
-        }}
-      >
-        <Sidebar className="fixed">
-          <SidebarContent className="bg-earth px-6">
-            <SidebarGroup>
-              <SidebarGroupLabel className="text-white ml-10 text-4xl mb-16 mt-6">
-                Le Café
-              </SidebarGroupLabel>
-              <SidebarGroupContent>
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-300 mb-4">
-                    Search
-                  </label>
-                  <Input type="email" placeholder="Search" />
+    <>
+      <Navbar />
+      <div className="px-10 md:px-28 py-10 md:py-20 bg-earth3">
+        <Carousel className="w-full relative mb-8">
+          <CarouselContent className="flex space-x-4">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <CarouselItem key={index}>
+                <div className="p-2 md:p-4">
+                  <Card className="rounded-lg h-[50vh] shadow-lg overflow-hidden">
+                    <CardContent className="flex items-center justify-center p-6 bg-white">
+                      <span className="text-2xl md:text-4xl font-semibold">
+                        Banner {index + 1}
+                      </span>
+                    </CardContent>
+                  </Card>
                 </div>
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-300 mb-4">
-                    Category
-                  </label>
-                  <Select>
-                    <SelectTrigger className="w-full mb-4">
-                      <SelectValue placeholder="Category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Delivery">Coffe</SelectItem>
-                      <SelectItem value="Dine-in">Non-coffe</SelectItem>
-                      <SelectItem value="Dine-in">Food</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-300 mb-4">
-                    Price
-                  </label>
-                  <Slider defaultValue={[33]} max={100} step={1} />
-                </div>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          </SidebarContent>
-        </Sidebar>
-        <div className="w-full">
-          <div className="w-full h-10 flex items-center justify-between p-8 bg-earth4">
-            <div className="flex items-center">
-              <SidebarTrigger className="hover:bg-earth4" />
-              <Breadcrumb className="px-10">
-                <BreadcrumbList>
-                  <BreadcrumbItem>
-                    <BreadcrumbLink href="/">Home</BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator />
-                  <BreadcrumbItem>
-                    <BreadcrumbLink href="/menu">Menu</BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbItem>
-                    {menuById ? (
-                      <>
-                        <BreadcrumbSeparator />
-                        <BreadcrumbPage>{menuById?.mn_name}</BreadcrumbPage>
-                      </>
-                    ) : null}
-                  </BreadcrumbItem>
-                </BreadcrumbList>
-              </Breadcrumb>
-            </div>
-            <div className="flex items-center gap-6">
-              <AvatarNav />
-              <CartNav cartClass="text-black cursor-pointer" />
-            </div>
-          </div>
-          <main className="px-10 py-6">
-            {menuById ? <MenuDetail /> : <MenuList />}
-          </main>
-        </div>
-      </SidebarProvider>
-    </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+
+          <CarouselPrevious className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full shadow-lg hover:bg-gray-700 focus:outline-none">
+            &lt;
+          </CarouselPrevious>
+
+          <CarouselNext className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full shadow-lg hover:bg-gray-700 focus:outline-none">
+            &gt;
+          </CarouselNext>
+        </Carousel>
+
+        <CardList />
+      </div>
+    </>
   );
 }
 

@@ -10,6 +10,8 @@ export const menuSlice = createSlice({
     isOpen: false,
     message: null,
     code: null,
+    page: 1,
+    limit: 8,
   },
   reducers: {
     fetchRequestGetAllMenu: (state) => {
@@ -73,6 +75,12 @@ export const menuSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    setLimit: (state, action) => {
+      state.limit = action.payload;
+    },
+    setPage: (state, action) => {
+      state.page = action.payload;
+    },
   },
 });
 
@@ -92,6 +100,8 @@ export const {
   updateMenuFailure,
   deleteMenuSuccess,
   deleteMenuFailure,
+  setPage,
+  setLimit,
 } = menuSlice.actions;
 
 export default menuSlice.reducer;

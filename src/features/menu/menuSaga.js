@@ -19,9 +19,9 @@ import {
   fetchDeleteMenu,
 } from "./menuApi";
 
-function* getAllMenu() {
+function* getAllMenu(action) {
   try {
-    const response = yield fetchAllMenu();
+    const response = yield fetchAllMenu(action.payload ? action.payload : {});
     yield put(fetchSuccessGetAllMenu(response));
   } catch (error) {
     yield put(fetchFailureGetAllMenu(error.message));

@@ -1,5 +1,4 @@
-// MenuList.js
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Card,
@@ -12,7 +11,6 @@ import {
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -24,33 +22,39 @@ import { toast } from "sonner";
 import { Input } from "../ui/input";
 import { formatPrice } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
+import { setPage } from "@/features/menu/menuSlice";
 
-function MenuList() {
+function CardList() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { menu, error } = useSelector((state) => state.menu);
-  const { cookie, isAutenticated } = useSelector((state) => state.auth);
+  const { menu, error, page, limit } = useSelector((state) => state.menu);
+  const { cookie } = useSelector((state) => state.auth);
   const { message, errorCart } = useSelector((state) => state.cart);
+
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
 
   useEffect(() => {
     dispatch({ type: "auth/getCookie" });
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch({ type: "menu/getAllMenu" });
-  }, [dispatch]);
+    dispatch({
+      type: "menu/getAllMenu",
+      payload: { page, limit, search, category },
+    });
+  }, [dispatch, page, limit, search, category]);
+
+  const handlePageChange = (newPage) => {
+    dispatch(setPage(newPage));
+  };
 
   useEffect(() => {
     if (message) {
-      if (errorCart) {
-        toast.error(message);
-        dispatch({ type: "cart/setMessage" });
-      } else {
-        toast.success(message);
-        dispatch({ type: "cart/setMessage" });
-      }
+      toast[errorCart ? "error" : "success"](message);
+      dispatch({ type: "cart/setMessage" });
     }
-  }, [message]);
+  }, [message, errorCart, dispatch]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -68,8 +72,12 @@ function MenuList() {
     }
   };
 
-  const clickDetail = (id) => {
-    dispatch({ type: "menu/getMenuById", payload: id });
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    dispatch({
+      type: "menu/getAllMenu",
+      payload: { page, limit, search, category },
+    });
   };
 
   if (error) {
@@ -78,6 +86,31 @@ function MenuList() {
 
   return (
     <div className="flex flex-col">
+      <div className="flex justify-between mb-8">
+        <form onSubmit={handleSearchSubmit} className="flex items-center">
+          <Input
+            className="form-control"
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearchSubmit(e);
+              }
+            }}
+          />
+        </form>
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="form-control w-[180px] border rounded-md p-2"
+        >
+          <option value="">Select a category</option>
+          <option value="coffee">Coffee</option>
+          <option value="non-coffee">Non-Coffee</option>
+          <option value="food">Food</option>
+        </select>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {menu?.data?.map((item) => (
           <Card
@@ -86,12 +119,11 @@ function MenuList() {
           >
             <div
               className="cursor-pointer"
-              onClick={() => clickDetail(item.mn_id)}
+              onClick={() => {
+                navigate(`/menu/${item.mn_id}`);
+              }}
             >
-              <CardHeader
-                className="h-48 overflow-hidden"
-                onClick={() => clickDetail(item.mn_id)}
-              >
+              <CardHeader className="h-48 overflow-hidden">
                 <img
                   className="w-full h-full object-cover"
                   src={`${item.mn_image}`}
@@ -119,11 +151,10 @@ function MenuList() {
                   className="hidden"
                   value={item.mn_id}
                   id="menuId"
-                  type="number"
-                  min="1"
+                  type="hidden"
                   required
-                ></Input>
-                <Button className=" bg-earth" type="submit">
+                />
+                <Button className="bg-earth" type="submit">
                   <ShoppingCart />
                 </Button>
               </form>
@@ -135,24 +166,26 @@ function MenuList() {
       <Pagination className="mt-6">
         <PaginationContent>
           <PaginationItem>
-            <PaginationPrevious href="#" />
+            <PaginationPrevious
+              onClick={() => handlePageChange(page - 1)}
+              disabled={page === 1}
+            />
           </PaginationItem>
+          {[...Array(menu?.totalPages)].map((_, index) => (
+            <PaginationItem key={index}>
+              <PaginationLink
+                onClick={() => handlePageChange(index + 1)}
+                isActive={index + 1 === page}
+              >
+                {index + 1}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
           <PaginationItem>
-            <PaginationLink href="#">1</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#" isActive>
-              2
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#">3</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationNext href="#" />
+            <PaginationNext
+              onClick={() => handlePageChange(page + 1)}
+              disabled={page === menu?.totalPages}
+            />
           </PaginationItem>
         </PaginationContent>
       </Pagination>
@@ -160,4 +193,4 @@ function MenuList() {
   );
 }
 
-export default MenuList;
+export default CardList;
