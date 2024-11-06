@@ -37,7 +37,7 @@ function Menu() {
   return (
     <>
       <Navbar navClass={"bg-earth border-gray-200 fixed w-full z-10"} />
-      <div className="px-10 md:px-28 py-10 md:pt-24 bg-earth3">
+      <div className="px-10 md:px-28 md:pt-24 pt-24 bg-earth3">
         <Carousel className="w-[100%] relative mb-8">
           <CarouselContent>
             {images.map((image) => {

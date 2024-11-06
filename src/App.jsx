@@ -12,14 +12,20 @@ import { ProtectedRoute, ProtectedRole } from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
 import Cart from "./pages/Cart";
 import DetailMenu from "./pages/DetailMenu";
+import Unauthorized from "./pages/Unauthorized";
+import VerifyFailed from "./pages/VerifyFailed";
+import VerifySuccess from "./pages/VerifySucess";
 
 function App() {
   return (
     <Routes>
+      <Route path="/" element={<Home />} />
       <Route path="/menu" element={<Menu />} />
       <Route path="/menu/:id" element={<DetailMenu />} />
-      <Route path="/" element={<Home />} />
       <Route path="/cart" element={<Cart />} />
+      <Route path="/unauthorized" element={<Unauthorized />} />
+      <Route path="/verify-success" element={<VerifySuccess />} />
+      <Route path="/verify-failed" element={<VerifyFailed />} />
       <Route element={<PublicRoute />}>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

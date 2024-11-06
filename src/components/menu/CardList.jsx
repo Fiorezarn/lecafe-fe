@@ -23,6 +23,15 @@ import { Input } from "../ui/input";
 import { formatPrice } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { setPage } from "@/features/menu/menuSlice";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 function CardList() {
   const dispatch = useDispatch();
@@ -79,17 +88,16 @@ function CardList() {
     });
   };
 
-  useEffect(()=> {
+  useEffect(() => {
     if (error) {
       toast.error(error);
     }
-  },[error])
-
+  }, [error]);
 
   return (
     <div className="flex flex-col">
-      <div className="flex justify-between mb-8">
-        <form onSubmit={handleSearchSubmit} className="flex items-center">
+      <div className="flex lg:flex-row flex-col gap-4 lg:justify-between mb-8">
+        <form onSubmit={handleSearchSubmit}>
           <Input
             className="form-control"
             placeholder="Search..."
@@ -102,16 +110,18 @@ function CardList() {
             }}
           />
         </form>
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="form-control w-[180px] border rounded-md p-2"
-        >
-          <option value="">Select a category</option>
-          <option value="coffee">Coffee</option>
-          <option value="non-coffee">Non-Coffee</option>
-          <option value="food">Food</option>
-        </select>
+        <Select value={category} onValueChange={setCategory}>
+          <SelectTrigger className="w-full lg:w-[180px]">
+            <SelectValue placeholder="Select a category" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="coffee">Coffee</SelectItem>
+              <SelectItem value="non-coffee">Non-Coffee</SelectItem>
+              <SelectItem value="food">Food</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {menu?.data?.map((item) => (
@@ -165,7 +175,7 @@ function CardList() {
           </Card>
         ))}
       </div>
-      <Pagination className="mt-6">
+      <Pagination className="my-16">
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious

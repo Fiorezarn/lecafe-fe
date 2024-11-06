@@ -4,10 +4,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import heroImage from "../assets/images/hero.jpg";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useDispatch, useSelector } from "react-redux";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Map from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
 import { formatDate, formatPrice } from "@/lib/utils";
@@ -19,7 +18,6 @@ import {
   CheckCircleIcon,
   CircleAlert,
   ClockIcon,
-  Trash,
   TruckIcon,
   Wallet,
 } from "lucide-react";
@@ -200,11 +198,11 @@ function Order() {
                     <AccordionItem value="item-1">
                       <AccordionTrigger>
                         <div className="flex justify-between items-center w-full p-4 bg-yellow-100 rounded-lg shadow-sm">
-                          <h1 className="text-2xl font-semibold text-yellow-800 flex items-center gap-2">
+                          <h1 className="text-sm lg:text-2xl font-semibold text-yellow-800 flex items-center gap-2">
                             <ClockIcon className="w-6 h-6 text-yellow-600" />
                             ORDER-{item.or_id}
                           </h1>
-                          <p className="text-gray-700">
+                          <p className="text-gray-700 text-sm lg:text-xl">
                             {formatDate(item.createdAt)}
                           </p>
                         </div>
@@ -279,11 +277,11 @@ function Order() {
                     <AccordionItem value="item-1">
                       <AccordionTrigger>
                         <div className="flex justify-between items-center w-full p-4 bg-blue-100 rounded-lg shadow-sm">
-                          <h1 className="text-2xl font-semibold text-blue-800 flex items-center gap-2">
+                          <h1 className="text-sm lg:text-2xl font-semibold text-blue-800 flex items-center gap-2">
                             <TruckIcon className="w-6 h-6 text-blue-600" />
                             ORDER-{item.or_id}
                           </h1>
-                          <p className="text-gray-700">
+                          <p className="text-gray-700 text-sm lg:text-xl">
                             {formatDate(item.createdAt)}
                           </p>
                         </div>
@@ -342,8 +340,6 @@ function Order() {
               item?.or_status_payment === "Success"
             ) {
               const menus = JSON.parse(item?.OrderDetail[0].od_mn_json);
-              console.log(item, "ini item");
-
               return (
                 <TabsContent value="finished" key={index}>
                   <Accordion
@@ -354,11 +350,11 @@ function Order() {
                     <AccordionItem value="item-1">
                       <AccordionTrigger>
                         <div className="flex justify-between items-center w-full p-4 bg-green-100 rounded-lg shadow-sm">
-                          <h1 className="text-2xl font-semibold text-green-800 flex items-center gap-2">
+                          <h1 className="text-sm lg:text-2xl font-semibold text-green-800 flex items-center gap-2">
                             <CheckCircleIcon className="w-6 h-6 text-green-600" />
                             ORDER-{item.or_id}
                           </h1>
-                          <p className="text-gray-700">
+                          <p className="text-gray-700 text-sm lg:text-xl">
                             {formatDate(item.createdAt)}
                           </p>
                         </div>
@@ -419,11 +415,11 @@ function Order() {
                     <AccordionItem value="item-1">
                       <AccordionTrigger>
                         <div className="flex justify-between items-center w-full p-4 bg-red-100 rounded-lg shadow-sm">
-                          <h1 className="text-2xl font-semibold text-red-800 flex items-center gap-2">
+                          <h1 className="text-sm lg:text-2xl font-semibold text-red-800 flex items-center gap-2">
                             <CircleAlert className="w-6 h-6 text-red-600" />
                             ORDER-{item.or_id}
                           </h1>
-                          <p className="text-gray-700">
+                          <p className="text-gray-700 text-sm lg:text-xl">
                             {formatDate(item.createdAt)}
                           </p>
                         </div>

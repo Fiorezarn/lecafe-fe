@@ -40,10 +40,10 @@ function Home() {
       >
         <Navbar navClass={"bg-earth border-gray-200 fixed w-full z-10"} />
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-          <h1 className="font-semibold text-5xl text-white drop-shadow-lg">
+          <h1 className="font-semibold text-xl lg:text-5xl text-white drop-shadow-lg">
             Welcome to Le Café {cookie?.us_username}!
           </h1>
-          <p className="text-white mt-4 text-lg">
+          <p className="text-white mt-4 text-sm lg:text-lg">
             We have the best coffee in the town!
           </p>
           <Button className="mt-4 bg-earth3 text-black hover:text-white px-4 py-2">
