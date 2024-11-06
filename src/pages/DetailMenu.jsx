@@ -6,7 +6,7 @@ import Navbar from "@/components/navbar/Navbar";
 function DetailMenu() {
   return (
     <>
-      <Navbar isFixed={true} />
+      <Navbar/>
       <div className="bg-earth3">
         <div id="menu-detail" className="py-28 px-28">
           <CardDetail />

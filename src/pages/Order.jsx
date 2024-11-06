@@ -1,4 +1,3 @@
-import Navbar from "@/components/navbar/Navbar";
 import {
   Accordion,
   AccordionContent,
@@ -17,6 +16,7 @@ import Extent from "@arcgis/core/geometry/Extent";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Wallet } from "lucide-react";
+import Navbar from "@/components/navbar/Navbar";
 
 function Order() {
   const dispatch = useDispatch();
@@ -60,26 +60,28 @@ function Order() {
 
   useEffect(() => {
     if (id) {
-      console.log(orderById);
-
       dispatch({ type: "order/getAllOrder", payload: id });
     }
   }, [id]);
 
   useEffect(() => {
     if (orderById) {
-      const orderCoordinates = [];
-      orderById?.order?.Order?.map((order) => {
-        orderCoordinates.push({
-          destinationLongitude: order.or_longitude,
-          destinationLatitude: order.or_latitude,
-          originLatitude: orderById.origins.latitude,
-          originLongitude: orderById.origins.longitude,
-        });
-      });
-      dispatch({ type: "map/fetchCoordinates", payload: orderCoordinates });
+      const orderCoordinates = orderById?.order?.Order?.map((order) => ({
+        destinationLongitude: order.or_longitude,
+        destinationLatitude: order.or_latitude,
+        originLatitude: orderById.origins.latitude,
+        originLongitude: orderById.origins.longitude,
+      })).filter(
+        (coordinate) => coordinate.destinationLatitude !== null && coordinate.destinationLongitude !== null
+      );
+  
+      console.log(orderCoordinates);
+      if (orderCoordinates.length > 0) {
+        dispatch({ type: "map/fetchCoordinates", payload: orderCoordinates });
+      }
     }
   }, [orderById]);
+  
 
   useEffect(() => {
     if (coordinates && view) {
@@ -165,8 +167,8 @@ function Order() {
 
   return (
     <>
-      <Navbar isFixed={false} />
-      <div className="p-10">
+      <Navbar navClass={"bg-earth border-gray-200 z-10"}/>
+      <div className="p-10 bg-earth5 h-screen">
         <Tabs
           defaultValue="pending"
           className="w-full"
@@ -175,7 +177,7 @@ function Order() {
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="pending">Pending</TabsTrigger>
             <TabsTrigger value="on-going">On-going</TabsTrigger>
-            <TabsTrigger value="success">Success</TabsTrigger>
+            <TabsTrigger value="finished">Finished</TabsTrigger>
             <TabsTrigger value="failed">Failed</TabsTrigger>
           </TabsList>
           {orderById?.order?.Order?.map((item, index) => {
@@ -323,7 +325,7 @@ function Order() {
             ) {
               const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
               return (
-                <TabsContent value="success" key={index}>
+                <TabsContent value="finished" key={index}>
                   <Accordion
                     type="single"
                     collapsible

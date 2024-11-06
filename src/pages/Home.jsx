@@ -1,4 +1,3 @@
-import Navbar from "@/components/navbar/Navbar";
 import heroImage from "../assets/images/hero.jpg";
 import {
   Card,
@@ -15,7 +14,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import Beans from "../assets/images/coffee-bean.png";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 import Footer from "@/components/footer/Footer";
@@ -25,6 +23,7 @@ import { formatPrice } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { fetchMenuRecommended } from "@/features/menu/menuApi";
+import Navbar from "@/components/navbar/Navbar";
 
 function Home() {
   const dispatch = useDispatch();
@@ -75,7 +74,7 @@ function Home() {
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${heroImage})`,
         }}
       >
-        <Navbar isFixed={true} />
+        <Navbar navClass={"bg-earth border-gray-200 fixed w-full z-10"}/>
         <div className="absolute top-56 left-24">
           <h1 className="font-semibold text-5xl text-white">
             Welcome to Le Café {cookie?.us_username}!

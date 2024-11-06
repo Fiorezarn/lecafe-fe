@@ -14,6 +14,7 @@ export default {
   			earth2: '#AB886D',
   			earth3: '#D6C0B3',
   			earth4: '#E4E0E1',
+			earth5: "#C0AF90",
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

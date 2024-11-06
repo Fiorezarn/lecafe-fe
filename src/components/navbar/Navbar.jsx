@@ -1,82 +1,47 @@
-import { useState, useEffect } from "react";
-import { Menu, ShoppingCart, X } from "lucide-react";
-import AvatarNav from "../menuNav/Avatar";
+import React, { useState } from 'react';
+import AvatarNav from '../menuNav/Avatar';
+import { Menu, ShoppingCart } from 'lucide-react';
 
-function Navbar({ isFixed = true }) {
-  const [navbar, setNavbar] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const isMobile = window.innerWidth <= 768; // Deteksi jika di mobile
+function Navbar({navClass}) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const changeBackground = () => {
-      if (window.scrollY >= 80 || isMobile) {
-        setNavbar(true);
-      } else {
-        setNavbar(false);
-      }
-    };
 
-    if (
-      document.documentElement.scrollHeight <= window.innerHeight ||
-      isMobile
-    ) {
-      setNavbar(true);
-    } else {
-      window.addEventListener("scroll", changeBackground);
-    }
-
-    return () => {
-      window.removeEventListener("scroll", changeBackground);
-    };
-  }, [isMobile]);
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
-    <nav
-      className={`w-full ${
-        isFixed ? "fixed" : ""
-      } z-20 flex justify-between items-center mx-auto py-4 px-6 md:px-12 text-white transition duration-500 ease-in-out ${
-        navbar ? "bg-earth" : "bg-transparent"
-      }`}
-    >
-      <h1 className="text-white text-3xl">Le Café</h1>
-
-      <div className="flex items-center gap-4 md:hidden">
-        <a href="/cart">
-          <ShoppingCart size={24} strokeWidth={1.75} />
+    <nav className={navClass}>
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <a href="https://flowbite.com/" className="flex items-center space-x-3 rtl:space-x-reverse">
+          <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">Le Café</span>
         </a>
-        <button onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
-          {menuOpen ? (
-            <X className="text-white" size={30} />
-          ) : (
-            <Menu className="text-white" size={30} />
-          )}
-        </button>
-      </div>
-
-      <div
-        className={`${
-          menuOpen ? "flex" : "hidden"
-        } md:flex flex-col md:flex-row gap-6 text-xl text-white absolute md:relative top-16 md:top-auto left-0 w-full md:w-auto bg-earth md:bg-transparent md:items-center p-4 md:p-0`}
-      >
-        <div className="md:hidden mt-4">
-          <AvatarNav />
+        <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+          <div className="flex gap-6 items-center">
+            <AvatarNav />
+            <a className="text-white" href="/cart">
+              <ShoppingCart size={24} strokeWidth={1.75} />
+            </a>
+          </div>
+          <button
+            onClick={toggleMenu}
+            data-collapse-toggle="navbar-user"
+            type="button"
+            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-white hover:text-black rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+            aria-controls="navbar-user"
+            aria-expanded={isMenuOpen}
+          >
+            <span className="sr-only">Open main menu</span>
+            <Menu/> 
+          </button>
         </div>
-        <a href="/" className="py-2 hover:text-gray-300 md:px-4">
-          Home
-        </a>
-        <a href="/menu" className="py-2 hover:text-gray-300 md:px-4">
-          Menu
-        </a>
-        <a href="/order" className="py-2 hover:text-gray-300 md:px-4">
-          Order
-        </a>
-      </div>
-
-      <div className="hidden md:flex items-center gap-8 text-white">
-        <AvatarNav />
-        <a href="/cart">
-          <ShoppingCart size={24} strokeWidth={1.75} />
-        </a>
+        <div className={`items-center z-10 justify-between ${isMenuOpen ? 'block' : 'hidden'} w-full md:flex md:w-auto md:order-1`} id="navbar-user">
+          <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-earth2 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-earth">
+            <li><a href="/" className="block py-2 px-3 text-white rounded hover:bg-earth">Home</a></li>
+            <li><a href="/menu" className="block py-2 px-3 text-white rounded hover:bg-earth">Menu</a></li>
+            <li><a href="/order" className="block py-2 px-3 text-white rounded hover:bg-earth">Order</a></li>
+          </ul>
+        </div>
       </div>
     </nav>
   );

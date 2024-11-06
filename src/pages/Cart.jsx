@@ -90,7 +90,7 @@ function Cart() {
 
   return (
     <>
-      <Navbar />
+      <Navbar navClass={"bg-earth border-gray-200 z-10"} />
       <div className="flex flex-col md:flex-row pt-32 h-[100vh] p-8 gap-8 bg-earth3">
         <section className="flex-1">
           <h2 className="text-2xl font-bold mb-4 text-earth">Your Cart</h2>
