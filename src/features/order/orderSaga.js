@@ -10,8 +10,15 @@ import { fetchAllOrder, fetchCreateOrder, fetchCoordinates } from "./orderApi";
 
 function* createOrder(action) {
   try {
-    const response = yield fetchCreateOrder(action.payload);
-    yield put(fetchcreateOrderSuccess(response));
+    const responseAdd = yield fetchCreateOrder(action.payload);
+    const responseGet = yield fetchAllOrder(action.payload.userId);
+    yield put(
+      fetchcreateOrderSuccess({
+        data: responseGet.data,
+        message: responseAdd.message,
+        code: responseAdd.code,
+      })
+    );
   } catch (error) {
     yield put(fetchcreateOrderFailure(error.message));
   }

@@ -11,26 +11,30 @@ import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Map from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
-import { formatPrice } from "@/lib/utils";
+import { formatDate, formatPrice } from "@/lib/utils";
 import Graphic from "@arcgis/core/Graphic";
 import Extent from "@arcgis/core/geometry/Extent";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Wallet } from "lucide-react";
 
 function Order() {
   const dispatch = useDispatch();
-  const { orderById, coordinates } = useSelector((state) => state.order);
-  const { cookie, isAuthenticated } = useSelector((state) => state.auth);
+  const { orderById, coordinates, messageOrder } = useSelector(
+    (state) => state.order
+  );
+  const { cookie } = useSelector((state) => state.auth);
   const mapRef = useRef(null);
   const [view, setView] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenTab, setIsOpenTab] = useState(false);
   const id = cookie?.us_id;
-  const BASE_URL = import.meta.env.VITE_BASE_URL_BE;
 
   useEffect(() => {
-    if (isAuthenticated) {
-      console.log(isAuthenticated);
+    if (messageOrder) {
+      toast.success(messageOrder);
     }
-  }, [isAuthenticated]);
+  }, [messageOrder]);
 
   useEffect(() => {
     if (mapRef.current) {
@@ -56,6 +60,8 @@ function Order() {
 
   useEffect(() => {
     if (id) {
+      console.log(orderById);
+
       dispatch({ type: "order/getAllOrder", payload: id });
     }
   }, [id]);
@@ -166,13 +172,14 @@ function Order() {
           className="w-full"
           onValueChange={(value) => setIsOpenTab(value)}
         >
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="pending">Pending</TabsTrigger>
             <TabsTrigger value="on-going">On-going</TabsTrigger>
             <TabsTrigger value="success">Success</TabsTrigger>
+            <TabsTrigger value="failed">Failed</TabsTrigger>
           </TabsList>
           {orderById?.order?.Order?.map((item, index) => {
-            if (item.or_status_payment === "Pending") {
+            if (item?.or_status_payment === "Pending") {
               const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
               return (
                 <TabsContent value="pending" key={index}>
@@ -183,45 +190,58 @@ function Order() {
                   >
                     <AccordionItem value="item-1">
                       <AccordionTrigger>
-                        <div className="flex justify-between items-center w-full">
-                          <h1 className="text-3xl">ORDER-{item.or_id}</h1>
-                          <p>{item.createdAt}</p>
+                        <div className="flex justify-between items-center w-full p-4 bg-gray-100 rounded-lg shadow-sm">
+                          <h1 className="text-2xl font-semibold text-gray-800">
+                            ORDER-{item.or_id}
+                          </h1>
+                          <p className="text-gray-600">
+                            {formatDate(item.createdAt)}
+                          </p>
                         </div>
                       </AccordionTrigger>
                       <AccordionContent>
-                        <div className="flex">
-                          <div className="w-1/2 rounded-md" ref={mapRef}></div>
-                          <div className="w-1/2 p-10 flex flex-col justify-between">
-                            <ul className="overflow-y-auto h-[300px]">
-                              {menus.map((menu, index) => {
-                                return (
-                                  <li
-                                    key={index}
-                                    className="flex justify-between items-center mb-4"
-                                  >
-                                    <div className="flex items-center gap-4">
-                                      <img
-                                        className="w-[100px]"
-                                        src={`${BASE_URL}/${menu?.image}`}
-                                        alt="heroImage"
-                                      />
-                                      <h1 className="text-3xl">{menu?.name}</h1>
-                                    </div>
-                                    <p className="text-xl">
-                                      {menu?.price} x {menu?.quantity}
-                                    </p>
-                                  </li>
-                                );
-                              })}
+                        <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
+                          <div className="w-full md:w-1/2 p-8">
+                            <ul className="overflow-y-auto max-h-[300px] space-y-6">
+                              {menus.map((menu, index) => (
+                                <li
+                                  key={index}
+                                  className="flex justify-between items-center"
+                                >
+                                  <div className="flex items-center gap-4">
+                                    <img
+                                      className="w-20 h-20 rounded-lg object-cover"
+                                      src={`${menu?.image}`}
+                                      alt="Menu item"
+                                    />
+                                    <h1 className="text-xl font-semibold text-gray-800">
+                                      {menu?.name}
+                                    </h1>
+                                  </div>
+                                  <p className="text-lg text-gray-700">
+                                    {menu?.price} x {menu?.quantity}
+                                  </p>
+                                </li>
+                              ))}
                             </ul>
-                            <div>
-                              <h1 className="text-3xl">
+                          </div>
+                          <div className="w-full md:w-1/2 p-8 flex flex-col justify-between">
+                            <div className="space-y-4">
+                              <h1 className="text-2xl font-bold text-gray-800">
                                 Total Price: {formatPrice(item?.or_total_price)}
                               </h1>
-                              <h1 className="text-3xl">
-                                Delivery on: {item?.or_site}
+                              <h1 className="text-xl text-gray-600">
+                                {isNaN(Number(item?.or_site))
+                                  ? "Delivery: " + item?.or_site
+                                  : "Dine In: " + item?.or_site}
                               </h1>
                             </div>
+                            <Button
+                              size="lg"
+                              className="bg-earth text-xl font-bold"
+                            >
+                              <Wallet /> Payment
+                            </Button>
                           </div>
                         </div>
                       </AccordionContent>
@@ -232,7 +252,11 @@ function Order() {
             }
           })}
           {orderById?.order?.Order?.map((item, index) => {
-            if (item.or_status_shipping === "On-going") {
+            if (
+              item?.or_status_shipping === "On-going" &&
+              item?.or_type_order === "Delivery" &&
+              item?.or_status_payment === "Success"
+            ) {
               const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
               return (
                 <TabsContent value="on-going" key={index}>
@@ -262,7 +286,7 @@ function Order() {
                                     <div className="flex items-center gap-4">
                                       <img
                                         className="w-[100px]"
-                                        src={`${BASE_URL}/${menu?.image}`}
+                                        src={`${menu?.image}`}
                                         alt="heroImage"
                                       />
                                       <h1 className="text-3xl">{menu?.name}</h1>
@@ -294,8 +318,8 @@ function Order() {
           })}
           {orderById?.Order?.map((item, index) => {
             if (
-              item.or_status_shipping === "Delivered" &&
-              item.or_status_shipping === "Delivered"
+              item?.or_status_shipping === "Delivered" &&
+              item?.or_status_shipping === "Delivered"
             ) {
               const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
               return (
@@ -326,7 +350,67 @@ function Order() {
                                     <div className="flex items-center gap-4">
                                       <img
                                         className="w-[100px]"
-                                        src={`${BASE_URL}/${menu?.image}`}
+                                        src={`${menu?.image}`}
+                                        alt="heroImage"
+                                      />
+                                      <h1 className="text-3xl">{menu?.name}</h1>
+                                    </div>
+                                    <p className="text-xl">
+                                      {menu?.price} x {menu?.quantity}
+                                    </p>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                            <div>
+                              <h1 className="text-3xl">
+                                Total Price: {item?.or_total_price}
+                              </h1>
+                              <h1 className="text-3xl">
+                                Delivery on: {item?.or_site}
+                              </h1>
+                            </div>
+                          </div>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </TabsContent>
+              );
+            }
+          })}
+          {orderById?.Order?.map((item, index) => {
+            if (item?.or_status_payment === "Failed") {
+              const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
+              return (
+                <TabsContent value="failed" key={index}>
+                  <Accordion
+                    type="single"
+                    collapsible
+                    onValueChange={(value) => setIsOpenTab(value === "item-1")}
+                  >
+                    <AccordionItem value="item-1">
+                      <AccordionTrigger>
+                        <div className="flex justify-between items-center w-full">
+                          <h1 className="text-3xl">ORDER-{item.or_id}</h1>
+                          <p>{item.createdAt}</p>
+                        </div>
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div className="flex">
+                          {/* <div className="w-1/2 rounded-md" ref={mapRef}></div> */}
+                          <div className="w-1/2 p-10 flex flex-col justify-between">
+                            <ul className="overflow-y-auto h-[300px]">
+                              {menus.map((menu, index) => {
+                                return (
+                                  <li
+                                    key={index}
+                                    className="flex justify-between items-center mb-4"
+                                  >
+                                    <div className="flex items-center gap-4">
+                                      <img
+                                        className="w-[100px]"
+                                        src={`${menu?.image}`}
                                         alt="heroImage"
                                       />
                                       <h1 className="text-3xl">{menu?.name}</h1>

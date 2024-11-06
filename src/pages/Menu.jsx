@@ -14,27 +14,41 @@ import {
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
 import CardList from "@/components/menu/CardList";
+import Footer from "@/components/footer/Footer";
 
 function Menu() {
+  const images = [
+    {
+      id: 1,
+      imgUrl:
+        "https://res.cloudinary.com/dsxnvgy7a/image/upload/v1730865829/Beige_Modern_Cafe_Banner_t8pitc.png",
+    },
+    {
+      id: 2,
+      imgUrl:
+        "https://res.cloudinary.com/dsxnvgy7a/image/upload/v1730865828/Beige_Brown_Abstract_Modern_Coffee_Shop_Banner_ct20fa.png",
+    },
+    {
+      id: 3,
+      imgUrl:
+        "https://res.cloudinary.com/dsxnvgy7a/image/upload/v1730865638/Brown_Modern_Coffee_Shop_Opening_and_Closing_Hours_Banner_vkojd9.png",
+    },
+  ];
   return (
     <>
       <Navbar />
       <div className="px-10 md:px-28 py-10 md:py-20 bg-earth3">
-        <Carousel className="w-full relative mb-8">
-          <CarouselContent className="flex space-x-4">
-            {Array.from({ length: 5 }).map((_, index) => (
-              <CarouselItem key={index}>
-                <div className="p-2 md:p-4">
-                  <Card className="rounded-lg h-[50vh] shadow-lg overflow-hidden">
-                    <CardContent className="flex items-center justify-center p-6 bg-white">
-                      <span className="text-2xl md:text-4xl font-semibold">
-                        Banner {index + 1}
-                      </span>
-                    </CardContent>
-                  </Card>
-                </div>
-              </CarouselItem>
-            ))}
+        <Carousel className="w-[100%] relative mb-8">
+          <CarouselContent>
+            {images.map((image) => {
+              return (
+                <img
+                  key={image.id}
+                  src={image.imgUrl}
+                  alt="Beige Modern Cafe Banner"
+                />
+              );
+            })}
           </CarouselContent>
 
           <CarouselPrevious className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full shadow-lg hover:bg-gray-700 focus:outline-none">
@@ -48,6 +62,7 @@ function Menu() {
 
         <CardList />
       </div>
+      <Footer />
     </>
   );
 }

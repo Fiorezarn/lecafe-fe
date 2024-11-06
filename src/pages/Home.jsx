@@ -1,6 +1,13 @@
 import Navbar from "@/components/navbar/Navbar";
 import heroImage from "../assets/images/hero.jpg";
-import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -8,26 +15,57 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import Coffee from "../assets/images/coffe.png";
-import Cake from "../assets/images/cake.png";
-import Bag from "../assets/images/bag.png";
-import Milkshake from "../assets/images/milkshake.png";
-import flyingCoffee from "../assets/images/flyingCoffee.png";
 import Beans from "../assets/images/coffee-bean.png";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 import Footer from "@/components/footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { formatPrice } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
+import { useNavigate } from "react-router-dom";
+import { fetchMenuRecommended } from "@/features/menu/menuApi";
 
 function Home() {
   const dispatch = useDispatch();
-  const { menu, loading, error } = useSelector((state) => state.menu);
+  const navigate = useNavigate();
+  const [menu, setMenu] = useState([]);
   const { cookie } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch({ type: "menu/getAllMenu" });
   }, [dispatch]);
+
+  const getRecommendedMenus = async () => {
+    try {
+      const response = await fetchMenuRecommended();
+      if (response) {
+        setMenu(response?.data);
+      }
+    } catch (error) {
+      console.error("Error fetching recommended menus:", error);
+    }
+  };
+
+  useEffect(() => {
+    getRecommendedMenus();
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const quantity = 1;
+    const menuId = e.target.menuId.value;
+    const userId = cookie?.us_id;
+
+    if (!cookie) {
+      navigate("/login");
+    } else {
+      dispatch({
+        type: "cart/addCart",
+        payload: { userId, menuId, quantity },
+      });
+    }
+  };
 
   return (
     <>
@@ -60,32 +98,58 @@ function Home() {
             className="w-full max-w-screen-xl"
           >
             <CarouselContent>
-              {menu?.data?.map((item) => {
+              {menu?.map((item) => {
                 return (
                   <CarouselItem
                     key={item.mn_id}
                     className="md:basis-1/2 lg:basis-1/3"
                   >
-                    <Card>
-                      <CardHeader>
-                        <img
-                          className="rounded-lg"
-                          src={`${item.mn_image}`}
-                          alt=""
-                        />
-                      </CardHeader>
-                      <CardTitle className="text-start px-6">
-                        {item.mn_name}
-                      </CardTitle>
-                      <div className="text-start px-6">
-                        <p>{item.mn_desc}</p>
-                        <p>Rp {item.mn_price}</p>
+                    <Card
+                      key={item.mn_id}
+                      className="shadow-md border border-gray-200 rounded-lg overflow-hidden bg-earth4"
+                    >
+                      <div
+                        className="cursor-pointer"
+                        onClick={() => {
+                          navigate(`/menu/${item.mn_id}`);
+                        }}
+                      >
+                        <CardHeader className="h-48 overflow-hidden">
+                          <img
+                            className="w-full h-full object-cover"
+                            src={`${item.mn_image}`}
+                            alt={item.mn_name}
+                          />
+                        </CardHeader>
+                        <CardContent>
+                          <CardTitle className="text-lg font-semibold">
+                            {item.mn_name}
+                          </CardTitle>
+                          <CardDescription className="text-sm text-gray-600">
+                            {item.mn_category}
+                          </CardDescription>
+                          <p className="font-semibold text-primary mt-2">
+                            {formatPrice(item.mn_price)}
+                          </p>
+                        </CardContent>
                       </div>
-                      <CardFooter className="w-full flex justify-between mt-8">
-                        <Button>
-                          <ShoppingCart />
-                        </Button>
-                        <Button>Order Now</Button>
+                      <CardFooter className="flex justify-between items-center">
+                        <form
+                          className="flex w-[50%] space-x-2 mr-6"
+                          onSubmit={handleSubmit}
+                        >
+                          <Input
+                            className="hidden"
+                            value={item.mn_id}
+                            id="menuId"
+                            type="hidden"
+                            required
+                          />
+                          <Button className="bg-earth" type="submit">
+                            <ShoppingCart />
+                          </Button>
+                        </form>
+                        <Button className="bg-earth">Order Now</Button>
                       </CardFooter>
                     </Card>
                   </CarouselItem>
@@ -100,7 +164,9 @@ function Home() {
       <section className="bg-[#C0AF90] flex flex-col lg:flex-row justify-between items-center p-6 lg:p-12">
         <img
           className="w-[200px] lg:w-[300px] mb-4 lg:mb-0"
-          src={flyingCoffee}
+          src={
+            "https://res.cloudinary.com/dsxnvgy7a/image/upload/v1730861879/flyingCoffee_gwkbg6.png"
+          }
           alt="Flying Coffee"
         />
         <div className="text-center lg:text-left mx-4 lg:mx-0">
@@ -113,7 +179,9 @@ function Home() {
         </div>
         <img
           className="w-[200px] lg:w-[300px] mt-4 lg:mt-0"
-          src={Beans}
+          src={
+            "https://res.cloudinary.com/dsxnvgy7a/image/upload/v1730861588/coffee-bean_exnpsc.png"
+          }
           alt="Coffee Beans"
         />
       </section>

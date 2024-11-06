@@ -90,6 +90,7 @@ function CardDetail() {
                   className=" placeholder:leading-loose text-black w-[30%] h-full font-mono mx-2 placeholder:text-center focus:outline-none focus:border-none focus:ring-0 text-center [&::-webkit-inner-spin-button]:appearance-none"
                   placeholder="0"
                   value={count}
+                  readOnly
                 />
                 <Button
                   variant="transparant"

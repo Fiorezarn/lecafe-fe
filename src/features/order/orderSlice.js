@@ -6,6 +6,8 @@ export const orderSlice = createSlice({
     order: null,
     coordinates: null,
     orderById: null,
+    messageOrder: null,
+    codeOrder: null,
     loading: false,
     error: null,
   },
@@ -17,6 +19,8 @@ export const orderSlice = createSlice({
     fetchcreateOrderSuccess: (state, action) => {
       state.loading = false;
       state.order = action.payload;
+      state.messageOrder = action.payload.message;
+      state.codeOrder = action.payload.code;
     },
     fetchcreateOrderFailure: (state, action) => {
       state.loading = false;
