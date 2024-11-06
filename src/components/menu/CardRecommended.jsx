@@ -14,10 +14,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Input } from "../ui/input";
 import { ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 function CardRecommended() {
   const [menu, setMenu] = useState([]);
   const { cookie } = useSelector((state) => state.auth);
+  const { message, errorCart } = useSelector((state) => state.cart);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -35,6 +37,13 @@ function CardRecommended() {
   useEffect(() => {
     getRecommendedMenus();
   }, []);
+
+  useEffect(() => {
+    if (message) {
+      toast[errorCart ? "error" : "success"](message);
+      dispatch({ type: "cart/setMessage" });
+    }
+  }, [message, errorCart, dispatch]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -54,7 +63,6 @@ function CardRecommended() {
 
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-10">
         {menu?.map((item) => (
           <Card
             key={item.mn_id}
@@ -106,7 +114,6 @@ function CardRecommended() {
             </CardFooter>
           </Card>
         ))}
-      </div>
     </>
   );
 }

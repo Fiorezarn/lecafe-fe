@@ -30,7 +30,6 @@ function CardList() {
   const { menu, error, page, limit } = useSelector((state) => state.menu);
   const { cookie } = useSelector((state) => state.auth);
   const { message, errorCart } = useSelector((state) => state.cart);
-
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
 
@@ -80,9 +79,12 @@ function CardList() {
     });
   };
 
-  if (error) {
-    toast.error(error);
-  }
+  useEffect(()=> {
+    if (error) {
+      toast.error(error);
+    }
+  },[error])
+
 
   return (
     <div className="flex flex-col">

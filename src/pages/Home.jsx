@@ -1,34 +1,14 @@
 import heroImage from "../assets/images/hero.jpg";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart } from "lucide-react";
 import Footer from "@/components/footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { formatPrice } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
-import { useNavigate } from "react-router-dom";
 import { fetchMenuRecommended } from "@/features/menu/menuApi";
 import Navbar from "@/components/navbar/Navbar";
+import CardRecommended from "@/components/menu/CardRecommended";
 
 function Home() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [menu, setMenu] = useState([]);
   const { cookie } = useSelector((state) => state.auth);
 
   useEffect(() => {
@@ -50,114 +30,34 @@ function Home() {
     getRecommendedMenus();
   }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const quantity = 1;
-    const menuId = e.target.menuId.value;
-    const userId = cookie?.us_id;
-
-    if (!cookie) {
-      navigate("/login");
-    } else {
-      dispatch({
-        type: "cart/addCart",
-        payload: { userId, menuId, quantity },
-      });
-    }
-  };
-
   return (
     <>
       <section
         className="relative h-[84vh] w-full bg-cover bg-center"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${heroImage})`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${heroImage})`,
         }}
       >
-        <Navbar navClass={"bg-earth border-gray-200 fixed w-full z-10"}/>
-        <div className="absolute top-56 left-24">
-          <h1 className="font-semibold text-5xl text-white">
+        <Navbar navClass={"bg-earth border-gray-200 fixed w-full z-10"} />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+          <h1 className="font-semibold text-5xl text-white drop-shadow-lg">
             Welcome to Le Café {cookie?.us_username}!
           </h1>
-          <p className="text-white mt-4">
+          <p className="text-white mt-4 text-lg">
             We have the best coffee in the town!
           </p>
-          <Button className="mt-4 bg-white text-black">Order Now</Button>
+          <Button className="mt-4 bg-earth3 text-black hover:text-white px-4 py-2">
+            Order Now
+          </Button>
         </div>
       </section>
+
       <section className="bg-[#F6EEE8] p-10">
         <h1 className="text-3xl text-center font-bold text-[#83704d]">
           OUR SPECIAL MENU
         </h1>
-        <div className="flex justify-center text-center mt-10">
-          <Carousel
-            opts={{
-              align: "start",
-            }}
-            className="w-full max-w-screen-xl"
-          >
-            <CarouselContent>
-              {menu?.map((item) => {
-                return (
-                  <CarouselItem
-                    key={item.mn_id}
-                    className="md:basis-1/2 lg:basis-1/3"
-                  >
-                    <Card
-                      key={item.mn_id}
-                      className="shadow-md border border-gray-200 rounded-lg overflow-hidden bg-earth4"
-                    >
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => {
-                          navigate(`/menu/${item.mn_id}`);
-                        }}
-                      >
-                        <CardHeader className="h-48 overflow-hidden">
-                          <img
-                            className="w-full h-full object-cover"
-                            src={`${item.mn_image}`}
-                            alt={item.mn_name}
-                          />
-                        </CardHeader>
-                        <CardContent>
-                          <CardTitle className="text-lg font-semibold">
-                            {item.mn_name}
-                          </CardTitle>
-                          <CardDescription className="text-sm text-gray-600">
-                            {item.mn_category}
-                          </CardDescription>
-                          <p className="font-semibold text-primary mt-2">
-                            {formatPrice(item.mn_price)}
-                          </p>
-                        </CardContent>
-                      </div>
-                      <CardFooter className="flex justify-between items-center">
-                        <form
-                          className="flex w-[50%] space-x-2 mr-6"
-                          onSubmit={handleSubmit}
-                        >
-                          <Input
-                            className="hidden"
-                            value={item.mn_id}
-                            id="menuId"
-                            type="hidden"
-                            required
-                          />
-                          <Button className="bg-earth" type="submit">
-                            <ShoppingCart />
-                          </Button>
-                        </form>
-                        <Button className="bg-earth">Order Now</Button>
-                      </CardFooter>
-                    </Card>
-                  </CarouselItem>
-                );
-              })}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-10">
+          <CardRecommended />
         </div>
       </section>
       <section className="bg-[#C0AF90] flex flex-col lg:flex-row justify-between items-center p-6 lg:p-12">

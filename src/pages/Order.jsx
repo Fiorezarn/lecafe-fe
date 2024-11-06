@@ -15,7 +15,14 @@ import Graphic from "@arcgis/core/Graphic";
 import Extent from "@arcgis/core/geometry/Extent";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Wallet } from "lucide-react";
+import {
+  CheckCircleIcon,
+  CircleAlert,
+  ClockIcon,
+  Trash,
+  TruckIcon,
+  Wallet,
+} from "lucide-react";
 import Navbar from "@/components/navbar/Navbar";
 
 function Order() {
@@ -72,16 +79,16 @@ function Order() {
         originLatitude: orderById.origins.latitude,
         originLongitude: orderById.origins.longitude,
       })).filter(
-        (coordinate) => coordinate.destinationLatitude !== null && coordinate.destinationLongitude !== null
+        (coordinate) =>
+          coordinate.destinationLatitude !== null &&
+          coordinate.destinationLongitude !== null
       );
-  
-      console.log(orderCoordinates);
+
       if (orderCoordinates.length > 0) {
         dispatch({ type: "map/fetchCoordinates", payload: orderCoordinates });
       }
     }
   }, [orderById]);
-  
 
   useEffect(() => {
     if (coordinates && view) {
@@ -167,7 +174,7 @@ function Order() {
 
   return (
     <>
-      <Navbar navClass={"bg-earth border-gray-200 z-10"}/>
+      <Navbar navClass={"bg-earth border-gray-200 z-10"} />
       <div className="p-10 bg-earth5 h-screen">
         <Tabs
           defaultValue="pending"
@@ -192,11 +199,12 @@ function Order() {
                   >
                     <AccordionItem value="item-1">
                       <AccordionTrigger>
-                        <div className="flex justify-between items-center w-full p-4 bg-gray-100 rounded-lg shadow-sm">
-                          <h1 className="text-2xl font-semibold text-gray-800">
+                        <div className="flex justify-between items-center w-full p-4 bg-yellow-100 rounded-lg shadow-sm">
+                          <h1 className="text-2xl font-semibold text-yellow-800 flex items-center gap-2">
+                            <ClockIcon className="w-6 h-6 text-yellow-600" />
                             ORDER-{item.or_id}
                           </h1>
-                          <p className="text-gray-600">
+                          <p className="text-gray-700">
                             {formatDate(item.createdAt)}
                           </p>
                         </div>
@@ -240,7 +248,7 @@ function Order() {
                             </div>
                             <Button
                               size="lg"
-                              className="bg-earth text-xl font-bold"
+                              className="bg-yellow-600 text-white text-xl font-bold"
                             >
                               <Wallet /> Payment
                             </Button>
@@ -253,6 +261,7 @@ function Order() {
               );
             }
           })}
+
           {orderById?.order?.Order?.map((item, index) => {
             if (
               item?.or_status_shipping === "On-going" &&
@@ -269,45 +278,53 @@ function Order() {
                   >
                     <AccordionItem value="item-1">
                       <AccordionTrigger>
-                        <div className="flex justify-between items-center w-full">
-                          <h1 className="text-3xl">ORDER-{item.or_id}</h1>
-                          <p>{item.createdAt}</p>
+                        <div className="flex justify-between items-center w-full p-4 bg-blue-100 rounded-lg shadow-sm">
+                          <h1 className="text-2xl font-semibold text-blue-800 flex items-center gap-2">
+                            <TruckIcon className="w-6 h-6 text-blue-600" />
+                            ORDER-{item.or_id}
+                          </h1>
+                          <p className="text-gray-700">
+                            {formatDate(item.createdAt)}
+                          </p>
                         </div>
                       </AccordionTrigger>
                       <AccordionContent>
-                        <div className="flex">
-                          <div className="w-1/2 rounded-md" ref={mapRef}></div>
-                          <div className="w-1/2 p-10 flex flex-col justify-between">
-                            <ul className="overflow-y-auto h-[300px]">
-                              {menus.map((menu, index) => {
-                                return (
-                                  <li
-                                    key={index}
-                                    className="flex justify-between items-center mb-4"
-                                  >
-                                    <div className="flex items-center gap-4">
-                                      <img
-                                        className="w-[100px]"
-                                        src={`${menu?.image}`}
-                                        alt="heroImage"
-                                      />
-                                      <h1 className="text-3xl">{menu?.name}</h1>
-                                    </div>
-                                    <p className="text-xl">
-                                      {formatPrice(menu?.price)} x
-                                      {menu?.quantity}
-                                    </p>
-                                  </li>
-                                );
-                              })}
+                        <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
+                          <div
+                            className="w-full md:w-1/2 p-8 rounded-md"
+                            ref={mapRef}
+                          />
+                          <div className="w-full md:w-1/2 p-8 flex flex-col justify-between">
+                            <ul className="overflow-y-auto max-h-[300px] space-y-6">
+                              {menus.map((menu, index) => (
+                                <li
+                                  key={index}
+                                  className="flex justify-between items-center mb-4"
+                                >
+                                  <div className="flex items-center gap-4">
+                                    <img
+                                      className="w-20 h-20 rounded-lg object-cover"
+                                      src={`${menu?.image}`}
+                                      alt="Menu item"
+                                    />
+                                    <h1 className="text-xl font-semibold text-gray-800">
+                                      {menu?.name}
+                                    </h1>
+                                  </div>
+                                  <p className="text-lg text-gray-700">
+                                    {formatPrice(menu?.price)} x{" "}
+                                    {menu?.quantity}
+                                  </p>
+                                </li>
+                              ))}
                             </ul>
-                            <div>
-                              <h1 className="text-3xl">
+                            <div className="mt-4 space-y-4">
+                              <h1 className="text-2xl font-bold text-gray-800">
                                 Total Price: {formatPrice(item?.or_total_price)}
                               </h1>
-                              <h1 className="text-3xl">
+                              <p className="text-xl text-gray-600">
                                 Delivery on: {item?.or_site}
-                              </h1>
+                              </p>
                             </div>
                           </div>
                         </div>
@@ -318,12 +335,15 @@ function Order() {
               );
             }
           })}
-          {orderById?.Order?.map((item, index) => {
+
+          {orderById?.order?.Order?.map((item, index) => {
             if (
               item?.or_status_shipping === "Delivered" &&
-              item?.or_status_shipping === "Delivered"
+              item?.or_status_payment === "Success"
             ) {
-              const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
+              const menus = JSON.parse(item?.OrderDetail[0].od_mn_json);
+              console.log(item, "ini item");
+
               return (
                 <TabsContent value="finished" key={index}>
                   <Accordion
@@ -333,45 +353,49 @@ function Order() {
                   >
                     <AccordionItem value="item-1">
                       <AccordionTrigger>
-                        <div className="flex justify-between items-center w-full">
-                          <h1 className="text-3xl">ORDER-{item.or_id}</h1>
-                          <p>{item.createdAt}</p>
+                        <div className="flex justify-between items-center w-full p-4 bg-green-100 rounded-lg shadow-sm">
+                          <h1 className="text-2xl font-semibold text-green-800 flex items-center gap-2">
+                            <CheckCircleIcon className="w-6 h-6 text-green-600" />
+                            ORDER-{item.or_id}
+                          </h1>
+                          <p className="text-gray-700">
+                            {formatDate(item.createdAt)}
+                          </p>
                         </div>
                       </AccordionTrigger>
                       <AccordionContent>
-                        <div className="flex">
-                          {/* <div className="w-1/2 rounded-md" ref={mapRef}></div> */}
-                          <div className="w-1/2 p-10 flex flex-col justify-between">
-                            <ul className="overflow-y-auto h-[300px]">
-                              {menus.map((menu, index) => {
-                                return (
-                                  <li
-                                    key={index}
-                                    className="flex justify-between items-center mb-4"
-                                  >
-                                    <div className="flex items-center gap-4">
-                                      <img
-                                        className="w-[100px]"
-                                        src={`${menu?.image}`}
-                                        alt="heroImage"
-                                      />
-                                      <h1 className="text-3xl">{menu?.name}</h1>
-                                    </div>
-                                    <p className="text-xl">
-                                      {menu?.price} x {menu?.quantity}
-                                    </p>
-                                  </li>
-                                );
-                              })}
+                        <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
+                          <div className="w-full md:w-1/2 p-8">
+                            <ul className="overflow-y-auto max-h-[300px] space-y-4">
+                              {menus.map((menu, index) => (
+                                <li
+                                  key={index}
+                                  className="flex justify-between items-center"
+                                >
+                                  <div className="flex items-center gap-4">
+                                    <img
+                                      className="w-20 h-20 rounded-lg object-cover"
+                                      src={`${menu?.image}`}
+                                      alt="Menu item"
+                                    />
+                                    <h1 className="text-lg font-semibold text-gray-800">
+                                      {menu?.name}
+                                    </h1>
+                                  </div>
+                                  <p className="text-lg text-gray-700">
+                                    {menu?.price} x {menu?.quantity}
+                                  </p>
+                                </li>
+                              ))}
                             </ul>
-                            <div>
-                              <h1 className="text-3xl">
-                                Total Price: {item?.or_total_price}
-                              </h1>
-                              <h1 className="text-3xl">
-                                Delivery on: {item?.or_site}
-                              </h1>
-                            </div>
+                          </div>
+                          <div className="w-full md:w-1/2 p-8 flex flex-col justify-between">
+                            <h1 className="text-2xl font-bold text-green-800">
+                              Total Price: {formatPrice(item?.or_total_price)}
+                            </h1>
+                            <p className="text-xl text-gray-600">
+                              Delivery on: {item?.or_site}
+                            </p>
                           </div>
                         </div>
                       </AccordionContent>
@@ -381,7 +405,8 @@ function Order() {
               );
             }
           })}
-          {orderById?.Order?.map((item, index) => {
+
+          {orderById?.order?.Order?.map((item, index) => {
             if (item?.or_status_payment === "Failed") {
               const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
               return (
@@ -393,45 +418,49 @@ function Order() {
                   >
                     <AccordionItem value="item-1">
                       <AccordionTrigger>
-                        <div className="flex justify-between items-center w-full">
-                          <h1 className="text-3xl">ORDER-{item.or_id}</h1>
-                          <p>{item.createdAt}</p>
+                        <div className="flex justify-between items-center w-full p-4 bg-red-100 rounded-lg shadow-sm">
+                          <h1 className="text-2xl font-semibold text-red-800 flex items-center gap-2">
+                            <CircleAlert className="w-6 h-6 text-red-600" />
+                            ORDER-{item.or_id}
+                          </h1>
+                          <p className="text-gray-700">
+                            {formatDate(item.createdAt)}
+                          </p>
                         </div>
                       </AccordionTrigger>
                       <AccordionContent>
-                        <div className="flex">
-                          {/* <div className="w-1/2 rounded-md" ref={mapRef}></div> */}
-                          <div className="w-1/2 p-10 flex flex-col justify-between">
-                            <ul className="overflow-y-auto h-[300px]">
-                              {menus.map((menu, index) => {
-                                return (
-                                  <li
-                                    key={index}
-                                    className="flex justify-between items-center mb-4"
-                                  >
-                                    <div className="flex items-center gap-4">
-                                      <img
-                                        className="w-[100px]"
-                                        src={`${menu?.image}`}
-                                        alt="heroImage"
-                                      />
-                                      <h1 className="text-3xl">{menu?.name}</h1>
-                                    </div>
-                                    <p className="text-xl">
-                                      {menu?.price} x {menu?.quantity}
-                                    </p>
-                                  </li>
-                                );
-                              })}
+                        <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
+                          <div className="w-full md:w-1/2 p-8">
+                            <ul className="overflow-y-auto max-h-[300px] space-y-4">
+                              {menus.map((menu, index) => (
+                                <li
+                                  key={index}
+                                  className="flex justify-between items-center"
+                                >
+                                  <div className="flex items-center gap-4">
+                                    <img
+                                      className="w-20 h-20 rounded-lg object-cover"
+                                      src={`${menu?.image}`}
+                                      alt="Menu item"
+                                    />
+                                    <h1 className="text-lg font-semibold text-gray-800">
+                                      {menu?.name}
+                                    </h1>
+                                  </div>
+                                  <p className="text-lg text-gray-700">
+                                    {menu?.price} x {menu?.quantity}
+                                  </p>
+                                </li>
+                              ))}
                             </ul>
-                            <div>
-                              <h1 className="text-3xl">
-                                Total Price: {item?.or_total_price}
-                              </h1>
-                              <h1 className="text-3xl">
-                                Delivery on: {item?.or_site}
-                              </h1>
-                            </div>
+                          </div>
+                          <div className="w-full md:w-1/2 p-8 flex flex-col justify-between">
+                            <h1 className="text-2xl font-bold text-red-800">
+                              Total Price: {formatPrice(item?.or_total_price)}
+                            </h1>
+                            <p className="text-xl text-gray-600">
+                              Delivery on: {item?.or_site}
+                            </p>
                           </div>
                         </div>
                       </AccordionContent>
