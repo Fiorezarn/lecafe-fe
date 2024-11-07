@@ -5,8 +5,15 @@ import {
   fetchAllOrderSuccess,
   fetchAllOrderFailure,
   setCoordinates,
+  fetchTransactionSuccess,
+  fetchTransactionFailure,
 } from "@/features/order/orderSlice";
-import { fetchAllOrder, fetchCreateOrder, fetchCoordinates } from "./orderApi";
+import {
+  fetchAllOrder,
+  fetchCreateOrder,
+  fetchCoordinates,
+  fetchPayments,
+} from "./orderApi";
 
 function* createOrder(action) {
   try {
@@ -42,8 +49,18 @@ function* fetchCoordinatesData(action) {
   }
 }
 
+function* createPayments(action) {
+  try {
+    const response = yield fetchPayments(action.payload);
+    yield put(fetchTransactionSuccess(response));
+  } catch (error) {
+    yield put(fetchTransactionFailure(error.message));
+  }
+}
+
 export default function* orderSaga() {
   yield takeLatest("order/createOrder", createOrder);
   yield takeLatest("order/getAllOrder", getAllOrder);
   yield takeLatest("map/fetchCoordinates", fetchCoordinatesData);
+  yield takeLatest("payments/createPayments", createPayments);
 }

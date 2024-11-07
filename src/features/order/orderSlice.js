@@ -4,6 +4,7 @@ export const orderSlice = createSlice({
   name: "order",
   initialState: {
     order: null,
+    transactions: null,
     coordinates: null,
     orderById: null,
     messageOrder: null,
@@ -41,6 +42,14 @@ export const orderSlice = createSlice({
     setCoordinates: (state, action) => {
       state.coordinates = action.payload;
     },
+    fetchTransactionSuccess: (state, action) => {
+      state.loading = false;
+      state.transactions = action.payload.data.transaction;
+    },
+    fetchTransactionFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
 
@@ -52,6 +61,8 @@ export const {
   fetchAllOrderSuccess,
   fetchAllOrderFailure,
   setCoordinates,
+  fetchTransactionSuccess,
+  fetchTransactionFailure,
 } = orderSlice.actions;
 
 export default orderSlice.reducer;

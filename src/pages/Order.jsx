@@ -22,10 +22,11 @@ import {
   Wallet,
 } from "lucide-react";
 import Navbar from "@/components/navbar/Navbar";
+import { useSearchParams } from "react-router-dom";
 
 function Order() {
   const dispatch = useDispatch();
-  const { orderById, coordinates, messageOrder } = useSelector(
+  const { orderById, coordinates, messageOrder, transactions } = useSelector(
     (state) => state.order
   );
   const { cookie } = useSelector((state) => state.auth);
@@ -34,12 +35,55 @@ function Order() {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenTab, setIsOpenTab] = useState(false);
   const id = cookie?.us_id;
+  const queryParams = new URLSearchParams(window.location.search);
+  const orderIdMidtrans = queryParams.get("order_id");
 
   useEffect(() => {
     if (messageOrder) {
       toast.success(messageOrder);
     }
   }, [messageOrder]);
+
+  const handlePayment = (id, amount) => {
+    const email = cookie?.us_email;
+    dispatch({
+      type: "payments/createPayments",
+      payload: { email, amount, id },
+    });
+  };
+
+  useEffect(() => {
+    const clientKey = import.meta.env.VITE_CLIENT_KEY_MIDTRANS;
+    const snapUrl = import.meta.env.VITE_SNAP_URL_MIDTRANS;
+    const script = document.createElement("script");
+    script.src = snapUrl;
+    script.setAttribute("data-client-key", clientKey);
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log(transactions);
+    const token = transactions?.token;
+    if (token) {
+      window.snap.pay(token, {
+        onSuccess: (result) => {
+          console.log("Payment success:", result);
+        },
+        onPending: (result) => {
+          console.log("Payment pending:", result);
+        },
+        onError: (result) => {
+          console.log("Payment error:", result);
+        },
+        onClose: () => {
+          console.log("Payment closed");
+        },
+      });
+    }
+  }, [transactions]);
 
   useEffect(() => {
     if (mapRef.current) {
@@ -82,7 +126,7 @@ function Order() {
           coordinate.destinationLongitude !== null
       );
 
-      if (orderCoordinates.length > 0) {
+      if (orderCoordinates?.length > 0) {
         dispatch({ type: "map/fetchCoordinates", payload: orderCoordinates });
       }
     }
@@ -245,6 +289,9 @@ function Order() {
                               </h1>
                             </div>
                             <Button
+                              onClick={() =>
+                                handlePayment(item?.or_id, item?.or_total_price)
+                              }
                               size="lg"
                               className="bg-yellow-600 text-white text-xl font-bold"
                             >

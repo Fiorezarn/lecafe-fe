@@ -2,8 +2,7 @@ import heroImage from "../assets/images/hero.jpg";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { fetchMenuRecommended } from "@/features/menu/menuApi";
+import { useEffect } from "react";
 import Navbar from "@/components/navbar/Navbar";
 import CardRecommended from "@/components/menu/CardRecommended";
 
@@ -15,30 +14,15 @@ function Home() {
     dispatch({ type: "menu/getAllMenu" });
   }, [dispatch]);
 
-  const getRecommendedMenus = async () => {
-    try {
-      const response = await fetchMenuRecommended();
-      if (response) {
-        setMenu(response?.data);
-      }
-    } catch (error) {
-      console.error("Error fetching recommended menus:", error);
-    }
-  };
-
-  useEffect(() => {
-    getRecommendedMenus();
-  }, []);
-
   return (
     <>
+      <Navbar />
       <section
         className="relative h-screen w-full bg-cover bg-center"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${heroImage})`,
         }}
       >
-        <Navbar />
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
           <h1 className="font-semibold text-xl lg:text-5xl text-white drop-shadow-lg">
             Welcome to Le Café {cookie?.us_username}!

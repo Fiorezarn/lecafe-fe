@@ -41,4 +41,20 @@ const fetchCoordinates = async (data) => {
   return await response.json();
 };
 
-export { fetchCreateOrder, fetchAllOrder, fetchCoordinates };
+const fetchPayments = async ({ email, amount, id }) => {
+  const response = await fetch(`${BASE_URL}/order/payments/${id}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({
+      email,
+      amount,
+    }),
+  });
+
+  return await response.json();
+};
+
+export { fetchCreateOrder, fetchAllOrder, fetchCoordinates, fetchPayments };

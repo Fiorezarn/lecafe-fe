@@ -77,7 +77,7 @@ function CardDetail() {
           </span>
 
           <div className="flex space-x-2 md:space-x-4 mt-4">
-            <div className="bg-white flex items-center border border-black rounded-md p-1">
+            <div className="bg-white flex justify-between items-center border border-black rounded-md p-1">
               <Button
                 variant="transparant"
                 size="xs"
