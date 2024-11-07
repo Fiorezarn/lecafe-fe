@@ -5,9 +5,9 @@ import Navbar from "@/components/navbar/Navbar";
 function DetailMenu() {
   return (
     <>
-      <Navbar navClass={"bg-earth border-gray-200 fixed w-full z-10"} />
+      <Navbar />
       <div className="bg-earth3">
-        <div id="menu-detail" className="py-28 px-6 lg:px-28">
+        <div id="menu-detail" className="py-10 px-6 lg:px-28">
           <CardDetail />
           <h1 className="text-3xl lg:text-4xl mb-6 lg:mb-10 font-bold mt-10 text-earth text-center">
             Recommended for You
