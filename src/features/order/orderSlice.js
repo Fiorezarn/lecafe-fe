@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { setMessage } from "../cart/cartSlice";
 
 export const orderSlice = createSlice({
   name: "order",
@@ -69,6 +70,9 @@ export const orderSlice = createSlice({
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
+    setMessageOrder: (state, action) => {
+      state.messageOrder = action.payload;
+    },
   },
 });
 
@@ -87,6 +91,7 @@ export const {
   fetchCancelTransactionSuccess,
   fetchCancelTransactionFailed,
   setLoading,
+  setMessageOrder,
 } = orderSlice.actions;
 
 export default orderSlice.reducer;

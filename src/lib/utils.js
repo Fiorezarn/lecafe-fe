@@ -15,18 +15,13 @@ export function formatPrice(price = 0) {
   }).format(numericPrice);
 }
 
-export function formatDate(
-  isoDate,
-  locale = "id-ID",
-  timeZone = "Asia/Jakarta"
-) {
-  return new Date(isoDate).toLocaleString(locale, {
+export function formatDate(isoDate) {
+  return new Date(isoDate).toLocaleString("id-ID", {
     day: "2-digit",
-    month: "2-digit",
+    month: "short",
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
-    second: "2-digit",
-    timeZone: timeZone,
+    hour12: false,
   });
 }

@@ -25,6 +25,7 @@ import {
 import Navbar from "@/components/navbar/Navbar";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { setMessageOrder } from "@/features/order/orderSlice";
 
 function Order() {
   const dispatch = useDispatch();
@@ -64,6 +65,7 @@ function Order() {
           "top-10 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
         ),
       });
+      dispatch(setMessageOrder(null));
     }
   }, [messageOrder]);
 

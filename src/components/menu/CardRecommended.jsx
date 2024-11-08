@@ -9,10 +9,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { fetchMenuRecommended } from "@/features/menu/menuApi";
-import { formatPrice } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { Input } from "../ui/input";
-import { ShoppingCart } from "lucide-react";
+import { CircleCheckBigIcon, ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
