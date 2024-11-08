@@ -50,6 +50,25 @@ export const orderSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    fetchVerifyTransactionSuccess: (state, action) => {
+      state.loading = false;
+      state.transactions = action.payload;
+    },
+    fetchVerifyTransactionFailed: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    fetchCancelTransactionSuccess: (state, action) => {
+      state.loading = false;
+      state.transactions = action.payload;
+    },
+    fetchCancelTransactionFailed: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
   },
 });
 
@@ -63,6 +82,11 @@ export const {
   setCoordinates,
   fetchTransactionSuccess,
   fetchTransactionFailure,
+  fetchVerifyTransactionSuccess,
+  fetchVerifyTransactionFailed,
+  fetchCancelTransactionSuccess,
+  fetchCancelTransactionFailed,
+  setLoading,
 } = orderSlice.actions;
 
 export default orderSlice.reducer;

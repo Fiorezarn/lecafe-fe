@@ -36,4 +36,25 @@ const fetchDeleteCart = async ({ userId, menuId }) => {
   return await response.json();
 };
 
-export { fetchAddCart, fetchGetCartByUserId, fetchDeleteCart };
+const fetchUpdateQuantity = async ({ id, quantity }) => {
+  const response = await fetch(
+    `${BASE_API}/cart/${id}
+    `,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ quantity }),
+    }
+  );
+  return await response.json();
+};
+
+export {
+  fetchAddCart,
+  fetchGetCartByUserId,
+  fetchDeleteCart,
+  fetchUpdateQuantity,
+};

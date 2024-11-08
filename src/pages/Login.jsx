@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import heroImage from "../assets/images/hero.jpg";
 import { FcGoogle } from "react-icons/fc";
-import { MoveLeft } from "lucide-react";
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import firebaseConfig from "../../firebaseconfig.json";

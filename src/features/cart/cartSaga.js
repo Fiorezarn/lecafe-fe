@@ -1,5 +1,10 @@
 import { put, takeLatest } from "redux-saga/effects";
-import { fetchAddCart, fetchDeleteCart, fetchGetCartByUserId } from "./cartApi";
+import {
+  fetchAddCart,
+  fetchDeleteCart,
+  fetchGetCartByUserId,
+  fetchUpdateQuantity,
+} from "./cartApi";
 import {
   addCartSuccess,
   addCartFailure,
@@ -8,6 +13,8 @@ import {
   setMessage,
   decrement,
   increment,
+  updateCartFailure,
+  updateCartSuccess,
 } from "./cartSlice";
 
 function* addCart(action) {
@@ -41,10 +48,21 @@ function* deleteCart(action) {
   }
 }
 
+function* updateQuantity(action) {
+  try {
+    yield fetchUpdateQuantity(action.payload);
+    const response = yield fetchGetCartByUserId(action.payload.userId);
+    yield put(updateCartSuccess(response));
+  } catch (error) {
+    yield put(updateCartFailure(error.message));
+  }
+}
+
 export default function* cartSaga() {
   yield takeLatest("cart/addCart", addCart);
   yield takeLatest("cart/getCartByUserId", getCartByUserId);
   yield takeLatest("cart/deleteCart", deleteCart);
+  yield takeLatest("cart/updateQuantity", updateQuantity);
   yield takeLatest("cart/setMessage", setMessage);
   yield takeLatest("cart/decrement", decrement);
   yield takeLatest("cart/increment", increment);

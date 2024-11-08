@@ -18,21 +18,23 @@ function Home() {
     <>
       <Navbar />
       <section
-        className="relative h-screen w-full bg-cover bg-center"
+        className="relative h-screen w-full bg-cover bg-center group"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${heroImage})`,
         }}
       >
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-          <h1 className="font-semibold text-xl lg:text-5xl text-white drop-shadow-lg">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center group">
+          <h1 className="font-semibold text-xl lg:text-5xl text-white drop-shadow-lg cursor-pointer">
             Welcome to Le Café {cookie?.us_username}!
           </h1>
-          <p className="text-white mt-4 text-sm lg:text-lg">
-            We have the best coffee in the town!
+
+          <p className="text-white mt-4 text-sm lg:text-lg hidden group-hover:block opacity-0 group-hover:opacity-100 transition-opacity duration-1000 ease-in-out">
+            We have the best coffee in town!
           </p>
-          <Button className="mt-4 bg-earth3 text-black hover:text-white px-4 py-2">
+
+          <button className="mt-4 bg-earth3 text-black hover:text-white px-4 py-2">
             Order Now
-          </Button>
+          </button>
         </div>
       </section>
 

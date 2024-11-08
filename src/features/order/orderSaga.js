@@ -7,16 +7,22 @@ import {
   setCoordinates,
   fetchTransactionSuccess,
   fetchTransactionFailure,
+  fetchVerifyTransactionSuccess,
+  fetchVerifyTransactionFailed,
+  setLoading,
 } from "@/features/order/orderSlice";
 import {
   fetchAllOrder,
   fetchCreateOrder,
   fetchCoordinates,
   fetchPayments,
+  verifyPayments,
+  fetchCancelPayments,
 } from "./orderApi";
 
 function* createOrder(action) {
   try {
+    yield put(setLoading(true));
     const responseAdd = yield fetchCreateOrder(action.payload);
     const responseGet = yield fetchAllOrder(action.payload.userId);
     yield put(
@@ -58,9 +64,29 @@ function* createPayments(action) {
   }
 }
 
+function* createVerifyPayments(action) {
+  try {
+    const response = yield verifyPayments(action.payload);
+    yield put(fetchVerifyTransactionSuccess(response));
+  } catch (error) {
+    yield put(fetchVerifyTransactionFailed(error.message));
+  }
+}
+
+function* cancelPayments(action) {
+  try {
+    const response = yield fetchCancelPayments(action.payload);
+    yield put(fetchVerifyTransactionSuccess(response));
+  } catch (error) {
+    yield put(fetchVerifyTransactionFailed(error.message));
+  }
+}
+
 export default function* orderSaga() {
   yield takeLatest("order/createOrder", createOrder);
   yield takeLatest("order/getAllOrder", getAllOrder);
   yield takeLatest("map/fetchCoordinates", fetchCoordinatesData);
   yield takeLatest("payments/createPayments", createPayments);
+  yield takeLatest("payments/createVerifyPayments", createVerifyPayments);
+  yield takeLatest("payments/cancelPayments", cancelPayments);
 }

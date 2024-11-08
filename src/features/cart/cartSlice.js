@@ -48,6 +48,14 @@ export const cartSlice = createSlice({
       state.loading = false;
       state.errorCart = action.payload;
     },
+    updateCartSuccess: (state, action) => {
+      state.loading = false;
+      state.cart = action.payload.data;
+    },
+    updateCartFailure: (state, action) => {
+      state.loading = false;
+      state.errorCart = action.payload;
+    },
     setMessage: (state, action) => {
       state.message = action.payload;
     },
@@ -70,6 +78,8 @@ export const {
   setMessage,
   increment,
   decrement,
+  updateCartSuccess,
+  updateCartFailure,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

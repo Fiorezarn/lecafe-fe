@@ -57,4 +57,35 @@ const fetchPayments = async ({ email, amount, id }) => {
   return await response.json();
 };
 
-export { fetchCreateOrder, fetchAllOrder, fetchCoordinates, fetchPayments };
+const verifyPayments = async (id) => {
+  const response = await fetch(`${BASE_URL}/order/verify-payment/${id}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+
+  return await response.json();
+};
+
+const fetchCancelPayments = async (id) => {
+  const response = await fetch(`${BASE_URL}/order/cancel-payment/${id}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+
+  return await response.json();
+};
+
+export {
+  fetchCreateOrder,
+  fetchAllOrder,
+  fetchCoordinates,
+  fetchPayments,
+  verifyPayments,
+  fetchCancelPayments,
+};

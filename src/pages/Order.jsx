@@ -18,11 +18,11 @@ import {
   CheckCircleIcon,
   CircleAlert,
   ClockIcon,
+  MessageCircleX,
   TruckIcon,
   Wallet,
 } from "lucide-react";
 import Navbar from "@/components/navbar/Navbar";
-import { useSearchParams } from "react-router-dom";
 
 function Order() {
   const dispatch = useDispatch();
@@ -39,6 +39,15 @@ function Order() {
   const orderIdMidtrans = queryParams.get("order_id");
 
   useEffect(() => {
+    if (orderIdMidtrans) {
+      dispatch({
+        type: "payments/createVerifyPayments",
+        payload: orderIdMidtrans,
+      });
+    }
+  }, [orderIdMidtrans]);
+
+  useEffect(() => {
     if (messageOrder) {
       toast.success(messageOrder);
     }
@@ -50,6 +59,10 @@ function Order() {
       type: "payments/createPayments",
       payload: { email, amount, id },
     });
+  };
+
+  const cancelPayments = (id) => {
+    dispatch({ type: "payments/cancelPayments", payload: id });
   };
 
   useEffect(() => {
@@ -230,7 +243,7 @@ function Order() {
             <TabsTrigger value="failed">Failed</TabsTrigger>
           </TabsList>
           {orderById?.order?.Order?.map((item, index) => {
-            if (item?.or_status_payment === "Pending") {
+            if (item?.or_status_payment === "pending") {
               const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
               return (
                 <TabsContent value="pending" key={index}>
@@ -288,15 +301,27 @@ function Order() {
                                   : "Dine In: " + item?.or_site}
                               </h1>
                             </div>
-                            <Button
-                              onClick={() =>
-                                handlePayment(item?.or_id, item?.or_total_price)
-                              }
-                              size="lg"
-                              className="bg-yellow-600 text-white text-xl font-bold"
-                            >
-                              <Wallet /> Payment
-                            </Button>
+                            <div className="flex flex-col gap-2">
+                              <Button
+                                onClick={() => cancelPayments(item?.or_id)}
+                                size="lg"
+                                className="bg-red-600 text-white text-xl font-bold"
+                              >
+                                <MessageCircleX /> Cancel
+                              </Button>
+                              <Button
+                                onClick={() =>
+                                  handlePayment(
+                                    item?.or_id,
+                                    item?.or_total_price
+                                  )
+                                }
+                                size="lg"
+                                className="bg-yellow-600 text-white text-xl font-bold"
+                              >
+                                <Wallet /> Payment
+                              </Button>
+                            </div>
                           </div>
                         </div>
                       </AccordionContent>
@@ -309,9 +334,9 @@ function Order() {
 
           {orderById?.order?.Order?.map((item, index) => {
             if (
-              item?.or_status_shipping === "On-going" &&
+              item?.or_status_shipping === "ongoing" &&
               item?.or_type_order === "Delivery" &&
-              item?.or_status_payment === "Success"
+              item?.or_status_payment === "settlement"
             ) {
               const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
               return (
@@ -383,8 +408,8 @@ function Order() {
 
           {orderById?.order?.Order?.map((item, index) => {
             if (
-              item?.or_status_shipping === "Delivered" &&
-              item?.or_status_payment === "Success"
+              item?.or_status_shipping === "delivered" &&
+              item?.or_status_payment === "settlement"
             ) {
               const menus = JSON.parse(item?.OrderDetail[0].od_mn_json);
               return (
@@ -450,7 +475,11 @@ function Order() {
           })}
 
           {orderById?.order?.Order?.map((item, index) => {
-            if (item?.or_status_payment === "Failed") {
+            if (
+              item?.or_status_payment === "expired" ||
+              (item?.or_status_payment === "cancel" &&
+                item?.or_status_shipping === "cancelled")
+            ) {
               const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
               return (
                 <TabsContent value="failed" key={index}>
