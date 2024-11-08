@@ -6,12 +6,15 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import firebaseConfig from "../../firebaseconfig.json";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
+import { CircleCheckBigIcon, CircleX } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 function Register() {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
@@ -29,18 +32,35 @@ function Register() {
       type: "auth/registerRequest",
       payload: { fullname, username, email, phonenumber, password },
     });
-    e.target.reset();
   };
 
   useEffect(() => {
     if (user) {
       const code = user?.code;
       if (code !== 201) {
-        toast.error(user?.message);
+        toast({
+          variant: "destructive",
+          description: (
+            <div className="flex items-center gap-2 font-bold">
+              <CircleX className="text-white" />
+              <p>{user?.message}</p>
+            </div>
+          ),
+          className: cn(
+            "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+          ),
+        });
       } else {
-        toast.success(user?.message, {
-          duration: Infinity,
-          description: "We have sent you an email to verify your account.",
+        toast({
+          description: (
+            <div className="flex gap-2 font-bold">
+              <CircleCheckBigIcon className="text-green-600" />
+              <p>We have sent you an email to verify your account.</p>
+            </div>
+          ),
+          className: cn(
+            "top-10 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+          ),
         });
       }
     }

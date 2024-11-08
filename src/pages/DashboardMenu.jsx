@@ -4,7 +4,6 @@ import ModalCreateMenu from "@/components/modal/createMenu";
 import ModalEditMenu from "@/components/modal/editMenu";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -14,9 +13,19 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Home, ListOrderedIcon, Menu, Trash2, User } from "lucide-react";
+import {
+  CircleCheckBigIcon,
+  CircleX,
+  Home,
+  ListOrderedIcon,
+  Menu,
+  Trash2,
+  User,
+} from "lucide-react";
 import SidebarComponent from "@/components/dashboard/SidebarComponent";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 const items = [
   { title: "Home", url: "#", icon: Home },
@@ -27,6 +36,7 @@ const items = [
 
 function DashboardMenu() {
   const dispatch = useDispatch();
+  const { toast } = useToast();
   const { menu, message, code, loading } = useSelector((state) => state.menu);
 
   useEffect(() => {
@@ -38,9 +48,30 @@ function DashboardMenu() {
   useEffect(() => {
     if (code) {
       if (code === 201) {
-        toast.success(message);
+        toast({
+          description: (
+            <div className="flex gap-2 font-bold">
+              <CircleCheckBigIcon className="text-green-600" />
+              <p>{message}</p>
+            </div>
+          ),
+          className: cn(
+            "top-10 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+          ),
+        });
       } else {
-        toast.error(message);
+        toast({
+          variant: "destructive",
+          description: (
+            <div className="flex items-center gap-2 font-bold">
+              <CircleX className="text-white" />
+              <p>{message}</p>
+            </div>
+          ),
+          className: cn(
+            "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+          ),
+        });
       }
     }
   }, [code, message]);

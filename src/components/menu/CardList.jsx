@@ -17,10 +17,9 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Button } from "../ui/button";
-import { ShoppingCart } from "lucide-react";
-import { toast } from "sonner";
+import { CircleCheckBigIcon, ShoppingCart } from "lucide-react";
 import { Input } from "../ui/input";
-import { formatPrice } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { setPage } from "@/features/menu/menuSlice";
 import {
@@ -32,6 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
 
 function CardList() {
   const dispatch = useDispatch();
@@ -41,6 +41,7 @@ function CardList() {
   const { message, errorCart } = useSelector((state) => state.cart);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
+  const { toast } = useToast();
 
   useEffect(() => {
     dispatch({ type: "auth/getCookie" });
@@ -59,7 +60,17 @@ function CardList() {
 
   useEffect(() => {
     if (message) {
-      toast[errorCart ? "error" : "success"](message);
+      toast({
+        description: (
+          <div className="flex gap-2 font-bold">
+            <CircleCheckBigIcon className="text-green-600" />
+            <p>{message}</p>
+          </div>
+        ),
+        className: cn(
+          "top-10 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+        ),
+      });
       dispatch({ type: "cart/setMessage" });
     }
   }, [message, errorCart, dispatch]);
@@ -90,7 +101,17 @@ function CardList() {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast({
+        description: (
+          <div className="flex gap-2 font-bold">
+            <CircleX className="text-red-600" />
+            <p>{message}</p>
+          </div>
+        ),
+        className: cn(
+          "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+        ),
+      });
     }
   }, [error]);
 

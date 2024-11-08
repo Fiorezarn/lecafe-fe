@@ -4,7 +4,6 @@ import ModalCreateMenu from "@/components/modal/createMenu";
 import ModalEditMenu from "@/components/modal/editMenu";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,6 +16,7 @@ import {
 import { Home, ListOrderedIcon, Menu, Trash2, User } from "lucide-react";
 import SidebarComponent from "@/components/dashboard/SidebarComponent";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { useToast } from "@/hooks/use-toast";
 
 const items = [
   { title: "Home", url: "#", icon: Home },
@@ -26,6 +26,7 @@ const items = [
 ];
 
 function DashboardUser() {
+  const { toast } = useToast();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
 

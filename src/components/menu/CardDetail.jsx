@@ -1,12 +1,19 @@
-import { Minus, Plus, ShoppingCart } from "lucide-react";
+import {
+  CircleCheckBigIcon,
+  CircleX,
+  Minus,
+  Plus,
+  ShoppingCart,
+} from "lucide-react";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { toast } from "sonner";
-import { formatPrice } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import { useParams } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 function CardDetail() {
   const dispatch = useDispatch();
+  const { toast } = useToast();
   const { menuById } = useSelector((state) => state.menu);
   const { cookie } = useSelector((state) => state.auth);
   const { message, errorCart, count } = useSelector((state) => state.cart);
@@ -21,13 +28,15 @@ function CardDetail() {
   useEffect(() => {
     dispatch({ type: "menu/getMenuById", payload: id });
   }, [dispatch]);
+
   const handleSubmit = () => {
+    const menuId = id;
     const quantity = count;
     const userId = cookie?.us_id;
 
     dispatch({
       type: "cart/addCart",
-      payload: { userId, id, quantity },
+      payload: { userId, menuId, quantity },
     });
   };
 
@@ -44,10 +53,31 @@ function CardDetail() {
   useEffect(() => {
     if (message) {
       if (errorCart) {
-        toast.error(message);
+        toast({
+          variant: "destructive",
+          description: (
+            <div className="flex items-center gap-2 font-bold">
+              <CircleX className="text-white" />
+              <p>{message}</p>
+            </div>
+          ),
+          className: cn(
+            "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+          ),
+        });
         dispatch({ type: "cart/setMessage" });
       } else {
-        toast.success(message);
+        toast({
+          description: (
+            <div className="flex gap-2 font-bold">
+              <CircleCheckBigIcon className="text-green-600" />
+              <p>{message}</p>
+            </div>
+          ),
+          className: cn(
+            "top-10 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+          ),
+        });
         dispatch({ type: "cart/setMessage" });
       }
     }

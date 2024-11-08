@@ -7,15 +7,25 @@ async function fetchRegister({
   phonenumber,
   password,
 }) {
-  const response = await fetch(`${BASE_API}/auth/register`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify({ fullname, username, email, phonenumber, password }),
-  });
-  return await response.json();
+  try {
+    const response = await fetch(`${BASE_API}/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        fullname,
+        username,
+        email,
+        phonenumber,
+        password,
+      }),
+    });
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 async function fetchlogin({ input, password }) {

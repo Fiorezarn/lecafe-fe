@@ -9,14 +9,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import Map from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
-import { formatDate, formatPrice } from "@/lib/utils";
+import { cn, formatDate, formatPrice } from "@/lib/utils";
 import Graphic from "@arcgis/core/Graphic";
 import Extent from "@arcgis/core/geometry/Extent";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   CheckCircleIcon,
   CircleAlert,
+  CircleCheckBigIcon,
   ClockIcon,
   MessageCircleX,
   TruckIcon,
@@ -24,9 +24,11 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/navbar/Navbar";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 function Order() {
   const dispatch = useDispatch();
+  const { toast } = useToast();
   const { orderById, coordinates, messageOrder, transactions } = useSelector(
     (state) => state.order
   );
@@ -51,7 +53,17 @@ function Order() {
 
   useEffect(() => {
     if (messageOrder) {
-      toast.success(messageOrder);
+      toast({
+        description: (
+          <div className="flex gap-2 font-bold">
+            <CircleCheckBigIcon className="text-green-600" />
+            <p>{messageOrder}</p>
+          </div>
+        ),
+        className: cn(
+          "top-10 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+        ),
+      });
     }
   }, [messageOrder]);
 

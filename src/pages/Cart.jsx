@@ -11,15 +11,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useDispatch, useSelector } from "react-redux";
-import { Minus, Plus, Trash } from "lucide-react";
-import { formatPrice } from "@/lib/utils";
+import { CircleX, Minus, Plus, Trash } from "lucide-react";
+import { cn, formatPrice } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 
 function Cart() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [orderType, setOrderType] = useState("Dine In");
   const [address, setAddress] = useState("");
   const [tableNumber, setTableNumber] = useState("");
@@ -48,7 +49,7 @@ function Cart() {
 
   const handleDecrement = (itemId, count) => {
     const id = itemId;
-    const quantity = (count -= 1);
+    const quantity = count > 1 ? count - 1 : 1;
     dispatch({
       type: "cart/updateQuantity",
       payload: { id, quantity, userId },
@@ -58,7 +59,7 @@ function Cart() {
 
   const handleIncrement = (itemId, count) => {
     const id = itemId;
-    const quantity = (count += 1);
+    const quantity = count + 1;
     dispatch({
       type: "cart/updateQuantity",
       payload: { id, quantity, userId },
@@ -71,7 +72,18 @@ function Cart() {
     const site = orderType === "Dine-in" ? tableNumber : address;
 
     if (!site) {
-      toast.error("Please provide a valid address or table number.");
+      toast({
+        variant: "destructive",
+        description: (
+          <div className="flex items-center gap-2 font-bold">
+            <CircleX className="text-white" />
+            <p>Please provide a valid address or table number.</p>
+          </div>
+        ),
+        className: cn(
+          "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+        ),
+      });
       return;
     }
 
@@ -100,7 +112,18 @@ function Cart() {
   useEffect(() => {
     if (codeOrder && messageOrder) {
       if (codeOrder !== 201) {
-        toast.error(messageOrder);
+        toast({
+          variant: "destructive",
+          description: (
+            <div className="flex items-center gap-2 font-bold">
+              <CircleX className="text-white" />
+              <p>{messageOrder}</p>
+            </div>
+          ),
+          className: cn(
+            "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+          ),
+        });
       } else {
         navigate("/order");
       }

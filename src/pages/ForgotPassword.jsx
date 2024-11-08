@@ -1,13 +1,16 @@
 import heroImage from "../assets/images/hero.jpg";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
+import { CircleX } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 
 function ForgotPassword() {
   const queryParams = new URLSearchParams(window.location.search);
   const navigate = useNavigate();
+  const { toast } = useToast();
   const action = queryParams.get("token");
 
   const [loading, setLoading] = useState(false);
@@ -18,7 +21,18 @@ function ForgotPassword() {
     const password = e.target.password.value;
     const repeatpassword = e.target.repeatpassword.value;
     if (password !== repeatpassword) {
-      toast.error("Password doesn't match");
+      toast({
+        variant: "destructive",
+        description: (
+          <div className="flex items-center gap-2 font-bold">
+            <CircleX className="text-white" />
+            <p>Password doesn't match</p>
+          </div>
+        ),
+        className: cn(
+          "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+        ),
+      });
       return;
     }
     try {
@@ -37,7 +51,18 @@ function ForgotPassword() {
       const result = await response.json();
       setLoading(false);
       if (result.code !== 200) {
-        toast.error(result.message);
+        toast({
+          variant: "destructive",
+          description: (
+            <div className="flex items-center gap-2 font-bold">
+              <CircleX className="text-white" />
+              <p>{result.message}</p>
+            </div>
+          ),
+          className: cn(
+            "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+          ),
+        });
       } else {
         navigate("/login");
       }

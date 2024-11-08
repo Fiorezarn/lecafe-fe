@@ -7,10 +7,14 @@ import firebaseConfig from "../../firebaseconfig.json";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
+import { CircleCheckBigIcon, CircleX } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
+import { ToastAction } from "@/components/ui/toast";
 
 function Login() {
+  const { toast } = useToast();
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
@@ -31,14 +35,40 @@ function Login() {
   useEffect(() => {
     if (user) {
       if (user.type === "notverify") {
-        toast.error(user?.message, {
-          action: {
-            label: "Click Here",
-            onClick: () => navigate("/send-email?action=verify-email"),
-          },
+        toast({
+          variant: "success",
+          description: (
+            <div className="flex items-center gap-2 font-bold">
+              <CircleCheckBigIcon className="text-green-600" />
+              <p>{user?.message}</p>
+            </div>
+          ),
+          action: (
+            <ToastAction
+              onClick={() => navigate("/send-email?action=verify-email")}
+              className="bg-white"
+              altText="Goto verify email"
+            >
+              Click Here
+            </ToastAction>
+          ),
+          className: cn(
+            "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+          ),
         });
       } else if (user.type === "invalidpassword" || user?.code !== 200) {
-        toast.error(user?.message);
+        toast({
+          variant: "destructive",
+          description: (
+            <div className="flex items-center gap-2 font-bold">
+              <CircleX className="text-white" />
+              <p>{user?.message}</p>
+            </div>
+          ),
+          className: cn(
+            "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+          ),
+        });
       } else {
         navigate("/");
       }

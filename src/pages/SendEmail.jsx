@@ -1,9 +1,12 @@
 import { Input } from "@/components/ui/input";
 import heroImage from "../assets/images/hero.jpg";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { CircleCheckBigIcon, CircleX } from "lucide-react";
+import { cn } from "@/lib/utils";
 function SendEmail() {
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const queryParams = new URLSearchParams(window.location.search);
   const action = queryParams.get("action");
@@ -31,9 +34,30 @@ function SendEmail() {
       const result = await response.json();
       setLoading(false);
       if (result.code !== 200) {
-        toast.error(result.message);
+        toast({
+          variant: "destructive",
+          description: (
+            <div className="flex items-center gap-2 font-bold">
+              <CircleX className="text-white" />
+              <p>{result.message}</p>
+            </div>
+          ),
+          className: cn(
+            "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+          ),
+        });
       } else {
-        toast.success(result.message);
+        toast({
+          description: (
+            <div className="flex gap-2 font-bold">
+              <CircleCheckBigIcon className="text-green-600" />
+              <p>{result.message}</p>
+            </div>
+          ),
+          className: cn(
+            "top-10 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+          ),
+        });
       }
     } catch (error) {
       console.error("Error during send email:", error);
