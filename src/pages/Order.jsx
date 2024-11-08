@@ -23,12 +23,14 @@ import {
   Wallet,
 } from "lucide-react";
 import Navbar from "@/components/navbar/Navbar";
+import { useNavigate } from "react-router-dom";
 
 function Order() {
   const dispatch = useDispatch();
   const { orderById, coordinates, messageOrder, transactions } = useSelector(
     (state) => state.order
   );
+  const navigate = useNavigate();
   const { cookie } = useSelector((state) => state.auth);
   const mapRef = useRef(null);
   const [view, setView] = useState(null);
@@ -39,13 +41,13 @@ function Order() {
   const orderIdMidtrans = queryParams.get("order_id");
 
   useEffect(() => {
-    if (orderIdMidtrans) {
+    if (orderIdMidtrans && id) {
       dispatch({
         type: "payments/createVerifyPayments",
-        payload: orderIdMidtrans,
+        payload: { orderIdMidtrans, userId: id },
       });
     }
-  }, [orderIdMidtrans]);
+  }, [orderIdMidtrans, id]);
 
   useEffect(() => {
     if (messageOrder) {
@@ -63,6 +65,7 @@ function Order() {
 
   const cancelPayments = (id) => {
     dispatch({ type: "payments/cancelPayments", payload: id });
+    navigate(0);
   };
 
   useEffect(() => {
@@ -78,7 +81,6 @@ function Order() {
   }, []);
 
   useEffect(() => {
-    console.log(transactions);
     const token = transactions?.token;
     if (token) {
       window.snap.pay(token, {

@@ -66,8 +66,11 @@ function* createPayments(action) {
 
 function* createVerifyPayments(action) {
   try {
-    const response = yield verifyPayments(action.payload);
-    yield put(fetchVerifyTransactionSuccess(response));
+    console.log(action);
+
+    yield verifyPayments(action.payload.orderIdMidtrans);
+    const response = yield fetchAllOrder(action.payload.userId);
+    yield put(fetchAllOrderSuccess(response));
   } catch (error) {
     yield put(fetchVerifyTransactionFailed(error.message));
   }
