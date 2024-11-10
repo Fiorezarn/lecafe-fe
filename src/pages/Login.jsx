@@ -154,15 +154,11 @@ function Login() {
                 Or
               </p>
             </div>
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={loginWithGoogle}
-            >
-              Login with google <FcGoogle />
-            </Button>
           </div>
         </form>
+        <Button variant="outline" className="w-full" onClick={loginWithGoogle}>
+          Login with google <FcGoogle />
+        </Button>
         <div className="mt-4 font-semibold flex justify-between text-sm text-slate-500 text-center md:text-left">
           <a
             className="text-[#C0AF90] hover:underline hover:underline-offset-4"

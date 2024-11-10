@@ -77,7 +77,7 @@ function CardRecommended() {
       {menu?.map((item) => (
         <Card
           key={item.mn_id}
-          className="shadow-md border border-gray-200 rounded-lg overflow-hidden bg-earth4"
+          className="shadow-lg border border-gray-200 rounded-[20px] overflow-hidden bg-earth4 transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:rounded-[30px]"
         >
           <div
             className="cursor-pointer"

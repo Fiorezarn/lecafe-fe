@@ -17,7 +17,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Button } from "../ui/button";
-import { CircleCheckBigIcon, ShoppingCart } from "lucide-react";
+import { CircleCheckBigIcon, CircleX, ShoppingCart } from "lucide-react";
 import { Input } from "../ui/input";
 import { cn, formatPrice } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
@@ -32,6 +32,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "../ui/textarea";
 
 function CardList() {
   const dispatch = useDispatch();
@@ -42,6 +53,10 @@ function CardList() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const { toast } = useToast();
+  const [orderType, setOrderType] = useState("");
+  const [tableNumber, setTableNumber] = useState("");
+  const [address, setAddress] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     dispatch({ type: "auth/getCookie" });
@@ -89,6 +104,48 @@ function CardList() {
         payload: { userId, menuId, quantity },
       });
     }
+  };
+
+  const handleOrderSubmit = (e) => {
+    e.preventDefault();
+    const site = orderType === "Dine-in" ? tableNumber : address;
+
+    if (!site) {
+      toast({
+        variant: "destructive",
+        description: (
+          <div className="flex items-center gap-2 font-bold">
+            <CircleX className="text-white" />
+            <p>Please provide a valid address or table number.</p>
+          </div>
+        ),
+        className: cn(
+          "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+        ),
+      });
+      return;
+    }
+
+    const menuJson = JSON.stringify(
+      cart?.Menu?.map((item) => ({
+        id: item.mn_id,
+        name: item.mn_name,
+        image: item.mn_image,
+        price: item.mn_price,
+        quantity: item.Cart?.cr_quantity,
+      }))
+    );
+
+    dispatch({
+      type: "order/createOrder",
+      payload: {
+        userId,
+        typeOrder: orderType,
+        site,
+        totalPrice,
+        menuJson,
+      },
+    });
   };
 
   const handleSearchSubmit = (e) => {
@@ -148,7 +205,7 @@ function CardList() {
         {menu?.data?.map((item) => (
           <Card
             key={item.mn_id}
-            className="shadow-md border border-gray-200 rounded-lg overflow-hidden bg-earth4"
+            className="shadow-lg border border-gray-200 rounded-[20px] overflow-hidden bg-earth4 transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:rounded-[30px]"
           >
             <div
               className="cursor-pointer"
@@ -191,12 +248,87 @@ function CardList() {
                   <ShoppingCart />
                 </Button>
               </form>
-              <Button className="bg-earth">Order Now</Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="bg-earth">Order Now</Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>Place Your Order</DialogTitle>
+                    <DialogDescription>
+                      Choose your order type and provide details. Click proceed
+                      when you're ready.
+                    </DialogDescription>
+                  </DialogHeader>
+
+                  <div className="mt-6">
+                    <label className="block text-lg font-semibold mb-2">
+                      Order Type
+                    </label>
+                    <Select onValueChange={(value) => setOrderType(value)}>
+                      <SelectTrigger className="w-full text-black">
+                        <SelectValue placeholder="Select Order Type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Order Type</SelectLabel>
+                          <SelectItem value="Dine-in">Dine In</SelectItem>
+                          <SelectItem value="Delivery">Delivery</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {orderType === "Dine-in" && (
+                    <div className="mt-4">
+                      <label className="block text-lg font-semibold mb-2">
+                        Table Number
+                      </label>
+                      <Select onValueChange={(value) => setTableNumber(value)}>
+                        <SelectTrigger className="w-full mb-4 text-black">
+                          <SelectValue placeholder="Select Table Number" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {[...Array(10).keys()].map((num) => (
+                            <SelectItem key={num + 1} value={String(num + 1)}>
+                              {num + 1}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
+
+                  {orderType === "Delivery" && (
+                    <div className="mt-4">
+                      <label className="block text-lg font-semibold mb-2">
+                        Address
+                      </label>
+                      <Textarea
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        className="w-full p-2 rounded-lg bg-brown-700 text-black"
+                        placeholder="Enter delivery address"
+                      />
+                    </div>
+                  )}
+
+                  <DialogFooter>
+                    <Button
+                      className="w-full mt-6 bg-earth text-white hover:bg-gray-800"
+                      onClick={handleOrderSubmit}
+                      disabled={loading}
+                    >
+                      {loading ? "Loading..." : "Proceed to Checkout"}
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </CardFooter>
           </Card>
         ))}
       </div>
-      <Pagination className="my-16">
+      <Pagination className="my-16 cursor-pointer">
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious

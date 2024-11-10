@@ -28,7 +28,7 @@ function Home() {
             Welcome to Le Café {cookie?.us_username}!
           </h1>
 
-          <p className="text-white mt-4 text-sm lg:text-lg hidden group-hover:block opacity-0 group-hover:opacity-100 transition-opacity duration-1000 ease-in-out">
+          <p className="text-white mt-4 text-sm lg:text-lg">
             We have the best coffee in town!
           </p>
 
@@ -46,16 +46,14 @@ function Home() {
           <CardRecommended />
         </div>
       </section>
-      <section className="bg-[#C0AF90] flex flex-col lg:flex-row justify-between items-center p-6 lg:p-12">
+      <section className="bg-[#C0AF90] flex justify-between items-center p-6 lg:p-12">
         <img
-          className="w-[200px] lg:w-[300px] mb-4 lg:mb-0"
-          src={
-            "https://res.cloudinary.com/dsxnvgy7a/image/upload/v1730861879/flyingCoffee_gwkbg6.png"
-          }
+          className="w-[20%] mb-4 lg:mb-0"
+          src="https://res.cloudinary.com/dsxnvgy7a/image/upload/v1730861879/flyingCoffee_gwkbg6.png"
           alt="Flying Coffee"
         />
-        <div className="text-center lg:text-left mx-4 lg:mx-0">
-          <h1 className="text-2xl lg:text-3xl font-bold text-[#4B332B]">
+        <div className="text-center mx-4 lg:mx-0 w-full max-w-3xl">
+          <h1 className="md:text-xl lg:text-3xl font-bold text-[#4B332B]">
             Check out our best coffee beans here
           </h1>
           <Button className="mt-4 bg-[#4B332B] text-white px-4 py-2">
@@ -63,13 +61,12 @@ function Home() {
           </Button>
         </div>
         <img
-          className="w-[200px] lg:w-[300px] mt-4 lg:mt-0"
-          src={
-            "https://res.cloudinary.com/dsxnvgy7a/image/upload/v1730861588/coffee-bean_exnpsc.png"
-          }
+          className="w-[20%] mt-4 lg:mt-0"
+          src="https://res.cloudinary.com/dsxnvgy7a/image/upload/v1730861588/coffee-bean_exnpsc.png"
           alt="Coffee Beans"
         />
       </section>
+
       <section className="bg-[#F6EEE8]">
         <div className="mx-auto max-w-screen-xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
           <p className="text-center text-xl ">Come and Join</p>

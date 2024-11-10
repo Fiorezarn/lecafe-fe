@@ -36,7 +36,7 @@ function Menu() {
         <CarouselContent>
           {images.map((image) => (
             <img
-              className="w-[400px] h-[500px]"
+              className="w-full h-[500px]"
               key={image.id}
               src={image.imgUrl}
               alt="Beige Modern Cafe Banner"

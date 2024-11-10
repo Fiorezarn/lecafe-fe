@@ -26,6 +26,16 @@ import Navbar from "@/components/navbar/Navbar";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { setMessageOrder } from "@/features/order/orderSlice";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 function Order() {
   const dispatch = useDispatch();
@@ -79,7 +89,7 @@ function Order() {
 
   const cancelPayments = (id) => {
     dispatch({ type: "payments/cancelPayments", payload: id });
-    navigate(0);
+    location.reload();
   };
 
   useEffect(() => {
@@ -258,7 +268,7 @@ function Order() {
             <TabsTrigger value="finished">Finished</TabsTrigger>
             <TabsTrigger value="failed">Failed</TabsTrigger>
           </TabsList>
-          {orderById?.order?.Order?.map((item, index) => {
+          {orderById?.orders?.Order?.map((item, index) => {
             if (item?.or_status_payment === "pending") {
               const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
               return (
@@ -318,13 +328,36 @@ function Order() {
                               </h1>
                             </div>
                             <div className="flex flex-col gap-2">
-                              <Button
-                                onClick={() => cancelPayments(item?.or_id)}
-                                size="lg"
-                                className="bg-red-600 text-white text-xl font-bold"
-                              >
-                                <MessageCircleX /> Cancel
-                              </Button>
+                              <Dialog>
+                                <DialogTrigger asChild>
+                                  <Button className="bg-red-600 text-white text-xl font-bold">
+                                    <MessageCircleX /> Cancel
+                                  </Button>
+                                </DialogTrigger>
+                                <DialogContent className="sm:max-w-md">
+                                  <DialogHeader>
+                                    <DialogTitle>Cancel Order</DialogTitle>
+                                    <DialogDescription>
+                                      Are you sure you want to cancel this
+                                      order?
+                                    </DialogDescription>
+                                  </DialogHeader>
+                                  <DialogFooter className="justify-end">
+                                    <DialogClose asChild>
+                                      <Button>No</Button>
+                                    </DialogClose>
+                                    <Button
+                                      onClick={() =>
+                                        cancelPayments(item?.or_id)
+                                      }
+                                      className="bg-red-600 text-white font-bold"
+                                    >
+                                      Yes
+                                    </Button>
+                                  </DialogFooter>
+                                </DialogContent>
+                              </Dialog>
+                              <div />
                               <Button
                                 onClick={() =>
                                   handlePayment(
@@ -348,7 +381,7 @@ function Order() {
             }
           })}
 
-          {orderById?.order?.Order?.map((item, index) => {
+          {orderById?.orders?.Order?.map((item, index) => {
             if (
               item?.or_status_shipping === "ongoing" &&
               item?.or_type_order === "Delivery" &&
@@ -422,7 +455,7 @@ function Order() {
             }
           })}
 
-          {orderById?.order?.Order?.map((item, index) => {
+          {orderById?.orders?.Order?.map((item, index) => {
             if (
               item?.or_status_shipping === "delivered" &&
               item?.or_status_payment === "settlement"
@@ -490,10 +523,10 @@ function Order() {
             }
           })}
 
-          {orderById?.order?.Order?.map((item, index) => {
+          {orderById?.orders?.Order?.map((item, index) => {
             if (
-              item?.or_status_payment === "expired" ||
-              (item?.or_status_payment === "cancel" &&
+              item?.or_status_payment === "expire" ||
+              (item?.or_status_payment === "cancelled" &&
                 item?.or_status_shipping === "cancelled")
             ) {
               const menus = JSON.parse(item.OrderDetail[0].od_mn_json);

@@ -146,75 +146,82 @@ function Cart() {
                 return (
                   <div
                     key={item.mn_id}
-                    className="flex items-center bg-earth2 justify-between p-4 bg-brown-800 text-white rounded-lg shadow-md"
+                    className="flex flex-col lg:flex-row items-center bg-earth2 justify-between p-4 bg-brown-800 text-white rounded-lg shadow-md"
                   >
                     <img
                       src={item.mn_image}
                       alt={item.mn_name}
-                      className="w-16 h-16 rounded-md object-cover"
+                      className="w-16 h-16 rounded-md object-cover mb-4 lg:mb-0 lg:mr-4"
                     />
-                    <div className="flex-1 ml-4">
-                      <h3 className="text-xl font-semibold">{item.mn_name}</h3>
-                      <p className="text-sm text-gray-300">
+                    <div className="flex-1">
+                      <h3 className="lg:text-xl font-semibold">
+                        {item.mn_name}
+                      </h3>
+                      <p className="text-xs lg:text-sm text-gray-300">
                         {formatPrice(item.mn_price)}
                       </p>
                     </div>
-                    <div className="bg-white justify-between flex items-center border border-black rounded-md p-1">
+                    <div className="flex items-center w-full lg:w-auto mt-4 lg:mt-0 justify-between gap-2">
+                      <div className="bg-white flex items-center border border-black rounded-md p-1 w-full max-w-xs">
+                        <Button
+                          variant="transparent"
+                          size="xs"
+                          className="flex items-center justify-center h-full text-black"
+                          onClick={() =>
+                            handleDecrement(
+                              item?.Cart?.cr_id,
+                              item?.Cart?.cr_quantity
+                            )
+                          }
+                        >
+                          <Minus />
+                        </Button>
+                        <input
+                          id="quantity"
+                          type="number"
+                          className="placeholder:leading-loose text-black h-full font-mono mx-2 placeholder:text-center focus:outline-none focus:border-none focus:ring-0 text-center [&::-webkit-inner-spin-button]:appearance-none w-16"
+                          placeholder="0"
+                          defaultValue={item.Cart?.cr_quantity}
+                          readOnly
+                        />
+                        <Button
+                          variant="transparent"
+                          size="xs"
+                          className="flex items-center justify-center h-full text-black"
+                          onClick={() =>
+                            handleIncrement(
+                              item?.Cart?.cr_id,
+                              item?.Cart?.cr_quantity
+                            )
+                          }
+                        >
+                          <Plus />
+                        </Button>
+                      </div>
                       <Button
-                        variant="transparant"
-                        size="xs"
-                        className="flex items-center justify-center h-full text-black"
+                        variant="destructive"
+                        className="flex items-center justify-center h-full lg:w-auto w-full ml-4"
                         onClick={() =>
-                          handleDecrement(
-                            item?.Cart?.cr_id,
-                            item?.Cart?.cr_quantity
-                          )
+                          dispatch({
+                            type: "cart/deleteCart",
+                            payload: { userId, menuId: item.mn_id },
+                          })
                         }
                       >
-                        <Minus className="h-[80%] w-[80%]" />
-                      </Button>
-                      <input
-                        id="quantity"
-                        type="number"
-                        className="placeholder:leading-loose text-black w-[30%] h-full font-mono mx-2 placeholder:text-center focus:outline-none focus:border-none focus:ring-0 text-center [&::-webkit-inner-spin-button]:appearance-none"
-                        placeholder="0"
-                        defaultValue={item.Cart?.cr_quantity}
-                        readOnly
-                      />
-                      <Button
-                        variant="transparant"
-                        size="xs"
-                        className="flex items-center justify-center h-full text-black"
-                        onClick={() =>
-                          handleIncrement(
-                            item?.Cart?.cr_id,
-                            item?.Cart?.cr_quantity
-                          )
-                        }
-                      >
-                        <Plus className="h-[80%] w-[80%]" />
+                        <Trash className="h-[80%] w-[80%]" />
                       </Button>
                     </div>
-                    <Button
-                      variant="destructive"
-                      className="flex items-center justify-center h-full ml-4"
-                      onClick={() =>
-                        dispatch({
-                          type: "cart/deleteCart",
-                          payload: { userId, menuId: item.mn_id },
-                        })
-                      }
-                    >
-                      <Trash className="h-[80%] w-[80%]" />
-                    </Button>
                   </div>
                 );
               })
             )}
           </div>
         </section>
-
-        <aside className="md:w-1/3 h-fit bg-brown-900 p-6 text-white rounded-lg shadow-lg md:sticky md:top-8 bg-earth2">
+        <aside
+          className={`md:w-1/3 h-fit bg-brown-900 p-6 text-white rounded-lg shadow-lg md:sticky md:top-8 bg-earth2 ${
+            cart?.Menu?.length === 0 ? "hidden" : ""
+          }`}
+        >
           <h3 className="text-2xl font-bold mb-4">Order Summary</h3>
           <div className="flex justify-between font-bold text-lg mt-4">
             <span>Total</span>
@@ -281,6 +288,7 @@ function Cart() {
               />
             </div>
           )}
+
           <Button
             className="w-full mt-6 bg-earth text-white hover:bg-gray-800"
             onClick={handleSubmit}
@@ -289,6 +297,7 @@ function Cart() {
             {loading ? "Loading..." : "Proceed to Checkout"}
           </Button>
         </aside>
+        ;
       </div>
     </>
   );
