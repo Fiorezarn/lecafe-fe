@@ -37,7 +37,7 @@ function App() {
         <Route element={<ProtectedRole />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/menu" element={<DashboardMenu />} />
-          <Route path="/dashboard/order" element={<DashboardOrder />} />
+          <Route path="/dashboard/tracking" element={<DashboardOrder />} />
           <Route path="/dashboard/user" element={<DashboardUser />} />
         </Route>
         <Route path="/cart" element={<Cart />} />

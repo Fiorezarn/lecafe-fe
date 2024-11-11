@@ -52,7 +52,7 @@ function SidebarComponent({ items }) {
           <SidebarGroupLabel className="text-white text-xl">
             Dashboard Le Café
           </SidebarGroupLabel>
-          <SidebarGroupContent>
+          <SidebarGroupContent className="mt-6">
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>

@@ -4,7 +4,7 @@ function DashboardOrder() {
   return (
     <DashboardLayout
       breadcrumbLinks={[
-        { id: 1, title: "Dashboard", url: "/" },
+        { id: 1, title: "Dashboard", url: "/dashboard" },
         { id: 2, title: "Order", url: "/dashboard/order" },
       ]}
     >

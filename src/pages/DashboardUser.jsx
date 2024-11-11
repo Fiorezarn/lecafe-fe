@@ -100,7 +100,7 @@ function DashboardUser() {
   return (
     <DashboardLayout
       breadcrumbLinks={[
-        { id: 1, title: "Dashboard", url: "/" },
+        { id: 1, title: "Dashboard", url: "/dashboard" },
         { id: 2, title: "User", url: "/dashboard/user" },
       ]}
     >

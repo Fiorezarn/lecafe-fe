@@ -1,13 +1,13 @@
 import BreadcrumbComponent from "@/components/dashboard/Breadcrumb";
 import SidebarComponent from "@/components/dashboard/SidebarComponent";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { Home, ListOrderedIcon, Menu, User } from "lucide-react";
+import { Home, MapPinHouse, Menu, User } from "lucide-react";
 
 const items = [
   { title: "Home", url: "/dashboard", icon: Home },
   { title: "User", url: "/dashboard/user", icon: User },
   { title: "Menu Management", url: "/dashboard/menu", icon: Menu },
-  { title: "Order", url: "/dashboard/order", icon: ListOrderedIcon },
+  { title: "Tracking", url: "/dashboard/tracking", icon: MapPinHouse },
 ];
 function DashboardLayout({ children, breadcrumbLinks }) {
   return (
