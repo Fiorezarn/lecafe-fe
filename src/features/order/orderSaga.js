@@ -10,6 +10,8 @@ import {
   fetchVerifyTransactionSuccess,
   fetchVerifyTransactionFailed,
   setLoading,
+  fetchOrderDeliverySuccess,
+  fetchOrderDeliveryFailure,
 } from "@/features/order/orderSlice";
 import {
   fetchAllOrder,
@@ -83,11 +85,23 @@ function* cancelPayments(action) {
   }
 }
 
+function* trackingOrder() {
+  try {
+    const response = yield fetchDeliveryOrder(action.payload);
+    console.log(response);
+
+    yield put(fetchOrderDeliverySuccess(response));
+  } catch (error) {
+    yield put(fetchOrderDeliveryFailure(error.message));
+  }
+}
+
 export default function* orderSaga() {
   yield takeLatest("order/createOrder", createOrder);
-  yield takeLatest("order/getAllOrder", getAllOrder);
+  yield takeLatest("order/getOrderByUserId", getAllOrder);
   yield takeLatest("map/fetchCoordinates", fetchCoordinatesData);
   yield takeLatest("payments/createPayments", createPayments);
   yield takeLatest("payments/createVerifyPayments", createVerifyPayments);
   yield takeLatest("payments/cancelPayments", cancelPayments);
+  yield takeLatest("order/trackingOrder", trackingOrder);
 }

@@ -85,7 +85,7 @@ function Order() {
 
   useEffect(() => {
     if (id) {
-      dispatch({ type: "order/getAllOrder", payload: id });
+      dispatch({ type: "order/getOrderByUserId", payload: id });
     }
   }, [id]);
 

@@ -12,6 +12,7 @@ export const orderSlice = createSlice({
     codeOrder: null,
     loading: false,
     error: null,
+    tracking: null,
   },
   reducers: {
     fetchcreateOrderRequest: (state) => {
@@ -73,6 +74,14 @@ export const orderSlice = createSlice({
     setMessageOrder: (state, action) => {
       state.messageOrder = action.payload;
     },
+    fetchOrderDeliverySuccess: (state, action) => {
+      state.loading = false;
+      state.tracking = action.payload;
+    },
+    fetchOrderDeliveryFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
 
@@ -92,6 +101,8 @@ export const {
   fetchCancelTransactionFailed,
   setLoading,
   setMessageOrder,
+  fetchOrderDeliverySuccess,
+  fetchOrderDeliveryFailure,
 } = orderSlice.actions;
 
 export default orderSlice.reducer;

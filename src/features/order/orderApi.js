@@ -81,6 +81,11 @@ const fetchCancelPayments = async (id) => {
   return await response.json();
 };
 
+const fetchDeliveryOrder = async () => {
+  const response = await fetch(`${BASE_URL}/order/delivery`);
+  return await response.json();
+};
+
 export {
   fetchCreateOrder,
   fetchAllOrder,
@@ -88,4 +93,5 @@ export {
   fetchPayments,
   verifyPayments,
   fetchCancelPayments,
+  fetchDeliveryOrder,
 };
