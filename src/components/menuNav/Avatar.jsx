@@ -58,7 +58,9 @@ function AvatarNav() {
           </DropdownMenuContent>
         </DropdownMenu>
       ) : (
-        <a className="text-white" href="/login">Login</a>
+        <a className="text-white" href="/login">
+          Login
+        </a>
       )}
     </>
   );

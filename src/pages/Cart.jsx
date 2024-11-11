@@ -297,7 +297,6 @@ function Cart() {
             {loading ? "Loading..." : "Proceed to Checkout"}
           </Button>
         </aside>
-        ;
       </div>
     </>
   );

@@ -1,4 +1,5 @@
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 const ProtectedRoute = () => {
@@ -17,7 +18,19 @@ const ProtectedRoute = () => {
 
 const ProtectedRole = () => {
   const { cookie } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!cookie) {
+      dispatch({ type: "auth/getCookie" });
+    }
+  }, [dispatch, cookie]);
+
   const role = cookie?.us_role;
+
+  if (!cookie) {
+    return <div>Loading...</div>;
+  }
 
   if (role !== "ADMIN") {
     return <Navigate to="/unauthorized" replace />;

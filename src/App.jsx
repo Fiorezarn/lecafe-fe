@@ -22,7 +22,6 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/menu" element={<Menu />} />
       <Route path="/menu/:id" element={<DetailMenu />} />
-      <Route path="/cart" element={<Cart />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
       <Route path="/verify-success" element={<VerifySuccess />} />
       <Route path="/verify-failed" element={<VerifyFailed />} />
@@ -37,6 +36,7 @@ function App() {
           <Route path="/dashboard/menu" element={<DashboardMenu />} />
           <Route path="/dashboard/user" element={<DashboardUser />} />
         </Route>
+        <Route path="/cart" element={<Cart />} />
         <Route path="order" element={<Order />} />
       </Route>
     </Routes>
