@@ -15,6 +15,8 @@ import DetailMenu from "./pages/DetailMenu";
 import Unauthorized from "./pages/Unauthorized";
 import VerifyFailed from "./pages/VerifyFailed";
 import VerifySuccess from "./pages/VerifySucess";
+import DashboardOrder from "./pages/DashboardOrder";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -33,7 +35,9 @@ function App() {
       </Route>
       <Route path="/" element={<ProtectedRoute />}>
         <Route element={<ProtectedRole />}>
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/menu" element={<DashboardMenu />} />
+          <Route path="/dashboard/order" element={<DashboardOrder />} />
           <Route path="/dashboard/user" element={<DashboardUser />} />
         </Route>
         <Route path="/cart" element={<Cart />} />

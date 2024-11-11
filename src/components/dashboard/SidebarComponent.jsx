@@ -1,4 +1,4 @@
-// components/Sidebar.js
+// components/SidebarWithBreadcrumb.js
 import {
   Sidebar,
   SidebarContent,
@@ -17,11 +17,37 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User2, ChevronUp } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
 function SidebarComponent({ items }) {
+  const BASE_URL = import.meta.env.VITE_BASE_URL_BE;
+  const { cookie } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({ type: "auth/getCookie" });
+  }, [dispatch]);
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/auth/logout`, {
+        credentials: "include",
+      });
+      if (!response.ok) {
+        throw new Error("Logout failed");
+      }
+      navigate(0);
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+  };
+
   return (
     <Sidebar collapsible="icon">
-      <SidebarContent className="bg-slate-300">
+      <SidebarContent className="bg-earth2">
         <SidebarGroup>
           <SidebarGroupLabel className="text-white text-xl">
             Dashboard Le Café
@@ -31,7 +57,7 @@ function SidebarComponent({ items }) {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <a className="text-white" href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
                     </a>
@@ -42,16 +68,20 @@ function SidebarComponent({ items }) {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="bg-earth2">
         <SidebarMenu>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <SidebarMenuButton>
-                <User2 /> Username
+              <SidebarMenuButton className="text-white">
+                <User2 /> {cookie?.us_username}
                 <ChevronUp className="ml-auto" />
               </SidebarMenuButton>
             </DropdownMenuTrigger>
-            <DropdownMenuContent side="top">
+            <DropdownMenuContent
+              className="cursor-pointer"
+              onClick={handleLogout}
+              side="top"
+            >
               <DropdownMenuItem>
                 <span>Sign out</span>
               </DropdownMenuItem>

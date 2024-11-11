@@ -10,7 +10,7 @@ import {
 function BreadcrumbComponent({ links }) {
   return (
     <Breadcrumb>
-      <BreadcrumbList>
+      <BreadcrumbList className="text-white">
         {links.map((link, index) => (
           <>
             <BreadcrumbItem key={link.id}>

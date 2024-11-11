@@ -13,26 +13,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  CircleCheckBigIcon,
-  CircleX,
-  Home,
-  ListOrderedIcon,
-  Menu,
-  Trash2,
-  User,
-} from "lucide-react";
-import SidebarComponent from "@/components/dashboard/SidebarComponent";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { CircleCheckBigIcon, CircleX, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-
-const items = [
-  { title: "Home", url: "#", icon: Home },
-  { title: "User", url: "/dashboard/user", icon: User },
-  { title: "Menu Management", url: "/dashboard/menu", icon: Menu },
-  { title: "Order", url: "#", icon: ListOrderedIcon },
-];
+import DashboardLayout from "@/components/dashboard/DashboardLayout";
 
 function DashboardMenu() {
   const dispatch = useDispatch();
@@ -124,24 +108,16 @@ function DashboardMenu() {
   ];
 
   return (
-    <SidebarProvider>
-      <SidebarComponent items={items} />
-      <div className="w-full">
-        <div className="w-full h-10 flex items-center justify-between p-8 bg-earth4">
-          <BreadcrumbComponent
-            links={[
-              { id: 1, title: "Home", url: "/" },
-              { id: 2, title: "Menu", url: "/menu" },
-            ]}
-          />
-        </div>
-        <main className="px-10 py-6">
-          <h1 className="text-3xl mb-4">Menu Management</h1>
-          <ModalCreateMenu />
-          <DataTableComponent columns={columns} data={data} />
-        </main>
-      </div>
-    </SidebarProvider>
+    <DashboardLayout
+      breadcrumbLinks={[
+        { id: 1, title: "Dashboard", url: "/" },
+        { id: 2, title: "Menu", url: "/dashboard/menu" },
+      ]}
+    >
+      <h1 className="text-3xl mb-4">Menu Management</h1>
+      <ModalCreateMenu />
+      <DataTableComponent columns={columns} data={data} />
+    </DashboardLayout>
   );
 }
 

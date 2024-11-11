@@ -265,7 +265,7 @@ function Order() {
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="pending">Pending</TabsTrigger>
             <TabsTrigger value="on-going">On-going</TabsTrigger>
-            <TabsTrigger value="finished">Finished</TabsTrigger>
+            <TabsTrigger value="finished">Ordered</TabsTrigger>
             <TabsTrigger value="failed">Failed</TabsTrigger>
           </TabsList>
           {orderById?.orders?.Order?.map((item, index) => {
