@@ -15,6 +15,7 @@ import { Input } from "../ui/input";
 import { CircleCheckBigIcon, ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import ButtonOrderNow from "./ButtonOrdernow";
 
 function CardRecommended() {
   const { toast } = useToast();
@@ -121,7 +122,7 @@ function CardRecommended() {
                 <ShoppingCart />
               </Button>
             </form>
-            <Button className="bg-earth">Order Now</Button>
+            <ButtonOrderNow idMenu={item.mn_id} />
           </CardFooter>
         </Card>
       ))}
