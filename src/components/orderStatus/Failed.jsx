@@ -15,7 +15,15 @@ function Failed({ orders }) {
         order?.or_status_shipping === "cancelled")
   );
 
-  if (!failedOrders?.length) return <div>Data Kosong</div>;
+  if (!failedOrders?.length)
+    return (
+      <NoData
+        title={"No Failed Orders"}
+        paragraph={
+          "There are no failed orders at the moment. All orders have been successfully processed."
+        }
+      />
+    );
 
   return failedOrders.map((item, index) => {
     const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
@@ -64,7 +72,9 @@ function Failed({ orders }) {
                   Total Price: {formatPrice(item?.or_total_price)}
                 </h1>
                 <p className="text-xl text-gray-600">
-                  Delivery on: {item?.or_site}
+                  {isNaN(Number(item?.or_site))
+                    ? "Delivery: " + item?.or_site
+                    : "Dine In: " + item?.or_site}
                 </p>
               </div>
             </div>

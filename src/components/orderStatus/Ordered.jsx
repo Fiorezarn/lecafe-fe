@@ -5,7 +5,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { formatDate, formatPrice } from "@/lib/utils";
-import { CheckCircleIcon } from "lucide-react";
+import { CheckCircleIcon, Wallet, WalletCards } from "lucide-react";
 import { useDispatch } from "react-redux";
 
 function Ordered({ orders }) {
@@ -59,15 +59,17 @@ function Ordered({ orders }) {
                   ))}
                 </ul>
               </div>
-              <div className="w-full md:w-1/2 p-8 flex flex-col justify-between">
+              <div className="w-full md:w-1/2 p-8 flex flex-col justify-center">
                 <h1 className="text-2xl font-bold text-green-800">
                   Total Price: {formatPrice(item?.or_total_price)}
                 </h1>
-                <p className="text-xl text-gray-600">
-                  Payment Method: {item?.payment_method}
+                <p className="text-xl flex text-gray-600">
+                  <WalletCards />: {item?.payment_method}
                 </p>
                 <p className="text-xl text-gray-600">
-                  Delivery on: {item?.or_site}
+                  {isNaN(Number(item?.or_site))
+                    ? "Delivery: " + item?.or_site
+                    : "Dine in Table: " + item?.or_site}
                 </p>
               </div>
             </div>

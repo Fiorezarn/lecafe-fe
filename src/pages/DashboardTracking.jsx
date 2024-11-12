@@ -6,64 +6,49 @@ import { useDispatch, useSelector } from "react-redux";
 function DashboardTracking() {
   const { tracking } = useSelector((state) => state.order);
   const dispatch = useDispatch();
+
   useEffect(() => {
-    if (!tracking) {
-      dispatch({ type: "order/trackingOrder" });
-    }
+    dispatch({ type: "order/trackingOrder" });
   }, [dispatch]);
-  // useEffect(() => {
-  //   console.log(tracking);
-  // }, [tracking]);
 
-  // const columns = [
-  //   { name: "Name", selector: (row) => row.mn_name, sortable: true },
-  //   { name: "Price", selector: (row) => row.mn_price, sortable: true },
-  //   { name: "Category", selector: (row) => row.mn_category, sortable: true },
-  //   {
-  //     name: "Action",
-  //     selector: (row) => (
-  //       <div className="gap-2 flex justify-center">
-  //         <ModalEditMenu menuId={row.mn_id} />
-  //         <Dialog>
-  //           <DialogTrigger asChild>
-  //             <Button variant="destructive">
-  //               <Trash2 />
-  //             </Button>
-  //           </DialogTrigger>
-  //           <DialogContent>
-  //             <DialogHeader>
-  //               <DialogTitle>
-  //                 Are you sure you want to delete the data?
-  //               </DialogTitle>
-  //             </DialogHeader>
-  //             <DialogFooter>
-  //               <Button onClick={() => {}}>Cancel</Button>
-  //               <Button
-  //                 variant="destructive"
-  //                 onClick={() =>
-  //                   dispatch({ type: "menu/deleteMenu", payload: row.mn_id })
-  //                 }
-  //                 disabled={loading}
-  //               >
-  //                 {loading ? "Loading..." : "Delete"}
-  //               </Button>
-  //             </DialogFooter>
-  //           </DialogContent>
-  //         </Dialog>
-  //       </div>
-  //     ),
-  //   },
-  // ];
+  const data =
+    tracking?.data?.orders?.Order?.map((order) => ({
+      us_fullname: tracking.data.orders.us_fullname,
+      or_status_shipping: order.or_status_shipping,
+      or_site: order.or_site,
+    })) || [];
 
-  // const data = order?.data;
+  const columns = [
+    {
+      name: "Receiver",
+      selector: (row) => row.us_fullname,
+      sortable: true,
+    },
+    {
+      name: "Shipping Status",
+      selector: (row) => row.or_status_shipping,
+      sortable: true,
+    },
+    {
+      name: "Address",
+      selector: (row) => row.or_site,
+      sortable: true,
+    },
+    {
+      name: "Map",
+      selector: (row) => row.or_site,
+      sortable: true,
+    },
+  ];
+
   return (
     <DashboardLayout
       breadcrumbLinks={[
         { id: 1, title: "Dashboard", url: "/dashboard" },
-        { id: 2, title: "Order", url: "/dashboard/order" },
+        { id: 2, title: "Tracking", url: "/dashboard/tracking" },
       ]}
     >
-      {/* <DataTableComponent columns={columns} data={data} /> */}
+      <DataTableComponent columns={columns} data={data} expand />
     </DashboardLayout>
   );
 }

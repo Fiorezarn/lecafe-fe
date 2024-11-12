@@ -18,6 +18,7 @@ import { formatDate, formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ClockIcon, MessageCircleX, Wallet } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
+import NoData from "./NoData";
 
 function Pending({ orders }) {
   const dispatch = useDispatch();
@@ -38,7 +39,15 @@ function Pending({ orders }) {
   const pendingOrders = orders?.filter(
     (order) => order?.or_status_payment === "pending"
   );
-  if (!pendingOrders?.length) return <div>Data Kosong</div>;
+  if (!pendingOrders?.length)
+    return (
+      <NoData
+        title={"No Pending Orders"}
+        paragraph={
+          "You currently have no orders in a pending status. All orders have been processed."
+        }
+      />
+    );
 
   return pendingOrders.map((item, index) => {
     const menus = JSON.parse(item.OrderDetail[0].od_mn_json);

@@ -20,6 +20,7 @@ import {
   fetchPayments,
   verifyPayments,
   fetchCancelPayments,
+  fetchDeliveryOrder,
 } from "./orderApi";
 
 function* createOrder(action) {
@@ -85,11 +86,9 @@ function* cancelPayments(action) {
   }
 }
 
-function* trackingOrder() {
+function* trackingOrder(action) {
   try {
     const response = yield fetchDeliveryOrder(action.payload);
-    console.log(response);
-
     yield put(fetchOrderDeliverySuccess(response));
   } catch (error) {
     yield put(fetchOrderDeliveryFailure(error.message));

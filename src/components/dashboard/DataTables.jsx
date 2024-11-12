@@ -1,6 +1,6 @@
 import DataTable from "react-data-table-component";
 
-function DataTableComponent({ columns, data }) {
+function DataTableComponent({ columns, data, expand }) {
   return (
     <div className="overflow-auto">
       <DataTable
@@ -9,6 +9,12 @@ function DataTableComponent({ columns, data }) {
         data={data}
         responsive={true}
         pagination
+        expandableRows={expand}
+        expandableRowsComponent={({ data }) => (
+          <div style={{ padding: "10px" }}>
+            <p>Map</p>
+          </div>
+        )}
       />
     </div>
   );

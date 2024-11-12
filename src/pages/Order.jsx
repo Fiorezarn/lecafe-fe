@@ -20,8 +20,8 @@ function Order() {
   );
   const navigate = useNavigate();
   const { cookie } = useSelector((state) => state.auth);
-  const [isOpenTab, setIsOpenTab] = useState(false);
   const id = cookie?.us_id;
+  const [isOpenTab, setIsOpenTab] = useState(false);
   const queryParams = new URLSearchParams(window.location.search);
   const orderIdMidtrans = queryParams.get("order_id");
 
@@ -92,7 +92,7 @@ function Order() {
   return (
     <>
       <Navbar navClass={"bg-earth border-gray-200 z-10"} />
-      <div className="p-10 bg-earth5 h-screen">
+      <div className="p-10 bg-earth5 h-full">
         <Tabs
           defaultValue="pending"
           className="w-full"
@@ -108,7 +108,7 @@ function Order() {
             <Pending orders={orderById?.orders?.Order} />
           </TabsContent>
           <TabsContent value="on-going">
-            <OnGoing orders={orderById?.orders?.Order} />
+            <OnGoing isOpenTab={isOpenTab} orders={orderById?.orders?.Order} />
           </TabsContent>
           <TabsContent value="ordered">
             <Ordered orders={orderById?.orders?.Order} />
