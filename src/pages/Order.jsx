@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/navbar/Navbar";
-import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { setMessageOrder } from "@/features/order/orderSlice";
 import Pending from "@/components/orderStatus/Pending";
@@ -18,7 +17,6 @@ function Order() {
   const { orderById, messageOrder, transactions } = useSelector(
     (state) => state.order
   );
-  const navigate = useNavigate();
   const { cookie } = useSelector((state) => state.auth);
   const id = cookie?.us_id;
   const [isOpenTab, setIsOpenTab] = useState(false);

@@ -74,9 +74,10 @@ function OnGoing({ orders, isOpenTab }) {
         const originGraphic = new Graphic({
           geometry: originPoint,
           symbol: {
-            type: "simple-marker",
-            color: "blue",
-            size: "12px",
+            type: "picture-marker",
+            url: "https://res.cloudinary.com/dsxnvgy7a/image/upload/v1731410974/store_wxaob8.png",
+            width: "30px",
+            height: "30px",
             outline: {
               color: [255, 255, 255],
               width: 2,
@@ -86,9 +87,10 @@ function OnGoing({ orders, isOpenTab }) {
         const destinationGraphic = new Graphic({
           geometry: destinationPoint,
           symbol: {
-            type: "simple-marker",
-            color: "green",
-            size: "12px",
+            type: "picture-marker",
+            url: "https://res.cloudinary.com/dsxnvgy7a/image/upload/v1731410682/motorcycle_l2iuvl.png",
+            width: "30px",
+            height: "30px",
             outline: {
               color: [255, 255, 255],
               width: 2,
@@ -168,7 +170,7 @@ function OnGoing({ orders, isOpenTab }) {
         <AccordionItem value="item-1">
           <AccordionTrigger onClick={() => handleOpenAccordion(index)}>
             <div className="flex justify-between items-center w-full p-4 bg-blue-100 rounded-lg shadow-sm">
-              <h1 className="text-sm lg:text-2xl font-semibold text-blue-800 flex items-center gap-2">
+              <h1 className="text-sm lg:text-2xl no-underline font-semibold text-blue-800 flex items-center gap-2">
                 <TruckIcon className="w-6 h-6 text-blue-600" />
                 ORDER-{item.or_id}
               </h1>
@@ -193,15 +195,15 @@ function OnGoing({ orders, isOpenTab }) {
                       >
                         <div className="flex items-center gap-4">
                           <img
-                            className="w-20 h-20 rounded-lg object-cover"
+                            className="w-10 h-10 md:w-20 md:h-20  rounded-lg object-cover"
                             src={`${menu?.image}`}
                             alt="Menu item"
                           />
-                          <h1 className="text-xl md:text-sm lg:text-xl font-semibold text-gray-800">
+                          <h1 className="text-xs md:text-sm lg:text-xl font-semibold text-gray-800">
                             {menu?.name}
                           </h1>
                         </div>
-                        <p className="text-xl md:text-sm lg:text-xl text-gray-700">
+                        <p className="text-xs md:text-sm lg:text-xl text-gray-700">
                           {formatPrice(menu?.price)} x {menu?.quantity}
                         </p>
                       </li>
@@ -209,13 +211,13 @@ function OnGoing({ orders, isOpenTab }) {
                   })}
                 </ul>
                 <div className="mt-4 space-y-4">
-                  <h1 className="text-xl md:text-sm lg:text-xl font-bold text-gray-800">
+                  <h1 className="text-sm md:text-sm lg:text-xl font-bold text-gray-800">
                     Total Price: {formatPrice(item?.or_total_price)}
                   </h1>
-                  <p className="text-xl md:text-sm lg:text-xl text-gray-600">
+                  <p className="text-sm md:text-sm lg:text-xl text-gray-600">
                     Delivery on: {item?.or_site}
                   </p>
-                  <p className="text-xl md:text-sm lg:text-xl text-gray-600">
+                  <p className="text-sm md:text-sm lg:text-xl text-gray-600">
                     Payment Method: {item?.payment_method}
                   </p>
                 </div>

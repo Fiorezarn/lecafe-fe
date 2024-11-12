@@ -7,6 +7,7 @@ import {
 import { formatDate, formatPrice } from "@/lib/utils";
 import { CheckCircleIcon, Wallet, WalletCards } from "lucide-react";
 import { useDispatch } from "react-redux";
+import NoData from "./NoData";
 
 function Ordered({ orders }) {
   const orderedOrders = orders?.filter(
@@ -15,7 +16,15 @@ function Ordered({ orders }) {
       order?.or_status_payment === "settlement"
   );
 
-  if (!orderedOrders?.length) return <div>Data Kosong</div>;
+  if (!orderedOrders?.length)
+    return (
+      <NoData
+        title={"No Ordered Orders"}
+        paragraph={
+          "You currently have no ordered orders. Check back here to track active orders."
+        }
+      />
+    );
 
   return orderedOrders.map((item, index) => {
     const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
@@ -59,7 +68,7 @@ function Ordered({ orders }) {
                   ))}
                 </ul>
               </div>
-              <div className="w-full md:w-1/2 p-8 flex flex-col justify-center">
+              <div className="w-full md:w-1/2 p-8 flex flex-col justify-end">
                 <h1 className="text-2xl font-bold text-green-800">
                   Total Price: {formatPrice(item?.or_total_price)}
                 </h1>
