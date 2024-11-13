@@ -9,10 +9,11 @@ import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { cn, formatPrice } from "@/lib/utils";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 function CardDetail() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { toast } = useToast();
   const { menuById } = useSelector((state) => state.menu);
   const { cookie } = useSelector((state) => state.auth);
@@ -33,15 +34,18 @@ function CardDetail() {
     const menuId = id;
     const quantity = count;
     const userId = cookie?.us_id;
-
-    dispatch({
-      type: "cart/addCart",
-      payload: { userId, menuId, quantity },
-    });
+    if (!cookie) {
+      navigate("/login");
+    } else {
+      dispatch({
+        type: "cart/addCart",
+        payload: { userId, menuId, quantity },
+      });
+    }
   };
 
   const handleDecrement = () => {
-    if (count >= 1) {
+    if (count > 1) {
       dispatch({ type: "cart/decrement" });
     }
   };

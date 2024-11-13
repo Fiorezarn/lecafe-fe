@@ -1,9 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AvatarNav from "../menuNav/Avatar";
 import { Menu, ShoppingCart } from "lucide-react";
+import { Separator } from "../ui/separator";
+import { useDispatch, useSelector } from "react-redux";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { cart } = useSelector((state) => state.cart);
+  const { cookie } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const userId = cookie?.us_id;
+
+  useEffect(() => {
+    if (userId) {
+      dispatch({ type: "cart/getCartByUserId", payload: userId });
+    }
+  }, [userId, dispatch]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -18,11 +30,19 @@ function Navbar() {
           </span>
         </a>
         <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-          <div className="flex gap-6 items-center">
-            <AvatarNav />
-            <a className="text-white" href="/cart">
-              <ShoppingCart size={24} strokeWidth={1.75} />
+          <div className="flex gap-10 items-center">
+            <a className="relative" href="/cart">
+              <ShoppingCart
+                className="text-white"
+                size={24}
+                strokeWidth={1.75}
+              />
+              <span className="absolute top-[-10px] left-4 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-600 rounded-full">
+                {cart?.Menu?.length}
+              </span>
             </a>
+            <Separator className="h-6 w-px bg-gray-200" aria-hidden="true" />
+            <AvatarNav />
           </div>
           <button
             onClick={toggleMenu}

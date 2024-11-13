@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +15,7 @@ function AvatarNav() {
   const { cookie } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch({ type: "auth/getCookie" });
   }, [dispatch]);
@@ -33,25 +33,23 @@ function AvatarNav() {
       console.error("Error during logout:", error);
     }
   };
+
+  const generateAvatar = (username) => {
+    return username ? username.slice(0, 2).toUpperCase() : "US";
+  };
+
   return (
     <>
       {cookie ? (
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
+            <button className="flex items-center justify-center w-10 h-10 rounded-full bg-teal-600 text-white text-lg font-bold">
+              {generateAvatar(cookie?.us_username)}
+            </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuLabel>{cookie?.us_username}</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={() => navigate("/order")}
-            >
-              Order
-            </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
               Logout
             </DropdownMenuItem>

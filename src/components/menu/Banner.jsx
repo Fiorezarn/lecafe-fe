@@ -29,7 +29,7 @@ function BannerSwiper() {
   ];
 
   return (
-    <div className="w-full h-[500px]">
+    <div className="px-10 lg:px-28 py-10 bg-earth3">
       <Swiper
         slidesPerView={1}
         grabCursor={true}
@@ -53,11 +53,11 @@ function BannerSwiper() {
       >
         {swiperContent.map((item, index) => (
           <SwiperSlide key={index}>
-            <div className="relative w-full h-full overflow-hidden">
+            <div className="relative w-full h-full rounded-xl overflow-hidden">
               <img
                 src={item.image}
                 alt={item.alt || `Slide ${index + 1}`}
-                className="w-full h-full bg-center object-cover"
+                className="w-full h-full rounded-xl bg-center object-cover"
               />
             </div>
           </SwiperSlide>

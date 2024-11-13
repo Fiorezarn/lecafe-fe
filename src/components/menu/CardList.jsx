@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import ButtonOrderNow from "./ButtonOrdernow";
+import NoData from "../orderStatus/NoData";
 
 function CardList() {
   const dispatch = useDispatch();
@@ -144,57 +145,65 @@ function CardList() {
           </SelectContent>
         </Select>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {menu?.data?.map((item) => (
-          <Card
-            key={item.mn_id}
-            className="shadow-lg border border-gray-200 rounded-[20px] overflow-hidden bg-earth4 transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:rounded-[30px]"
-          >
-            <div
-              className="cursor-pointer"
-              onClick={() => {
-                navigate(`/menu/${item.mn_id}`);
-              }}
+      <div className="flex flex-wrap justify-center gap-4">
+        {menu?.totalItems === 0 ? (
+          <NoData
+            className="text-center"
+            title={"No results found"}
+            paragraph={"Please try a different search."}
+          />
+        ) : (
+          menu?.data?.map((item) => (
+            <Card
+              key={item.mn_id}
+              className="shadow-lg border border-gray-200 rounded-[20px] overflow-hidden bg-earth4 transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:rounded-[30px]"
             >
-              <CardHeader className="h-48 overflow-hidden">
-                <img
-                  className="w-full h-full object-cover"
-                  src={`${item.mn_image}`}
-                  alt={item.mn_name}
-                />
-              </CardHeader>
-              <CardContent>
-                <CardTitle className="text-lg font-semibold">
-                  {item.mn_name}
-                </CardTitle>
-                <CardDescription className="text-sm text-gray-600">
-                  {item.mn_category}
-                </CardDescription>
-                <p className="font-semibold text-primary mt-2">
-                  {formatPrice(item.mn_price)}
-                </p>
-              </CardContent>
-            </div>
-            <CardFooter className="flex justify-between items-center">
-              <form
-                className="flex w-[50%] space-x-2 mr-6"
-                onSubmit={handleSubmit}
+              <div
+                className="cursor-pointer"
+                onClick={() => {
+                  navigate(`/menu/${item.mn_id}`);
+                }}
               >
-                <Input
-                  className="hidden"
-                  value={item.mn_id}
-                  id="menuId"
-                  type="hidden"
-                  required
-                />
-                <Button className="bg-earth" type="submit">
-                  <ShoppingCart />
-                </Button>
-              </form>
-              <ButtonOrderNow idMenu={item?.mn_id} />
-            </CardFooter>
-          </Card>
-        ))}
+                <CardHeader className="h-48 overflow-hidden">
+                  <img
+                    className="w-full h-full object-cover"
+                    src={`${item.mn_image}`}
+                    alt={item.mn_name}
+                  />
+                </CardHeader>
+                <CardContent>
+                  <CardTitle className="text-lg font-semibold">
+                    {item.mn_name}
+                  </CardTitle>
+                  <CardDescription className="text-sm text-gray-600">
+                    {item.mn_category}
+                  </CardDescription>
+                  <p className="font-semibold text-primary mt-2">
+                    {formatPrice(item.mn_price)}
+                  </p>
+                </CardContent>
+              </div>
+              <CardFooter className="flex justify-between items-center">
+                <form
+                  className="flex w-[50%] space-x-2 mr-6"
+                  onSubmit={handleSubmit}
+                >
+                  <Input
+                    className="hidden"
+                    value={item.mn_id}
+                    id="menuId"
+                    type="hidden"
+                    required
+                  />
+                  <Button className="bg-earth" type="submit">
+                    <ShoppingCart />
+                  </Button>
+                </form>
+                <ButtonOrderNow idMenu={item?.mn_id} />
+              </CardFooter>
+            </Card>
+          ))
+        )}
       </div>
       <Pagination className="my-16 cursor-pointer">
         <PaginationContent>

@@ -90,7 +90,7 @@ function Order() {
   return (
     <>
       <Navbar navClass={"bg-earth border-gray-200 z-10"} />
-      <div className="p-10 bg-earth5 h-full">
+      <div className="p-10 bg-earth5 h-screen overflow-y-auto">
         <Tabs
           defaultValue="pending"
           className="w-full"

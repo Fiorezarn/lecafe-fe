@@ -6,6 +6,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { CircleAlert } from "lucide-react";
+import NoData from "./NoData";
 
 function Failed({ orders }) {
   const failedOrders = orders?.filter(
