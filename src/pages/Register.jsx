@@ -11,13 +11,10 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { CircleCheckBigIcon, CircleX } from "lucide-react";
 import { cn } from "@/lib/utils";
+import ButtonGoogle from "@/components/auth/Google";
 
 function Register() {
-  const navigate = useNavigate();
   const { toast } = useToast();
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
   const dispatch = useDispatch();
   const { user, loading } = useSelector((state) => state.auth);
   const handleSubmit = (e) => {
@@ -66,27 +63,6 @@ function Register() {
     }
   }, [user]);
 
-  const loginWithGoogle = async () => {
-    try {
-      provider.setCustomParameters({ prompt: "select_account" });
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      const idToken = await user.getIdToken();
-      await fetch("http://localhost:3000/auth/google", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          idToken,
-        }),
-        credentials: "include",
-      });
-      navigate("/");
-    } catch (error) {
-      console.error("Login Failed:", error);
-    }
-  };
   return (
     <div className="flex h-screen justify-between items-center">
       <img className="w-1/2 hidden lg:block h-full" src={heroImage} alt="" />
@@ -150,13 +126,7 @@ function Register() {
                 Or
               </p>
             </div>
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={loginWithGoogle}
-            >
-              Register with google <FcGoogle />
-            </Button>
+            <ButtonGoogle text="Register with google" />
           </div>
         </form>
         <div className="mt-4 font-semibold flex justify-between text-sm text-slate-500 text-center md:text-left">

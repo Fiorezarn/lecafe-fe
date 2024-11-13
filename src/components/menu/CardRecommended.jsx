@@ -89,7 +89,7 @@ function CardRecommended() {
           >
             <CardHeader className="h-48 overflow-hidden">
               <img
-                className="w-full h-full object-cover"
+                className="w-full rounded-md h-full object-cover"
                 src={`${item.mn_image}`}
                 alt={item.mn_name}
               />
@@ -118,7 +118,10 @@ function CardRecommended() {
                 type="hidden"
                 required
               />
-              <Button className="bg-earth" type="submit">
+              <Button
+                className="bg-earth shadow-md shadow-gray-500 hover:bg-earth-dark hover:shadow-lg hover:shadow-gray-600 transform hover:-translate-y-1 transition-all duration-300 ease-in-out text-white"
+                type="submit"
+              >
                 <ShoppingCart />
               </Button>
             </form>

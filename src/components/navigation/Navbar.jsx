@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import AvatarNav from "../menuNav/Avatar";
+import AvatarNav from "./Avatar";
 import { Menu, ShoppingCart } from "lucide-react";
 import { Separator } from "../ui/separator";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +17,11 @@ function Navbar() {
     }
   }, [userId, dispatch]);
 
+  const totalCart =
+    cart?.Menu?.reduce((acc, item) => {
+      return acc + (item.Cart?.cr_quantity || 0);
+    }, 0) || 0;
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -30,15 +35,15 @@ function Navbar() {
           </span>
         </a>
         <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-          <div className="flex gap-10 items-center">
+          <div className="flex gap-6 md:gap-10 items-center">
             <a className="relative" href="/cart">
               <ShoppingCart
                 className="text-white"
                 size={24}
                 strokeWidth={1.75}
               />
-              <span className="absolute top-[-10px] left-4 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-600 rounded-full">
-                {cart?.Menu?.length}
+              <span className="absolute top-[-10px] left-4 inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-600 rounded-full">
+                {totalCart >= 100 ? "99+" : totalCart}
               </span>
             </a>
             <Separator className="h-6 w-px bg-gray-200" aria-hidden="true" />
@@ -62,7 +67,7 @@ function Navbar() {
           } w-full md:flex md:w-auto md:order-1`}
           id="navbar-user"
         >
-          <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-earth2 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-earth">
+          <ul className="flex flex-col items-center font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-earth2 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-earth">
             <li>
               <a
                 href="/"

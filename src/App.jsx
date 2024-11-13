@@ -33,7 +33,7 @@ function App() {
         <Route path="/send-email" element={<SendEmail />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
       </Route>
-      <Route path="/" element={<ProtectedRoute />}>
+      <Route element={<ProtectedRoute />}>
         <Route element={<ProtectedRole />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/menu" element={<DashboardMenu />} />

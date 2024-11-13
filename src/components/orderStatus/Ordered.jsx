@@ -5,8 +5,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { formatDate, formatPrice } from "@/lib/utils";
-import { CheckCircleIcon, Wallet, WalletCards } from "lucide-react";
-import { useDispatch } from "react-redux";
+import { CheckCircleIcon, WalletCards } from "lucide-react";
 import NoData from "./NoData";
 
 function Ordered({ orders }) {

@@ -1,9 +1,9 @@
 import heroImage from "../assets/images/hero.jpg";
 import { Button } from "@/components/ui/button";
-import Footer from "@/components/footer/Footer";
+import Footer from "@/components/navigation/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import Navbar from "@/components/navbar/Navbar";
+import Navbar from "@/components/navigation/Navbar";
 import CardRecommended from "@/components/menu/CardRecommended";
 
 function Home() {

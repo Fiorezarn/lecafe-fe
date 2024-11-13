@@ -9,9 +9,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { fetchLogout } from "@/features/auth/authApi";
 
 function AvatarNav() {
-  const BASE_URL = import.meta.env.VITE_BASE_URL_BE;
   const { cookie } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -22,13 +22,13 @@ function AvatarNav() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/auth/logout`, {
-        credentials: "include",
-      });
-      if (!response.ok) {
-        throw new Error("Logout failed");
+      const response = await fetchLogout();
+      if (response.code === 200) {
+        navigate(0);
+        console.log(response);
+      } else {
+        console.error(response.message);
       }
-      navigate(0);
     } catch (error) {
       console.error("Error during logout:", error);
     }
@@ -42,10 +42,10 @@ function AvatarNav() {
     <>
       {cookie ? (
         <DropdownMenu>
-          <DropdownMenuTrigger>
-            <button className="flex items-center justify-center w-10 h-10 rounded-full bg-teal-600 text-white text-lg font-bold">
+          <DropdownMenuTrigger asChild>
+            <div className="flex cursor-pointer items-center justify-center w-10 h-10 rounded-full bg-teal-600 text-white text-lg font-bold">
               {generateAvatar(cookie?.us_username)}
-            </button>
+            </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuLabel>{cookie?.us_username}</DropdownMenuLabel>

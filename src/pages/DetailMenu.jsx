@@ -1,6 +1,6 @@
 import CardDetail from "@/components/menu/CardDetail";
 import CardRecommended from "@/components/menu/CardRecommended";
-import Navbar from "@/components/navbar/Navbar";
+import Navbar from "@/components/navigation/Navbar";
 
 function DetailMenu() {
   return (

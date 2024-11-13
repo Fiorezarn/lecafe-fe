@@ -23,9 +23,7 @@ async function fetchRegister({
       }),
     });
     return await response.json();
-  } catch (error) {
-    console.error(error);
-  }
+  } catch (error) {}
 }
 
 async function fetchlogin({ input, password }) {
@@ -40,4 +38,25 @@ async function fetchlogin({ input, password }) {
   return await response.json();
 }
 
-export { fetchRegister, fetchlogin };
+async function fetchLoginGoogle(idToken) {
+  const response = await fetch(`${BASE_API}/auth/google`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      idToken,
+    }),
+    credentials: "include",
+  });
+  return await response.json();
+}
+
+async function fetchLogout() {
+  const response = await fetch(`${BASE_API}/auth/logout`, {
+    credentials: "include",
+  });
+  return await response.json();
+}
+
+export { fetchRegister, fetchlogin, fetchLoginGoogle, fetchLogout };

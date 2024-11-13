@@ -17,7 +17,13 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Button } from "../ui/button";
-import { CircleCheckBigIcon, CircleX, ShoppingCart } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  CircleCheckBigIcon,
+  CircleX,
+  ShoppingCart,
+} from "lucide-react";
 import { Input } from "../ui/input";
 import { cn, formatPrice } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
@@ -33,6 +39,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import ButtonOrderNow from "./ButtonOrdernow";
 import NoData from "../orderStatus/NoData";
+import { FcNext } from "react-icons/fc";
 
 function CardList() {
   const dispatch = useDispatch();
@@ -47,6 +54,11 @@ function CardList() {
   useEffect(() => {
     dispatch({ type: "auth/getCookie" });
   }, [dispatch]);
+
+  useEffect(() => {
+    console.log(page, "ini page");
+    console.log(menu?.totalPages, "ini totalpage");
+  }, [menu, page]);
 
   useEffect(() => {
     dispatch({
@@ -145,7 +157,7 @@ function CardList() {
           </SelectContent>
         </Select>
       </div>
-      <div className="flex flex-wrap justify-center gap-4">
+      <div>
         {menu?.totalItems === 0 ? (
           <NoData
             className="text-center"
@@ -153,65 +165,76 @@ function CardList() {
             paragraph={"Please try a different search."}
           />
         ) : (
-          menu?.data?.map((item) => (
-            <Card
-              key={item.mn_id}
-              className="shadow-lg border border-gray-200 rounded-[20px] overflow-hidden bg-earth4 transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:rounded-[30px]"
-            >
-              <div
-                className="cursor-pointer"
-                onClick={() => {
-                  navigate(`/menu/${item.mn_id}`);
-                }}
+          <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-1  gap-4">
+            {menu?.data?.map((item) => (
+              <Card
+                key={item.mn_id}
+                className="shadow-lg border border-gray-200 rounded-[20px] overflow-hidden bg-earth4 transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:rounded-[30px]"
               >
-                <CardHeader className="h-48 overflow-hidden">
-                  <img
-                    className="w-full h-full object-cover"
-                    src={`${item.mn_image}`}
-                    alt={item.mn_name}
-                  />
-                </CardHeader>
-                <CardContent>
-                  <CardTitle className="text-lg font-semibold">
-                    {item.mn_name}
-                  </CardTitle>
-                  <CardDescription className="text-sm text-gray-600">
-                    {item.mn_category}
-                  </CardDescription>
-                  <p className="font-semibold text-primary mt-2">
-                    {formatPrice(item.mn_price)}
-                  </p>
-                </CardContent>
-              </div>
-              <CardFooter className="flex justify-between items-center">
-                <form
-                  className="flex w-[50%] space-x-2 mr-6"
-                  onSubmit={handleSubmit}
+                <div
+                  className="cursor-pointer"
+                  onClick={() => {
+                    navigate(`/menu/${item.mn_id}`);
+                  }}
                 >
-                  <Input
-                    className="hidden"
-                    value={item.mn_id}
-                    id="menuId"
-                    type="hidden"
-                    required
-                  />
-                  <Button className="bg-earth" type="submit">
-                    <ShoppingCart />
-                  </Button>
-                </form>
-                <ButtonOrderNow idMenu={item?.mn_id} />
-              </CardFooter>
-            </Card>
-          ))
+                  <CardHeader className="h-48 overflow-hidden">
+                    <img
+                      className="w-full h-full rounded-md object-cover"
+                      src={`${item.mn_image}`}
+                      alt={item.mn_name}
+                    />
+                  </CardHeader>
+                  <CardContent>
+                    <CardTitle className="text-lg font-semibold">
+                      {item.mn_name}
+                    </CardTitle>
+                    <CardDescription className="text-sm text-gray-600">
+                      {item.mn_category}
+                    </CardDescription>
+                    <p className="font-semibold text-primary mt-2">
+                      {formatPrice(item.mn_price)}
+                    </p>
+                  </CardContent>
+                </div>
+                <CardFooter className="flex justify-between items-center">
+                  <form
+                    className="flex w-[50%] space-x-2 mr-6"
+                    onSubmit={handleSubmit}
+                  >
+                    <Input
+                      className="hidden"
+                      value={item.mn_id}
+                      id="menuId"
+                      type="hidden"
+                      required
+                    />
+                    <Button
+                      className="bg-earth shadow-md shadow-gray-500 hover:bg-earth-dark hover:shadow-lg hover:shadow-gray-600 transform hover:-translate-y-1 transition-all duration-300 ease-in-out"
+                      type="submit"
+                    >
+                      <ShoppingCart />
+                    </Button>
+                  </form>
+                  <ButtonOrderNow idMenu={item?.mn_id} />
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
         )}
       </div>
       <Pagination className="my-16 cursor-pointer">
         <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
+          <PaginationItem
+            className={page === 1 ? "cursor-not-allowed" : "cursor-pointer"}
+          >
+            <Button
+              className="bg-transparent hover:bg-white"
+              size="sm"
               onClick={() => handlePageChange(page - 1)}
               disabled={page === 1}
-            />
+            >
+              <ChevronLeft className="text-black" />
+            </Button>
           </PaginationItem>
           {[...Array(menu?.totalPages)].map((_, index) => (
             <PaginationItem key={index}>
@@ -223,11 +246,21 @@ function CardList() {
               </PaginationLink>
             </PaginationItem>
           ))}
-          <PaginationItem>
-            <PaginationNext
+          <PaginationItem
+            className={
+              page === menu?.totalPages
+                ? "cursor-not-allowed"
+                : "cursor-pointer"
+            }
+          >
+            <Button
+              className="bg-transparent hover:bg-white"
+              size="sm"
               onClick={() => handlePageChange(page + 1)}
               disabled={page === menu?.totalPages}
-            />
+            >
+              <ChevronRight className="text-black" />
+            </Button>
           </PaginationItem>
         </PaginationContent>
       </Pagination>

@@ -1,9 +1,5 @@
 import { Button } from "@/components/ui/button";
 import heroImage from "../assets/images/hero.jpg";
-import { FcGoogle } from "react-icons/fc";
-import { initializeApp } from "firebase/app";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import firebaseConfig from "../../firebaseconfig.json";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -12,12 +8,10 @@ import { CircleCheckBigIcon, CircleX } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { ToastAction } from "@/components/ui/toast";
+import ButtonGoogle from "@/components/auth/Google";
 
 function Login() {
   const { toast } = useToast();
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user, loading } = useSelector((state) => state.auth);
@@ -56,6 +50,7 @@ function Login() {
             "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
           ),
         });
+        return;
       } else if (user.type === "invalidpassword" || user?.code !== 200) {
         toast({
           variant: "destructive",
@@ -69,33 +64,11 @@ function Login() {
             "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
           ),
         });
-      } else {
-        navigate("/");
+        return;
       }
     }
   }, [user]);
 
-  const loginWithGoogle = async () => {
-    try {
-      provider.setCustomParameters({ prompt: "select_account" });
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      const idToken = await user.getIdToken();
-      await fetch("http://localhost:3000/auth/google", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          idToken,
-        }),
-        credentials: "include",
-      });
-      navigate("/");
-    } catch (error) {
-      console.error("Login Failed:", error);
-    }
-  };
   return (
     <div className="flex h-screen justify-between items-center">
       <img
@@ -103,12 +76,12 @@ function Login() {
         src={heroImage}
         alt="hero"
       />
-      <div className="w-full lg:w-1/2 p-24 lg:p-20">
+      <div className="w-full lg:w-1/2 p-6 md:p-24 lg:p-20">
         <div className="text-center mb-6">
-          <h1 className="text-4xl font-bold text-earth mb-2">
+          <h1 className="text-lg md:text-4xl font-bold text-earth mb-2">
             Welcome Back to Le Café
           </h1>
-          <p className="text-lg text-earth2 italic">
+          <p className="md:text-lg text-earth2 italic">
             "Discover a world of flavors with just a click. Your next favorite
             coffee awaits!"
           </p>
@@ -156,9 +129,7 @@ function Login() {
             </div>
           </div>
         </form>
-        <Button variant="outline" className="w-full" onClick={loginWithGoogle}>
-          Login with google <FcGoogle />
-        </Button>
+        <ButtonGoogle text=" Login with google" />
         <div className="mt-4 font-semibold flex justify-between text-sm text-slate-500 text-center md:text-left">
           <a
             className="text-[#C0AF90] hover:underline hover:underline-offset-4"

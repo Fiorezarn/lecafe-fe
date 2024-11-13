@@ -2,7 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import Navbar from "@/components/navbar/Navbar";
+import Navbar from "@/components/navigation/Navbar";
 import { useToast } from "@/hooks/use-toast";
 import { setMessageOrder } from "@/features/order/orderSlice";
 import Pending from "@/components/orderStatus/Pending";

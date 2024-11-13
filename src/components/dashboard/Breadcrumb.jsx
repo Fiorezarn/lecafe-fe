@@ -1,4 +1,3 @@
-// components/Breadcrumb.js
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,17 +8,17 @@ import {
 
 function BreadcrumbComponent({ links }) {
   return (
-    <Breadcrumb>
-      <BreadcrumbList className="text-white">
-        {links.map((link, index) => (
+    <Breadcrumb className="flex">
+      {links.map((link, index) => (
+        <BreadcrumbList key={index} className="text-white">
           <>
-            <BreadcrumbItem key={link.id}>
+            <BreadcrumbItem>
               <BreadcrumbLink href={link.url}>{link.title}</BreadcrumbLink>
             </BreadcrumbItem>
             {index < links.length - 1 && <BreadcrumbSeparator />}
           </>
-        ))}
-      </BreadcrumbList>
+        </BreadcrumbList>
+      ))}
     </Breadcrumb>
   );
 }

@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { cn, formatPrice } from "@/lib/utils";
 import { useNavigate, useParams } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import ButtonOrderNow from "./ButtonOrderNow";
 function CardDetail() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -137,10 +138,13 @@ function CardDetail() {
                 <Plus className="h-[80%] w-[80%]" />
               </Button>
             </div>
-            <Button className="bg-earth" onClick={handleSubmit}>
+            <Button
+              className="bg-earth shadow-md shadow-gray-500 hover:bg-earth-dark hover:shadow-lg hover:shadow-gray-600 transform hover:-translate-y-1 transition-all duration-300 ease-in-out text-white"
+              onClick={handleSubmit}
+            >
               <ShoppingCart />
             </Button>
-            <Button>Order</Button>
+            <ButtonOrderNow />
           </div>
         </div>
       </div>

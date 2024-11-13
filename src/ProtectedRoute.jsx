@@ -27,7 +27,6 @@ const ProtectedRole = () => {
   }, [dispatch, cookie]);
 
   const role = cookie?.us_role;
-
   if (!cookie) {
     return <div>Loading...</div>;
   }

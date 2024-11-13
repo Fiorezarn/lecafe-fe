@@ -50,11 +50,11 @@ function ModalCreateMenu() {
       console.error("No image file selected");
       return;
     }
-
-    dispatch({
-      type: "menu/createMenu",
-      payload: formData,
-    });
+    console.log(formData, "form data");
+    // dispatch({
+    //   type: "menu/createMenu",
+    //   payload: formData,
+    // });
   };
 
   const handleOpen = () => {
@@ -86,7 +86,10 @@ function ModalCreateMenu() {
         <DialogHeader>
           <DialogTitle>Menu</DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
+            <img
+              className="w-16 text-center"
+              src="https://res.cloudinary.com/dsxnvgy7a/image/upload/v1731294851/Le_Cafe_wy4cea.png"
+            />
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -107,8 +110,8 @@ function ModalCreateMenu() {
               <Label htmlFor="image">Image</Label>
               <Input
                 id="image"
-                {...register("image", { required: "Image is required" })}
                 type="file"
+                {...register("image", { required: "Image is required" })}
               />
               {errors.image && (
                 <span className="text-red-700">{errors.image.message}</span>

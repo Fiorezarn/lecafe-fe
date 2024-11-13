@@ -1,4 +1,4 @@
-import Navbar from "@/components/navbar/Navbar";
+import Navbar from "@/components/navigation/Navbar";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,6 +16,7 @@ import { cn, formatPrice } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import NoData from "@/components/orderStatus/NoData";
 
 function Cart() {
   const dispatch = useDispatch();
@@ -138,9 +139,11 @@ function Cart() {
           <h2 className="text-2xl font-bold mb-4 text-earth">Your Cart</h2>
           <div className="space-y-4">
             {cart?.Menu?.length === 0 ? (
-              <p className="text-earth text-2xl font-semibold flex items-center justify-center">
-                No Cart Available
-              </p>
+              <NoData
+                className="text-center"
+                title="Your cart is empty"
+                paragraph="Looks like you haven't added anything to your cart yet. Start shopping!"
+              />
             ) : (
               cart?.Menu?.map((item) => {
                 return (

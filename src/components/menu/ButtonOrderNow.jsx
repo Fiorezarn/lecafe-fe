@@ -26,7 +26,7 @@ import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 
 function ButtonOrderNow({ idMenu }) {
-  const toast = useToast();
+  const { toast } = useToast();
   const dispatch = useDispatch();
   const { cookie } = useSelector((state) => state.auth);
   const { messageOrder, codeOrder, loading } = useSelector(
@@ -37,7 +37,6 @@ function ButtonOrderNow({ idMenu }) {
   const [tableNumber, setTableNumber] = useState("");
   const [address, setAddress] = useState("");
   const navigate = useNavigate();
-
   const userId = cookie?.us_id;
 
   const handleOrderSubmit = () => {
@@ -107,7 +106,9 @@ function ButtonOrderNow({ idMenu }) {
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <Button className="bg-earth">Order Now</Button>
+          <Button className="bg-earth shadow-md shadow-gray-500 hover:bg-earth-dark hover:shadow-lg hover:shadow-gray-600 transform hover:-translate-y-1 transition-all duration-300 ease-in-out text-white">
+            Order Now
+          </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
@@ -117,7 +118,6 @@ function ButtonOrderNow({ idMenu }) {
               you're ready.
             </DialogDescription>
           </DialogHeader>
-
           <div className="mt-6">
             <label className="block text-lg font-semibold mb-2">
               Order Type
@@ -170,10 +170,10 @@ function ButtonOrderNow({ idMenu }) {
             </div>
           )}
 
-          <DialogFooter>
+          <DialogFooter onClick={handleOrderSubmit}>
             <Button
-              className="w-full mt-6 bg-earth text-white hover:bg-gray-800"
               onClick={handleOrderSubmit}
+              className="w-full mt-6 bg-earth text-white hover:bg-gray-800"
               disabled={loading}
             >
               {loading ? "Loading..." : "Proceed to Checkout"}

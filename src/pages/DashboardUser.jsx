@@ -1,7 +1,7 @@
 import BreadcrumbComponent from "@/components/dashboard/Breadcrumb";
 import DataTableComponent from "@/components/dashboard/DataTables";
-import ModalCreateMenu from "@/components/modal/createMenu";
-import ModalEditMenu from "@/components/modal/editMenu";
+import ModalCreateMenu from "@/components/dashboard/createMenu";
+import ModalEditMenu from "@/components/dashboard/editMenu";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
