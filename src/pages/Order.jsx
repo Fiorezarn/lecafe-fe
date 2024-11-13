@@ -96,7 +96,7 @@ function Order() {
           className="w-full"
           onValueChange={(value) => setIsOpenTab(value)}
         >
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-4 font-mono">
             <TabsTrigger value="pending">Pending</TabsTrigger>
             <TabsTrigger value="on-going">On-going</TabsTrigger>
             <TabsTrigger value="ordered">Ordered</TabsTrigger>

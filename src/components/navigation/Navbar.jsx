@@ -30,9 +30,11 @@ function Navbar() {
     <nav className="bg-earth border-gray-200 sticky top-0 z-10 transition-all duration-300">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
-            Le Café
-          </span>
+          <img
+            className="w-32"
+            src="https://res.cloudinary.com/dsxnvgy7a/image/upload/v1731496854/Le_Cafe%CC%81-removebg-preview_opefbm.png"
+            alt="logo navbar"
+          />
         </a>
         <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
           <div className="flex gap-6 md:gap-10 items-center">
@@ -67,7 +69,7 @@ function Navbar() {
           } w-full md:flex md:w-auto md:order-1`}
           id="navbar-user"
         >
-          <ul className="flex flex-col items-center font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-earth2 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-earth">
+          <ul className="flex flex-col items-center text-xl font-mono p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-earth2 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-earth">
             <li>
               <a
                 href="/"

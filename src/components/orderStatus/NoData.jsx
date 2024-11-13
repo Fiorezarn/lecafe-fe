@@ -6,8 +6,8 @@ function NoData({ title, paragraph }) {
         alt="No data"
         className="w-40 h-40 mb-4"
       />
-      <h2 className="text-white text-xl font-semibold">{title}</h2>
-      <p className="text-earth1 text-center">{paragraph}</p>
+      <h2 className="text-white font-mono text-xl font-semibold">{title}</h2>
+      <p className="text-earth1 font-mono text-center">{paragraph}</p>
     </div>
   );
 }

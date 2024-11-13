@@ -106,7 +106,7 @@ function ButtonOrderNow({ idMenu }) {
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <Button className="bg-earth shadow-md shadow-gray-500 hover:bg-earth-dark hover:shadow-lg hover:shadow-gray-600 transform hover:-translate-y-1 transition-all duration-300 ease-in-out text-white">
+          <Button className="bg-earth font-mono shadow-md shadow-gray-500 hover:bg-earth-dark hover:shadow-lg hover:shadow-gray-600 transform hover:-translate-y-1 transition-all duration-300 ease-in-out text-white">
             Order Now
           </Button>
         </DialogTrigger>

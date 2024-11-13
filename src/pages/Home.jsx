@@ -24,22 +24,22 @@ function Home() {
         }}
       >
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center group">
-          <h1 className="font-semibold text-xl lg:text-7xl text-white drop-shadow-lg cursor-pointer">
+          <h1 className="font-semibold font-sour text-xl lg:text-7xl text-white drop-shadow-lg cursor-pointer">
             Welcome to Le Café {cookie?.us_username}!
           </h1>
 
-          <p className="text-white mt-4 text-sm lg:text-lg">
+          <p className="text-white mt-4 text-sm lg:text-lg font-mono">
             We have the best coffee in town!
           </p>
 
-          <button className="mt-4 bg-earth3 text-black hover:text-white px-4 py-2">
+          <Button className="mt-4 font-mono font-bold bg-earth3 text-black hover:text-white px-4 py-2">
             Order Now
-          </button>
+          </Button>
         </div>
       </section>
 
       <section className="bg-[#F6EEE8] p-10">
-        <h1 className="text-3xl text-center font-bold text-[#83704d]">
+        <h1 className="text-3xl font-mono text-center font-bold text-[#83704d]">
           OUR SPECIAL MENU
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-10">
@@ -69,8 +69,8 @@ function Home() {
 
       <section className="bg-[#F6EEE8]">
         <div className="mx-auto max-w-screen-xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-          <p className="text-center text-xl ">Come and Join</p>
-          <h2 className="text-center text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+          <p className="text-center font-sour text-3xl ">Come and Join</p>
+          <h2 className="text-center font-mono text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
             OUR HAPPY CUSTOMERS
           </h2>
           <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-8">

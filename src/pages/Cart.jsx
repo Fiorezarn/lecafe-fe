@@ -17,6 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import NoData from "@/components/orderStatus/NoData";
+import { Separator } from "@/components/ui/separator";
 
 function Cart() {
   const dispatch = useDispatch();
@@ -136,7 +137,9 @@ function Cart() {
       <Navbar navClass={"bg-earth border-gray-200 z-10"} />
       <div className="flex flex-col h-screen md:flex-row p-8 gap-8 bg-earth3">
         <section className="flex-1 h-full overflow-auto">
-          <h2 className="text-2xl font-bold mb-4 text-earth">Your Cart</h2>
+          <h2 className="text-2xl font-bold mb-4 text-earth font-mono">
+            Your Cart
+          </h2>
           <div className="space-y-4">
             {cart?.Menu?.length === 0 ? (
               <NoData
@@ -157,7 +160,7 @@ function Cart() {
                       className="w-16 h-16 rounded-md object-cover mb-4 lg:mb-0 lg:mr-4"
                     />
                     <div className="flex-1">
-                      <h3 className="lg:text-xl font-semibold">
+                      <h3 className="lg:text-xl font-mono font-semibold">
                         {item.mn_name}
                       </h3>
                       <p className="text-xs lg:text-sm text-gray-300">
@@ -225,14 +228,14 @@ function Cart() {
             cart?.Menu?.length === 0 ? "hidden" : ""
           }`}
         >
-          <h3 className="text-2xl font-bold mb-4">Order Summary</h3>
-          <div className="flex justify-between font-bold text-lg mt-4">
-            <span>Total</span>
+          <h3 className="text-2xl font-bold mb-4 font-mono">Order Summary</h3>
+          <div className="flex justify-between font-bold text-lg my-4">
+            <span className="font-mono">Total</span>
             <span>{formatPrice(totalPrice)}</span>
           </div>
-
+          <Separator className="h-1 w-py bg-gray-200" aria-hidden="true" />
           <div className="mt-6">
-            <label className="block text-lg font-semibold mb-2">
+            <label className="block font-mono text-lg font-semibold mb-2">
               Order Type
             </label>
             <Select onValueChange={(value) => setOrderType(value)}>
@@ -293,7 +296,7 @@ function Cart() {
           )}
 
           <Button
-            className="w-full mt-6 bg-earth text-white hover:bg-gray-800"
+            className="w-full mt-6 bg-earth text-white font-mono text-lg hover:bg-gray-800"
             onClick={handleSubmit}
             disabled={loading}
           >

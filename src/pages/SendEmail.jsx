@@ -68,10 +68,10 @@ function SendEmail() {
     <div className="flex h-screen justify-between items-center">
       <img className="w-1/2 hidden lg:block h-full" src={heroImage} alt="" />
       <div className="w-full lg:w-1/2 p-10 flex flex-col justify-center gap-6">
-        <h1 className="text-3xl text-earth font-semibold">
+        <h1 className="text-lg md:text-3xl text-earth font-semibold">
           {action === "verify-email" ? "Verify Email" : "Forgot your password?"}
         </h1>
-        <p className="text-earth2">
+        <p className="text-sm mdtext-lg text-earth2">
           {action === "verify-email"
             ? "Enter the email address associated with your account, and we'll send you a link to verify your email"
             : "Enter the email address associated with your account, and we'll send you a link to reset your password"}

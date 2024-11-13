@@ -56,11 +56,6 @@ function CardList() {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log(page, "ini page");
-    console.log(menu?.totalPages, "ini totalpage");
-  }, [menu, page]);
-
-  useEffect(() => {
     dispatch({
       type: "menu/getAllMenu",
       payload: { page, limit, search, category },
@@ -185,10 +180,10 @@ function CardList() {
                     />
                   </CardHeader>
                   <CardContent>
-                    <CardTitle className="text-lg font-semibold">
+                    <CardTitle className="text-lg font-mono font-semibold">
                       {item.mn_name}
                     </CardTitle>
-                    <CardDescription className="text-sm text-gray-600">
+                    <CardDescription className="font-sour text-gray-600">
                       {item.mn_category}
                     </CardDescription>
                     <p className="font-semibold text-primary mt-2">

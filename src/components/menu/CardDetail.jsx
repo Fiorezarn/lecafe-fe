@@ -98,14 +98,16 @@ function CardDetail() {
 
       <div className="w-full lg:w-1/2 rounded-b-xl lg:rounded-r-xl flex flex-col justify-between bg-earth4 p-4 md:p-6 lg:p-10">
         <div className="flex flex-col justify-between">
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 lg:mb-10">
-            {menuById?.mn_name}
-          </h1>
+          <div className="flex flex-col lg:mb-10 mb-4">
+            <h1 className="text-2xl font-mono md:text-3xl lg:text-4xl font-bold">
+              {menuById?.mn_name}
+            </h1>
+            <p className="text-gray-600 font-sour">{menuById?.mn_category}</p>
+          </div>
           <div className="mb-4 lg:mb-10">
-            <p className="text-gray-600 text-lg md:text-xl lg:text-2xl font-semibold">
+            <p className="text-gray-600 font-sans text-justify  text-lg md:text-xl lg:text-2xl font-semibold">
               {menuById?.mn_desc}
             </p>
-            <p className="text-gray-600">{menuById?.mn_category}</p>
           </div>
           <span className="text-lg md:text-2xl font-bold">
             {formatPrice(menuById?.mn_price)}

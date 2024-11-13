@@ -68,10 +68,10 @@ function Register() {
       <img className="w-1/2 hidden lg:block h-full" src={heroImage} alt="" />
       <div className="w-full lg:w-1/2 p-10 lg:p-20">
         <div className="text-center mb-6">
-          <h1 className="text-4xl font-bold text-earth mb-2">
+          <h1 className="text-lg md:text-4xl font-bold text-earth mb-2">
             Become a Part of Le Café
           </h1>
-          <p className="text-lg text-earth2 italic">
+          <p className="text-sm md:text-lg text-earth2 italic">
             Create your account and start your journey with us.
           </p>
         </div>
