@@ -50,11 +50,10 @@ function ModalCreateMenu() {
       console.error("No image file selected");
       return;
     }
-    console.log(formData, "form data");
-    // dispatch({
-    //   type: "menu/createMenu",
-    //   payload: formData,
-    // });
+    dispatch({
+      type: "menu/createMenu",
+      payload: formData,
+    });
   };
 
   const handleOpen = () => {
@@ -86,10 +85,7 @@ function ModalCreateMenu() {
         <DialogHeader>
           <DialogTitle>Menu</DialogTitle>
           <DialogDescription>
-            <img
-              className="w-16 text-center"
-              src="https://res.cloudinary.com/dsxnvgy7a/image/upload/v1731294851/Le_Cafe_wy4cea.png"
-            />
+            Fill the form below to create a new menu.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)}>

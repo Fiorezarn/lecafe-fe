@@ -31,7 +31,7 @@ function Navbar() {
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
           <img
-            className="w-32"
+            className="w-28 md:w-40"
             src="https://res.cloudinary.com/dsxnvgy7a/image/upload/v1731496854/Le_Cafe%CC%81-removebg-preview_opefbm.png"
             alt="logo navbar"
           />
