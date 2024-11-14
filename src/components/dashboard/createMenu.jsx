@@ -8,6 +8,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
+import { joiResolver } from "@hookform/resolvers/joi";
+import Joi from "joi";
 import {
   Select,
   SelectContent,
@@ -21,6 +23,29 @@ import { Label } from "@/components/ui/label";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsOpen } from "@/features/menu/menuSlice";
 
+const schema = Joi.object({
+  name: Joi.string().required().messages({
+    "string.empty": "Name is required",
+  }),
+  description: Joi.string().required().messages({
+    "string.empty": "Description is required",
+  }),
+  price: Joi.number().required().messages({
+    "number.base": "Price must be a number",
+    "number.empty": "Price is required",
+  }),
+  category: Joi.string()
+    .valid("coffee", "non-coffee", "food")
+    .required()
+    .messages({
+      "string.empty": "Category is required",
+      "any.only": "Please select a valid category",
+    }),
+  image: Joi.any().required().messages({
+    "any.required": "Image is required",
+  }),
+});
+
 function ModalCreateMenu() {
   const dispatch = useDispatch();
   const { isOpen, loading } = useSelector((state) => state.menu);
@@ -30,14 +55,12 @@ function ModalCreateMenu() {
     formState: { errors },
     setValue,
     reset,
-  } = useForm();
+  } = useForm({
+    mode: "onSubmit",
+    resolver: joiResolver(schema),
+  });
 
   const onSubmit = async (data) => {
-    if (!data.category) {
-      console.error("Category is required.");
-      return;
-    }
-
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("description", data.description);
@@ -135,7 +158,7 @@ function ModalCreateMenu() {
               <Input
                 id="price"
                 {...register("price", { required: "Price is required" })}
-                type="text"
+                type="number"
               />
               {errors.price && (
                 <span className="text-red-700">{errors.price.message}</span>
@@ -162,7 +185,7 @@ function ModalCreateMenu() {
               </Select>
               {errors.category && (
                 <span className="text-red-700">{errors.category.message}</span>
-              )}{" "}
+              )}
             </div>
           </div>
           <DialogFooter>

@@ -1,7 +1,16 @@
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import DataTableComponent from "@/components/dashboard/DataTables";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { formatPrice } from "@/lib/utils";
 
 function DashboardTracking() {
   const { tracking } = useSelector((state) => state.order);
@@ -16,6 +25,7 @@ function DashboardTracking() {
       us_fullname: tracking.data.orders.us_fullname,
       or_status_shipping: order.or_status_shipping,
       or_site: order.or_site,
+      or_total_price: order.or_total_price,
     })) || [];
 
   const columns = [
@@ -26,7 +36,20 @@ function DashboardTracking() {
     },
     {
       name: "Shipping Status",
-      selector: (row) => row.or_status_shipping,
+      selector: (row) => (
+        <Select>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder={row.or_status_shipping} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="ongoing">On-Going</SelectItem>
+              <SelectItem value="delivered">Delivered</SelectItem>
+              <SelectItem value="cancelled">Cancelled</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      ),
       sortable: true,
     },
     {
@@ -35,8 +58,8 @@ function DashboardTracking() {
       sortable: true,
     },
     {
-      name: "Map",
-      selector: (row) => row.or_site,
+      name: "Total Price",
+      selector: (row) => formatPrice(row.or_total_price),
       sortable: true,
     },
   ];

@@ -16,7 +16,9 @@ function* register(action) {
     const response = yield fetchRegister(action.payload);
     yield put(registerSuccess(response));
   } catch (error) {
-    yield put(registerFailure(error.message));
+    console.log(error);
+
+    yield put(registerFailure(error));
   }
 }
 
@@ -26,7 +28,7 @@ function* login(action) {
     const response = yield fetchlogin(action.payload);
     yield put(loginSuccess(response));
   } catch (error) {
-    yield put(loginFailure(error.message));
+    yield put(loginFailure(error));
   }
 }
 

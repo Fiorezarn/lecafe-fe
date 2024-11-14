@@ -17,11 +17,32 @@ import { CircleCheckBigIcon, CircleX, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import ModalMenu from "@/components/dashboard/createMenu";
 
 function DashboardMenu() {
   const dispatch = useDispatch();
   const { toast } = useToast();
-  const { menu, message, code, loading } = useSelector((state) => state.menu);
+  const { menu, message, code, loading, error } = useSelector(
+    (state) => state.menu
+  );
+
+  useEffect(() => {
+    console.log(error);
+    if (error) {
+      toast({
+        variant: "destructive",
+        description: (
+          <div className="flex items-center gap-2 font-bold">
+            <CircleX className="text-white" />
+            <p>{error?.message}</p>
+          </div>
+        ),
+        className: cn(
+          "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+        ),
+      });
+    }
+  }, [error]);
 
   useEffect(() => {
     if (!menu) {
@@ -31,7 +52,7 @@ function DashboardMenu() {
 
   useEffect(() => {
     if (code) {
-      if (code === 201) {
+      if (code === 201 || code === 200) {
         toast({
           description: (
             <div className="flex gap-2 font-bold">
@@ -115,7 +136,14 @@ function DashboardMenu() {
       ]}
     >
       <h1 className="text-3xl mb-4">Menu Management</h1>
-      <ModalCreateMenu />
+      <ModalMenu
+        triggerButton={
+          <Button className="mb-4" variant="success">
+            New Menu
+          </Button>
+        }
+      />
+      {/* <ModalCreateMenu /> */}
       <DataTableComponent columns={columns} data={data} />
     </DashboardLayout>
   );

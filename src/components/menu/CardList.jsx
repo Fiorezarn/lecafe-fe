@@ -110,10 +110,11 @@ function CardList() {
   useEffect(() => {
     if (error) {
       toast({
+        variant: "destructive",
         description: (
-          <div className="flex gap-2 font-bold">
-            <CircleX className="text-red-600" />
-            <p>{message}</p>
+          <div className="flex items-center gap-2 font-bold">
+            <CircleX className="text-white" />
+            <p>{message ? message : error}</p>
           </div>
         ),
         className: cn(

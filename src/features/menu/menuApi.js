@@ -27,8 +27,13 @@ const fetchMenuById = async (id) => {
 const fetchcreateMenu = async (formData) => {
   const response = await fetch(`${BASE_URL}/menu`, {
     method: "POST",
+    credentials: "include",
     body: formData,
   });
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw errorData;
+  }
   return await response.json();
 };
 

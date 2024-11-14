@@ -24,7 +24,7 @@ import { Pen } from "lucide-react";
 
 function ModalEditMenu({ menuId }) {
   const dispatch = useDispatch();
-  const { menuById } = useSelector((state) => state.menu);
+  const { menuById, loading } = useSelector((state) => state.menu);
   const {
     register,
     handleSubmit,
@@ -46,6 +46,7 @@ function ModalEditMenu({ menuId }) {
       setValue("price", menuById.mn_price);
       setValue("description", menuById.mn_desc);
       setValue("category", menuById.mn_category);
+      console.log(menuById);
     }
   }, [menuById, setValue]);
 
@@ -170,7 +171,9 @@ function ModalEditMenu({ menuId }) {
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit">Save changes</Button>
+            <Button type="submit" disabled={loading}>
+              {loading ? "Loading..." : "Save Changes"}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

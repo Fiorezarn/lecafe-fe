@@ -9,7 +9,6 @@ function Footer() {
   return (
     <footer className="bg-earth2 px-6 py-16 text-white">
       <div className="flex flex-col md:flex-row items-center justify-between max-w-screen-xl mx-auto space-y-12 md:space-y-0">
-        {/* Logo and Cafe Location */}
         <div className="flex flex-col items-center md:items-start space-y-6">
           <img
             className="w-60"
@@ -26,7 +25,6 @@ function Footer() {
           </div>
         </div>
 
-        {/* Contact Info in the Center */}
         <div className="text-center md:text-left space-y-4">
           <h3 className="text-lg font-mono font-semibold uppercase tracking-wide">
             Contact Us
@@ -45,8 +43,7 @@ function Footer() {
           </div>
         </div>
 
-        {/* Navigation Links and Social Icons */}
-        <div className="flex flex-col items-center md:items-end space-y-6">
+        <div className="flex flex-col md:items-end space-y-6">
           <nav className="flex flex-wrap justify-center md:justify-end space-x-6">
             {["About", "Blog", "Team", "Pricing", "Contact", "Terms"].map(
               (link) => (
@@ -61,7 +58,6 @@ function Footer() {
             )}
           </nav>
 
-          {/* Social Icons */}
           <div className="flex justify-center space-x-6">
             {[
               { name: "Facebook", link: "/", icon: <FaFacebook /> },

@@ -25,7 +25,7 @@ export const store = configureStore({
     getDefaultMiddleware({
       thunk: false,
       serializableCheck: {
-        ignoredActions: ["menu/createMenu"],
+        ignoredActions: ["menu/createMenu", "menu/getAllMenu"],
       },
     }).concat(sagaMiddleware),
 });

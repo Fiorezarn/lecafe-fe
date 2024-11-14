@@ -44,7 +44,6 @@ export const menuSlice = createSlice({
     },
     createMenuSuccess: (state, action) => {
       state.loading = false;
-      state.menu = action.payload;
       state.message = action.payload.message;
       state.code = action.payload.code;
       state.isOpen = false;
@@ -61,7 +60,8 @@ export const menuSlice = createSlice({
     },
     updateMenuSuccess: (state, action) => {
       state.loading = false;
-      state.menu = action.payload;
+      state.message = action.payload.message;
+      state.code = action.payload.code;
     },
     updateMenuFailure: (state, action) => {
       state.loading = false;

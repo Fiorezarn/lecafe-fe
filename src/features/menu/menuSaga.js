@@ -17,6 +17,7 @@ import {
   fetchMenuById,
   fetchcreateMenu,
   fetchDeleteMenu,
+  fetchEditMenu,
 } from "./menuApi";
 
 function* getAllMenu(action) {
@@ -40,26 +41,18 @@ function* getMenuById(action) {
 function* createMenu(action) {
   try {
     yield put(setLoading(true));
-    const responseAdd = yield fetchcreateMenu(action.payload);
-    const responseGet = yield fetchAllMenu();
-    yield put(
-      createMenuSuccess({
-        data: responseGet.data,
-        message: responseAdd.message,
-        code: responseAdd.code,
-      })
-    );
+    const response = yield fetchcreateMenu(action.payload);
+    yield put(createMenuSuccess(response));
   } catch (error) {
-    yield put(createMenuFailure(error.message));
+    yield put(createMenuFailure(error));
   }
 }
 
 function* updateMenu(action) {
   try {
     const { id, formData } = action.payload;
-    yield fetchEditMenu(id, formData);
-    const responseGet = yield fetchAllMenu();
-    yield put(updateMenuSuccess(responseGet));
+    const response = yield fetchEditMenu(id, formData);
+    yield put(updateMenuSuccess(response));
   } catch (error) {
     yield put(updateMenuFailure(error.message));
   }
@@ -68,9 +61,8 @@ function* updateMenu(action) {
 function* DeleteMenu(action) {
   try {
     yield put(setLoading(true));
-    yield fetchDeleteMenu(action.payload);
-    const responseGet = yield fetchAllMenu();
-    yield put(deleteMenuSuccess(responseGet));
+    const response = yield fetchDeleteMenu(action.payload);
+    yield put(deleteMenuSuccess(response));
   } catch (error) {
     yield put(deleteMenuFailure(error.message));
   }

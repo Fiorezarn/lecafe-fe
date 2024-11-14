@@ -6,7 +6,7 @@ const PublicRoute = () => {
   if (isAuthenticated && user?.data?.us_role === "ADMIN") {
     return <Navigate to="/dashboard" />;
   }
-  if (isAuthenticated && user?.code === 200) {
+  if (isAuthenticated) {
     return <Navigate to="/" />;
   }
   return <Outlet />;

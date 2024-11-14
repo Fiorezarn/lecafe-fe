@@ -14,7 +14,7 @@ function Login() {
   const { toast } = useToast();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user, loading } = useSelector((state) => state.auth);
+  const { user, loading, error } = useSelector((state) => state.auth);
   const handlelogin = async (e) => {
     e.preventDefault();
     const input = e.target.email.value;
@@ -27,14 +27,14 @@ function Login() {
   };
 
   useEffect(() => {
-    if (user) {
-      if (user.type === "notverify") {
+    if (error) {
+      if (error.type === "notverify") {
         toast({
           variant: "success",
           description: (
             <div className="flex items-center gap-2 font-bold">
               <CircleCheckBigIcon className="text-green-600" />
-              <p>{user?.message}</p>
+              <p className="text-white">{error?.message}</p>
             </div>
           ),
           action: (
@@ -51,13 +51,13 @@ function Login() {
           ),
         });
         return;
-      } else if (user.type === "invalidpassword" || user?.code !== 200) {
+      } else if (error.type === "invalidpassword" || error?.code !== 200) {
         toast({
           variant: "destructive",
           description: (
             <div className="flex items-center gap-2 font-bold">
               <CircleX className="text-white" />
-              <p>{user?.message}</p>
+              <p className="text-white">{error?.message}</p>
             </div>
           ),
           className: cn(
@@ -67,7 +67,7 @@ function Login() {
         return;
       }
     }
-  }, [user]);
+  }, [error]);
 
   return (
     <div className="flex h-screen justify-between items-center">
@@ -78,10 +78,10 @@ function Login() {
       />
       <div className="w-full lg:w-1/2 p-6 md:p-24 lg:p-20">
         <div className="text-center mb-6">
-          <h1 className="text-lg md:text-4xl font-bold text-earth mb-2">
+          <h1 className="text-lg md:text-4xl font-mono font-bold text-earth mb-2">
             Welcome Back to Le Café
           </h1>
-          <p className="md:text-lg text-earth2 italic">
+          <p className="md:text-lg font-sour text-earth2 italic">
             "Discover a world of flavors with just a click. Your next favorite
             coffee awaits!"
           </p>
@@ -117,7 +117,7 @@ function Login() {
           <div className="mt-4">
             <Button
               type="submit"
-              className="w-full bg-[#4B332B]"
+              className="w-full font-sans font-bold text-lg bg-earth"
               disabled={loading}
             >
               {loading ? "Loading..." : "Login"}

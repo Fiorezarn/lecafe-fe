@@ -16,7 +16,7 @@ import ButtonGoogle from "@/components/auth/Google";
 function Register() {
   const { toast } = useToast();
   const dispatch = useDispatch();
-  const { user, loading } = useSelector((state) => state.auth);
+  const { user, loading, error } = useSelector((state) => state.auth);
   const handleSubmit = (e) => {
     e.preventDefault();
     const fullname = e.target.fullname.value;
@@ -32,15 +32,17 @@ function Register() {
   };
 
   useEffect(() => {
-    if (user) {
-      const code = user?.code;
+    if (error) {
+      console.log(error);
+
+      const code = error?.code;
       if (code !== 201) {
         toast({
           variant: "destructive",
           description: (
             <div className="flex items-center gap-2 font-bold">
               <CircleX className="text-white" />
-              <p>{user?.message}</p>
+              <p>{error?.message}</p>
             </div>
           ),
           className: cn(
@@ -61,17 +63,17 @@ function Register() {
         });
       }
     }
-  }, [user]);
+  }, [error]);
 
   return (
     <div className="flex h-screen justify-between items-center">
       <img className="w-1/2 hidden lg:block h-full" src={heroImage} alt="" />
       <div className="w-full lg:w-1/2 p-10 lg:p-20">
         <div className="text-center mb-6">
-          <h1 className="text-lg md:text-4xl font-bold text-earth mb-2">
+          <h1 className="text-lg md:text-4xl font-mono font-bold text-earth mb-2">
             Become a Part of Le Café
           </h1>
-          <p className="text-sm md:text-lg text-earth2 italic">
+          <p className="text-sm md:text-lg font-sour text-earth2 italic">
             Create your account and start your journey with us.
           </p>
         </div>
@@ -115,7 +117,7 @@ function Register() {
           />
           <div className="mt-4">
             <Button
-              className="w-full bg-[#4B332B]"
+              className="w-full font-sans font-bold text-lg bg-[#4B332B]"
               type="submit"
               disabled={loading}
             >

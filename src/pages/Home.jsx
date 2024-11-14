@@ -47,14 +47,14 @@ function Home() {
           <CardRecommended />
         </div>
       </section>
-      <section className="bg-[#C0AF90] flex justify-between items-center p-6 lg:p-12">
+      <section className="bg-earth1 flex justify-between items-center p-6 lg:p-12">
         <img
           className="w-[20%] mb-4 lg:mb-0"
           src="https://res.cloudinary.com/dsxnvgy7a/image/upload/v1730861879/flyingCoffee_gwkbg6.png"
           alt="Flying Coffee"
         />
         <div className="text-center mx-4 lg:mx-0 w-full max-w-3xl">
-          <h1 className="md:text-xl font-mono lg:text-3xl font-bold text-[#4B332B]">
+          <h1 className="md:text-xl font-mono lg:text-3xl font-bold text-earth4">
             Check out our best coffee beans here
           </h1>
         </div>
@@ -67,8 +67,10 @@ function Home() {
 
       <section className="bg-[#F6EEE8]">
         <div className="mx-auto max-w-screen-xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-          <p className="text-center font-sour text-3xl ">Come and Join</p>
-          <h2 className="text-center font-mono text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+          <p className="text-center font-sour text-2xl md:text-3xl ">
+            Come and Join
+          </p>
+          <h2 className="text-center font-mono text-3xl md:text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
             OUR HAPPY CUSTOMERS
           </h2>
           <div className="mt-10">
