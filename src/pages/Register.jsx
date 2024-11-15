@@ -121,9 +121,9 @@ function Register() {
                 Or
               </p>
             </div>
-            <ButtonGoogle text="Register with google" />
           </div>
         </form>
+        <ButtonGoogle text="Register with google" />
         <div className="mt-4 font-semibold flex justify-between text-sm text-slate-500 text-center md:text-left">
           <a
             className="text-[#C0AF90] hover:underline hover:underline-offset-4"
