@@ -25,7 +25,6 @@ function AvatarNav() {
       const response = await fetchLogout();
       if (response.code === 200) {
         navigate(0);
-        console.log(response);
       } else {
         console.error(response.message);
       }

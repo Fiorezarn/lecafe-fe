@@ -1,11 +1,13 @@
+"use client";
+
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogFooter,
 } from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
@@ -21,19 +23,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import { setIsOpen } from "@/features/menu/menuSlice";
 
 const schema = Joi.object({
-  name: Joi.string().required().messages({
-    "string.empty": "Name is required",
-  }),
-  description: Joi.string().required().messages({
-    "string.empty": "Description is required",
-  }),
-  price: Joi.number().required().messages({
-    "number.base": "Price must be a number",
-    "number.empty": "Price is required",
-  }),
+  name: Joi.string()
+    .required()
+    .messages({ "string.empty": "Menu is required" }),
+  description: Joi.string()
+    .required()
+    .messages({ "string.empty": "Description is required" }),
+  price: Joi.number()
+    .required()
+    .messages({ "number.base": "Price must be a number" }),
   category: Joi.string()
     .valid("coffee", "non-coffee", "food")
     .required()
@@ -41,42 +43,80 @@ const schema = Joi.object({
       "string.empty": "Category is required",
       "any.only": "Please select a valid category",
     }),
-  image: Joi.any().required().messages({
-    "any.required": "Image is required",
+  image: Joi.alternatives().conditional("type", {
+    is: "create",
+    then: Joi.any()
+      .required()
+      .messages({ "any.required": "Image is required" }),
+    otherwise: Joi.any().optional(),
   }),
+  type: Joi.string().valid("create", "edit").required(),
 });
 
-function ModalCreateMenu() {
+function ModalMenu({ menuData }) {
   const dispatch = useDispatch();
-  const { isOpen, loading } = useSelector((state) => state.menu);
+  const { isOpen, loading, type, productId, menuById } = useSelector(
+    (state) => state.menu
+  );
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
     reset,
+    watch,
   } = useForm({
     mode: "onSubmit",
     resolver: joiResolver(schema),
+    defaultValues: {
+      type,
+    },
   });
+  useEffect(() => {
+    const id = productId;
+    if (productId) {
+      dispatch({ type: "menu/getMenuById", payload: id });
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (type === "edit" && menuById) {
+      setValue("name", menuById?.mn_name);
+      setValue("price", menuById?.mn_price);
+      setValue("description", menuById?.mn_desc);
+      setValue("category", menuById?.mn_category);
+    }
+  }, [type, menuById, setValue, reset]);
 
   const onSubmit = async (data) => {
-    const formData = new FormData();
-    formData.append("name", data.name);
-    formData.append("description", data.description);
-    formData.append("price", data.price);
-    formData.append("category", data.category);
+    try {
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("description", data.description);
+      formData.append("price", data.price);
+      formData.append("category", data.category);
 
-    if (data.image && data.image[0]) {
-      formData.append("image", data.image[0]);
-    } else {
-      console.error("No image file selected");
-      return;
+      if (data.image && data.image.length > 0) {
+        formData.append("image", data.image[0]);
+      }
+
+      if (type === "edit") {
+        dispatch({
+          type: "menu/updateMenu",
+          payload: { id: productId, formData },
+        });
+        dispatch(setIsOpen(false));
+      } else {
+        await dispatch({
+          type: "menu/createMenu",
+          payload: formData,
+        }).unwrap();
+      }
+      // Close the modal or show success message
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      // Show error message to the user
     }
-    dispatch({
-      type: "menu/createMenu",
-      payload: formData,
-    });
   };
 
   const handleOpen = () => {
@@ -99,27 +139,22 @@ function ModalCreateMenu() {
       open={isOpen}
       onOpenChange={(open) => (open ? handleOpen() : handleClose())}
     >
-      <DialogTrigger asChild>
-        <Button className="mb-4" variant="success">
-          New Menu
-        </Button>
-      </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Menu</DialogTitle>
+          <DialogTitle>
+            {type === "edit" ? "Edit Menu" : "Create Menu"}
+          </DialogTitle>
           <DialogDescription>
-            Fill the form below to create a new menu.
+            {type === "edit"
+              ? "Make changes to your menu item. Click save when you're done."
+              : "Fill in the details for the new menu item and click save."}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-4 py-4">
             <div className="items-center">
               <Label htmlFor="name">Menu</Label>
-              <Input
-                id="name"
-                {...register("name", { required: "Name is required" })}
-                type="text"
-              />
+              <Input id="name" {...register("name")} type="text" />
               {errors.name && (
                 <span className="text-red-700">{errors.name.message}</span>
               )}
@@ -127,11 +162,14 @@ function ModalCreateMenu() {
 
             <div className="items-center">
               <Label htmlFor="image">Image</Label>
-              <Input
-                id="image"
-                type="file"
-                {...register("image", { required: "Image is required" })}
-              />
+              {type === "edit" && menuData?.mn_image && (
+                <img
+                  src={menuData.mn_image}
+                  alt={menuData.mn_name}
+                  className="mt-2 h-20 w-20 object-cover"
+                />
+              )}
+              <Input id="image" {...register("image")} type="file" />
               {errors.image && (
                 <span className="text-red-700">{errors.image.message}</span>
               )}
@@ -139,12 +177,10 @@ function ModalCreateMenu() {
 
             <div className="items-center">
               <Label htmlFor="description">Description</Label>
-              <Input
+              <textarea
                 id="description"
-                {...register("description", {
-                  required: "Description is required",
-                })}
-                type="text"
+                {...register("description")}
+                className="w-full rounded-md border p-2 text-sm"
               />
               {errors.description && (
                 <span className="text-red-700">
@@ -155,11 +191,7 @@ function ModalCreateMenu() {
 
             <div className="items-center">
               <Label htmlFor="price">Price</Label>
-              <Input
-                id="price"
-                {...register("price", { required: "Price is required" })}
-                type="number"
-              />
+              <Input id="price" {...register("price")} type="text" />
               {errors.price && (
                 <span className="text-red-700">{errors.price.message}</span>
               )}
@@ -168,9 +200,8 @@ function ModalCreateMenu() {
             <div className="items-center">
               <Label htmlFor="category">Category</Label>
               <Select
-                onValueChange={(selectedValue) => {
-                  setValue("category", selectedValue);
-                }}
+                onValueChange={(value) => setValue("category", value)}
+                defaultValue={watch("category")}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select a Category" />
@@ -183,6 +214,7 @@ function ModalCreateMenu() {
                   ))}
                 </SelectContent>
               </Select>
+              <input type="hidden" {...register("category")} />
               {errors.category && (
                 <span className="text-red-700">{errors.category.message}</span>
               )}
@@ -190,7 +222,11 @@ function ModalCreateMenu() {
           </div>
           <DialogFooter>
             <Button type="submit" disabled={loading}>
-              {loading ? "Loading..." : "Save Changes"}
+              {loading
+                ? "Loading..."
+                : type === "edit"
+                ? "Save Changes"
+                : "Create Menu"}
             </Button>
           </DialogFooter>
         </form>
@@ -199,4 +235,4 @@ function ModalCreateMenu() {
   );
 }
 
-export default ModalCreateMenu;
+export default ModalMenu;

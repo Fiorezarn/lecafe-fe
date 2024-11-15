@@ -1,12 +1,7 @@
 import { Button } from "@/components/ui/button";
 import heroImage from "../assets/images/hero.jpg";
-import { FcGoogle } from "react-icons/fc";
-import { initializeApp } from "firebase/app";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import firebaseConfig from "../../firebaseconfig.json";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { CircleCheckBigIcon, CircleX } from "lucide-react";
@@ -33,8 +28,6 @@ function Register() {
 
   useEffect(() => {
     if (error) {
-      console.log(error);
-
       const code = error?.code;
       if (code !== 201) {
         toast({

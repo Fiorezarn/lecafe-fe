@@ -52,9 +52,18 @@ const fetchUpdateQuantity = async ({ id, quantity }) => {
   return await response.json();
 };
 
+const fetchCountCart = async (userId) => {
+  const response = await fetch(`${BASE_API}/cart/count/${userId}`, {
+    credentials: "include",
+  });
+
+  return await response.json();
+};
+
 export {
   fetchAddCart,
   fetchGetCartByUserId,
   fetchDeleteCart,
   fetchUpdateQuantity,
+  fetchCountCart,
 };

@@ -7,6 +7,7 @@ export const cartSlice = createSlice({
     loading: false,
     errorCart: null,
     message: null,
+    cartCount: 0,
     count: 1,
   },
   reducers: {
@@ -65,6 +66,12 @@ export const cartSlice = createSlice({
     decrement: (state) => {
       state.count -= 1;
     },
+    cartCountSuccess: (state, action) => {
+      state.cartCount = action.payload.data;
+    },
+    cartCountFailure: (state, action) => {
+      state.errorCart = action.payload;
+    },
   },
 });
 
@@ -80,6 +87,8 @@ export const {
   decrement,
   updateCartSuccess,
   updateCartFailure,
+  cartCountSuccess,
+  cartCountFailure,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

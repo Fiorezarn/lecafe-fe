@@ -16,8 +16,6 @@ function* register(action) {
     const response = yield fetchRegister(action.payload);
     yield put(registerSuccess(response));
   } catch (error) {
-    console.log(error);
-
     yield put(registerFailure(error));
   }
 }

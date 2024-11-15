@@ -1,8 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { set } from "react-hook-form";
 
 export const menuSlice = createSlice({
   name: "menu",
   initialState: {
+    newData: null,
+    editData: null,
     menu: null,
     menuById: null,
     loading: false,
@@ -12,6 +15,8 @@ export const menuSlice = createSlice({
     code: null,
     page: 1,
     limit: 8,
+    type: "create",
+    productId: null,
   },
   reducers: {
     fetchRequestGetAllMenu: (state) => {
@@ -47,6 +52,7 @@ export const menuSlice = createSlice({
       state.message = action.payload.message;
       state.code = action.payload.code;
       state.isOpen = false;
+      state.newData = action.payload;
     },
     createMenuFailure: (state, action) => {
       state.loading = false;
@@ -62,6 +68,7 @@ export const menuSlice = createSlice({
       state.loading = false;
       state.message = action.payload.message;
       state.code = action.payload.code;
+      state.editData = action.payload;
     },
     updateMenuFailure: (state, action) => {
       state.loading = false;
@@ -80,6 +87,12 @@ export const menuSlice = createSlice({
     },
     setPage: (state, action) => {
       state.page = action.payload;
+    },
+    setType: (state, action) => {
+      state.type = action.payload;
+    },
+    setProductId: (state, action) => {
+      state.productId = action.payload;
     },
   },
 });
@@ -102,6 +115,8 @@ export const {
   deleteMenuFailure,
   setPage,
   setLimit,
+  setType,
+  setProductId,
 } = menuSlice.actions;
 
 export default menuSlice.reducer;

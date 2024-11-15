@@ -6,21 +6,16 @@ import { useDispatch, useSelector } from "react-redux";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { cart } = useSelector((state) => state.cart);
+  const { cartCount } = useSelector((state) => state.cart);
   const { cookie } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const userId = cookie?.us_id;
 
   useEffect(() => {
     if (userId) {
-      dispatch({ type: "cart/getCartByUserId", payload: userId });
+      dispatch({ type: "cart/cartCount", payload: userId });
     }
   }, [userId, dispatch]);
-
-  const totalCart =
-    cart?.Menu?.reduce((acc, item) => {
-      return acc + (item.Cart?.cr_quantity || 0);
-    }, 0) || 0;
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -45,7 +40,7 @@ function Navbar() {
                 strokeWidth={1.75}
               />
               <span className="absolute top-[-10px] left-4 inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-600 rounded-full">
-                {totalCart >= 100 ? "99+" : totalCart}
+                {cartCount >= 100 ? "99+" : cartCount}
               </span>
             </a>
             <Separator className="h-6 w-px bg-gray-200" aria-hidden="true" />

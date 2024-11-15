@@ -2,9 +2,9 @@ import { Button } from "../ui/button";
 import { FcGoogle } from "react-icons/fc";
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import firebaseConfig from "../../../firebaseconfig.json";
 import { useNavigate } from "react-router-dom";
 import { fetchLoginGoogle } from "@/features/auth/authApi";
+import firebaseConfig from "../../../firebaseconfig";
 
 function ButtonGoogle({ text }) {
   const navigate = useNavigate();

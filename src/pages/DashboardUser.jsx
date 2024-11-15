@@ -1,7 +1,5 @@
 import BreadcrumbComponent from "@/components/dashboard/Breadcrumb";
 import DataTableComponent from "@/components/dashboard/DataTables";
-import ModalCreateMenu from "@/components/dashboard/createMenu";
-import ModalEditMenu from "@/components/dashboard/editMenu";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
@@ -63,7 +61,6 @@ function DashboardUser() {
       name: "Action",
       selector: (row) => (
         <div className="gap-2 flex justify-center">
-          <ModalEditMenu menuId={row.us_id} />
           <Dialog>
             <DialogTrigger asChild>
               <Button variant="destructive">
@@ -105,7 +102,6 @@ function DashboardUser() {
       ]}
     >
       <h1 className="text-3xl mb-4">User Management</h1>
-      <ModalCreateMenu />
       <DataTableComponent columns={columns} data={data} />
     </DashboardLayout>
   );

@@ -10,6 +10,8 @@ import createSagaMiddleware from "redux-saga";
 import cartSaga from "@/features/cart/cartSaga";
 import orderSaga from "@/features/order/orderSaga";
 import userSaga from "@/features/user/userSaga";
+import dashboardReducer from "@/features/dashboard/dashboardSlice";
+import dashboardSaga from "@/features/dashboard/dashboardSaga";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -20,6 +22,7 @@ export const store = configureStore({
     cart: cartReducer,
     order: orderReducer,
     user: userReducer,
+    dashboard: dashboardReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -30,6 +33,8 @@ export const store = configureStore({
     }).concat(sagaMiddleware),
 });
 
-[menuSaga, authSaga, cartSaga, orderSaga, userSaga].map((saga) => {
-  sagaMiddleware.run(saga);
-});
+[menuSaga, authSaga, cartSaga, orderSaga, userSaga, dashboardSaga].map(
+  (saga) => {
+    sagaMiddleware.run(saga);
+  }
+);

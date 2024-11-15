@@ -1,7 +1,16 @@
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
-import { Box, UserRound } from "lucide-react";
+import { Box, Coffee, Menu, UserRound } from "lucide-react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 function Dashboard() {
+  const dispatch = useDispatch();
+  const { countData } = useSelector((state) => state.dashboard);
+
+  useEffect(() => {
+    dispatch({ type: "dashboard/countData" });
+  }, [dispatch]);
+
   return (
     <DashboardLayout
       breadcrumbLinks={[{ id: 1, title: "Dashboard", url: "/dashboard" }]}
@@ -13,7 +22,7 @@ function Dashboard() {
           </div>
           <div className="px-4 text-gray-700">
             <h3 className="text-sm tracking-wider">Total User</h3>
-            <p className="text-3xl">12,768</p>
+            <p className="text-3xl">{countData?.user}</p>
           </div>
         </div>
         <div className="flex items-center bg-white border rounded-sm overflow-hidden shadow">
@@ -22,7 +31,16 @@ function Dashboard() {
           </div>
           <div className="px-4 text-gray-700">
             <h3 className="text-sm tracking-wider">Total Order</h3>
-            <p className="text-3xl">39,265</p>
+            <p className="text-3xl">{countData?.order}</p>
+          </div>
+        </div>
+        <div className="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+          <div className="p-4 bg-yellow-400">
+            <Coffee className="h-12 w-12 text-white" />
+          </div>
+          <div className="px-4 text-gray-700">
+            <h3 className="text-sm tracking-wider">Total Menu</h3>
+            <p className="text-3xl">{countData?.menu}</p>
           </div>
         </div>
       </div>

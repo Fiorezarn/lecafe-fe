@@ -1,7 +1,7 @@
+"use client";
+
 import BreadcrumbComponent from "@/components/dashboard/Breadcrumb";
 import DataTableComponent from "@/components/dashboard/DataTables";
-import ModalCreateMenu from "@/components/dashboard/createMenu";
-import ModalEditMenu from "@/components/dashboard/editMenu";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
@@ -13,21 +13,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { CircleCheckBigIcon, CircleX, Trash2 } from "lucide-react";
+import { CircleCheckBigIcon, CircleX, Pen, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
-import ModalMenu from "@/components/dashboard/createMenu";
+import ModalMenu from "@/components/dashboard/ModalMenu";
+import { setIsOpen, setProductId, setType } from "@/features/menu/menuSlice";
 
 function DashboardMenu() {
   const dispatch = useDispatch();
   const { toast } = useToast();
-  const { menu, message, code, loading, error } = useSelector(
-    (state) => state.menu
-  );
+  const { menu, message, code, loading, error, newData, editData, isOpen } =
+    useSelector((state) => state.menu);
 
   useEffect(() => {
-    console.log(error);
     if (error) {
       toast({
         variant: "destructive",
@@ -42,13 +41,13 @@ function DashboardMenu() {
         ),
       });
     }
-  }, [error]);
+  }, [error, toast]);
 
   useEffect(() => {
-    if (!menu) {
+    if (!menu || newData || editData) {
       dispatch({ type: "menu/getAllMenu" });
     }
-  }, [dispatch]);
+  }, [dispatch, newData, editData, menu]);
 
   useEffect(() => {
     if (code) {
@@ -79,7 +78,18 @@ function DashboardMenu() {
         });
       }
     }
-  }, [code, message]);
+  }, [code, message, toast]);
+
+  const handleEdit = (id) => {
+    dispatch(setProductId(id));
+    dispatch(setIsOpen(true));
+    dispatch(setType("edit"));
+  };
+
+  const handleCreate = () => {
+    dispatch(setIsOpen(true));
+    dispatch(setType("create"));
+  };
 
   const data = menu?.data;
   const columns = [
@@ -96,7 +106,7 @@ function DashboardMenu() {
       name: "Action",
       selector: (row) => (
         <div className="gap-2 flex justify-center">
-          <ModalEditMenu menuId={row.mn_id} />
+          <Button onClick={() => handleEdit(row.mn_id)}>edit</Button>
           <Dialog>
             <DialogTrigger asChild>
               <Button variant="destructive">
@@ -136,14 +146,10 @@ function DashboardMenu() {
       ]}
     >
       <h1 className="text-3xl mb-4">Menu Management</h1>
-      <ModalMenu
-        triggerButton={
-          <Button className="mb-4" variant="success">
-            New Menu
-          </Button>
-        }
-      />
-      {/* <ModalCreateMenu /> */}
+      <Button className="bg-green-900" onClick={handleCreate}>
+        Create Menu
+      </Button>
+      {isOpen && <ModalMenu />}
       <DataTableComponent columns={columns} data={data} />
     </DashboardLayout>
   );
