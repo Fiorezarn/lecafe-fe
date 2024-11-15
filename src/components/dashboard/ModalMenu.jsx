@@ -55,9 +55,8 @@ const schema = Joi.object({
 
 function ModalMenu({ menuData }) {
   const dispatch = useDispatch();
-  const { isOpen, loading, type, productId, menuById } = useSelector(
-    (state) => state.menu
-  );
+  const { isOpen, loading, type, productId, menuById, editData, newData } =
+    useSelector((state) => state.menu);
   const {
     register,
     handleSubmit,
@@ -88,6 +87,9 @@ function ModalMenu({ menuData }) {
     }
   }, [type, menuById, setValue, reset]);
 
+  useEffect(() => {
+    console.log(loading);
+  }, [loading]);
   const onSubmit = async (data) => {
     try {
       const formData = new FormData();
@@ -105,17 +107,23 @@ function ModalMenu({ menuData }) {
           type: "menu/updateMenu",
           payload: { id: productId, formData },
         });
+        if (editData) {
+          setIsOpen(false);
+        }
         dispatch(setIsOpen(false));
-      } else {
-        await dispatch({
+      }
+
+      if (type === "create") {
+        dispatch({
           type: "menu/createMenu",
           payload: formData,
-        }).unwrap();
+        });
+        if (newData) {
+          setIsOpen(false);
+        }
       }
-      // Close the modal or show success message
     } catch (error) {
       console.error("Error submitting form:", error);
-      // Show error message to the user
     }
   };
 

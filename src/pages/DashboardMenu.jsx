@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -91,6 +92,10 @@ function DashboardMenu() {
     dispatch(setType("create"));
   };
 
+  const handleDelete = (id) => {
+    dispatch({ type: "menu/deleteMenu", payload: id });
+  };
+
   const data = menu?.data;
   const columns = [
     {
@@ -120,12 +125,12 @@ function DashboardMenu() {
                 </DialogTitle>
               </DialogHeader>
               <DialogFooter>
-                <Button onClick={() => {}}>Cancel</Button>
+                <DialogClose asChild>
+                  <Button className="w-full">Cancel</Button>
+                </DialogClose>
                 <Button
-                  variant="destructive"
-                  onClick={() =>
-                    dispatch({ type: "menu/deleteMenu", payload: row.mn_id })
-                  }
+                  onClick={() => handleDelete(row.mn_id)}
+                  className="bg-red-600 w-full text-white font-bold"
                   disabled={loading}
                 >
                   {loading ? "Loading..." : "Delete"}
