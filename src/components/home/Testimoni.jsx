@@ -30,7 +30,7 @@ function Testimoni() {
           spaceBetween: 40,
         },
       }}
-      navigation={true}
+      navigation={false}
       modules={[Autoplay, Pagination, Navigation]}
       className="mySwiper pt-28"
     >

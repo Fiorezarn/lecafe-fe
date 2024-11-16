@@ -50,6 +50,7 @@ function* createMenu(action) {
 
 function* updateMenu(action) {
   try {
+    yield put(setLoading(true));
     const { id, formData } = action.payload;
     const response = yield fetchEditMenu(id, formData);
     yield put(updateMenuSuccess(response));

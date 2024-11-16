@@ -2,8 +2,8 @@ import { put, takeLatest } from "redux-saga/effects";
 import {
   fetchcreateOrderSuccess,
   fetchcreateOrderFailure,
-  fetchAllOrderSuccess,
-  fetchAllOrderFailure,
+  fetchOrderByUserIdSuccess,
+  fetchOrderByUserIdFailure,
   setCoordinates,
   fetchTransactionSuccess,
   fetchTransactionFailure,
@@ -12,22 +12,28 @@ import {
   setLoading,
   fetchOrderDeliverySuccess,
   fetchOrderDeliveryFailure,
+  fetchUpdateStatusFailed,
+  fetchUpdateStatusSuccess,
+  fetchAllOrderHistorySuccess,
+  fetchAllOrderHistoryFailure,
 } from "@/features/order/orderSlice";
 import {
-  fetchAllOrder,
+  fetchOrderByUserId,
   fetchCreateOrder,
   fetchCoordinates,
   fetchPayments,
   verifyPayments,
   fetchCancelPayments,
   fetchDeliveryOrder,
+  fetchUpdateStatus,
+  fetchAllOrderHistory,
 } from "./orderApi";
 
 function* createOrder(action) {
   try {
     yield put(setLoading(true));
     const responseAdd = yield fetchCreateOrder(action.payload);
-    const responseGet = yield fetchAllOrder(action.payload.userId);
+    const responseGet = yield fetchOrderByUserId(action.payload.userId);
     yield put(
       fetchcreateOrderSuccess({
         data: responseGet.data,
@@ -40,12 +46,12 @@ function* createOrder(action) {
   }
 }
 
-function* getAllOrder(action) {
+function* getOrderByUserId(action) {
   try {
-    const response = yield fetchAllOrder(action.payload);
-    yield put(fetchAllOrderSuccess(response));
+    const response = yield fetchOrderByUserId(action.payload);
+    yield put(fetchOrderByUserIdSuccess(response));
   } catch (error) {
-    yield put(fetchAllOrderFailure(error.message));
+    yield put(fetchOrderByUserIdFailure(error.message));
   }
 }
 
@@ -54,7 +60,7 @@ function* fetchCoordinatesData(action) {
     const response = yield fetchCoordinates(action.payload);
     yield put(setCoordinates(response.data));
   } catch (error) {
-    yield put(fetchAllOrderFailure(error.message));
+    yield put(fetchOrderByUserIdFailure(error.message));
   }
 }
 
@@ -70,8 +76,8 @@ function* createPayments(action) {
 function* createVerifyPayments(action) {
   try {
     yield verifyPayments(action.payload.orderIdMidtrans);
-    const response = yield fetchAllOrder(action.payload.userId);
-    yield put(fetchAllOrderSuccess(response));
+    const response = yield fetchOrderByUserId(action.payload.userId);
+    yield put(fetchOrderByUserIdSuccess(response));
   } catch (error) {
     yield put(fetchVerifyTransactionFailed(error.message));
   }
@@ -95,12 +101,33 @@ function* trackingOrder(action) {
   }
 }
 
+function* getAllOrderHistory(action) {
+  try {
+    const response = yield fetchAllOrderHistory(action.payload);
+    yield put(fetchAllOrderHistorySuccess(response));
+  } catch (error) {
+    yield put(fetchAllOrderHistoryFailure(error.message));
+  }
+}
+
+function* updateStatus(action) {
+  try {
+    yield fetchUpdateStatus(action.payload);
+    const response = yield fetchDeliveryOrder(action.payload);
+    yield put(fetchUpdateStatusSuccess(response));
+  } catch (error) {
+    yield put(fetchUpdateStatusFailed(error.message));
+  }
+}
+
 export default function* orderSaga() {
   yield takeLatest("order/createOrder", createOrder);
-  yield takeLatest("order/getOrderByUserId", getAllOrder);
+  yield takeLatest("order/getAllOrderHistory", getAllOrderHistory);
+  yield takeLatest("order/getOrderByUserId", getOrderByUserId);
   yield takeLatest("map/fetchCoordinates", fetchCoordinatesData);
   yield takeLatest("payments/createPayments", createPayments);
   yield takeLatest("payments/createVerifyPayments", createVerifyPayments);
   yield takeLatest("payments/cancelPayments", cancelPayments);
   yield takeLatest("order/trackingOrder", trackingOrder);
+  yield takeLatest("order/updateStatus", updateStatus);
 }

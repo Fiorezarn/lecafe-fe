@@ -63,10 +63,10 @@ function BannerSwiper() {
           </SwiperSlide>
         ))}
 
-        <div className="swiper-button-next right-5 top-1/2 transform -translate-y-1/2 text-white text-2xl cursor-pointer">
+        <div className="swiper-button-next-custom swiper-button-next right-5 top-1/2 transform -translate-y-1/2 text-white text-2xl cursor-pointer">
           <ChevronRight />
         </div>
-        <div className="swiper-button-prev left-5 top-1/2 transform -translate-y-1/2 text-white text-2xl cursor-pointer">
+        <div className="swiper-button-prev-custom swiper-button-prev left-5 top-1/2 transform -translate-y-1/2 text-white text-2xl cursor-pointer">
           <ChevronLeft />
         </div>
       </Swiper>

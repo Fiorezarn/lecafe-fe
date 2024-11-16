@@ -76,7 +76,8 @@ export const menuSlice = createSlice({
     },
     deleteMenuSuccess: (state, action) => {
       state.loading = false;
-      state.menu = action.payload;
+      state.code = action.payload.code;
+      state.message = action.payload.message;
     },
     deleteMenuFailure: (state, action) => {
       state.loading = false;

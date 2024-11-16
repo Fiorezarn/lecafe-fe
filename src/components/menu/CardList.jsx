@@ -13,8 +13,6 @@ import {
   PaginationContent,
   PaginationItem,
   PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Button } from "../ui/button";
 import {
@@ -39,7 +37,6 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import ButtonOrderNow from "./ButtonOrdernow";
 import NoData from "../orderStatus/NoData";
-import { FcNext } from "react-icons/fc";
 
 function CardList() {
   const dispatch = useDispatch();
@@ -114,7 +111,7 @@ function CardList() {
         description: (
           <div className="flex items-center gap-2 font-bold">
             <CircleX className="text-white" />
-            <p>{message ? message : error}</p>
+            <p>{message || error}</p>
           </div>
         ),
         className: cn(
@@ -157,8 +154,10 @@ function CardList() {
         {menu?.totalItems === 0 ? (
           <NoData
             className="text-center"
-            title={"No results found"}
-            paragraph={"Please try a different search."}
+            title={"No data found"}
+            paragraph={
+              "Please check your internet connection or try again later."
+            }
           />
         ) : (
           <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-1  gap-4">

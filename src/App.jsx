@@ -7,7 +7,6 @@ import SendEmail from "./pages/SendEmail";
 import ForgotPassword from "./pages/ForgotPassword";
 import Order from "./pages/Order";
 import DashboardMenu from "./pages/DashboardMenu";
-import DashboardUser from "./pages/DashboardUser";
 import { ProtectedRoute, ProtectedRole } from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
 import Cart from "./pages/Cart";
@@ -17,6 +16,7 @@ import VerifyFailed from "./pages/VerifyFailed";
 import VerifySuccess from "./pages/VerifySucess";
 import Dashboard from "./pages/Dashboard";
 import DashboardTracking from "./pages/DashboardTracking";
+import DashboardOrderHistory from "./pages/DashboardOrderHistory";
 
 function App() {
   return (
@@ -38,7 +38,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/menu" element={<DashboardMenu />} />
           <Route path="/dashboard/tracking" element={<DashboardTracking />} />
-          <Route path="/dashboard/user" element={<DashboardUser />} />
+          <Route path="/dashboard/order" element={<DashboardOrderHistory />} />
         </Route>
         <Route path="/cart" element={<Cart />} />
         <Route path="order" element={<Order />} />

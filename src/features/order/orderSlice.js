@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { setMessage } from "../cart/cartSlice";
+import { fetchUpdateStatus } from "./orderApi";
 
 export const orderSlice = createSlice({
   name: "order",
@@ -13,6 +14,7 @@ export const orderSlice = createSlice({
     loading: false,
     error: null,
     tracking: null,
+    orders: null,
   },
   reducers: {
     fetchcreateOrderRequest: (state) => {
@@ -29,15 +31,15 @@ export const orderSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    fetchAllOrderRequest: (state) => {
+    fetchOrderByUserIdRequest: (state) => {
       state.loading = true;
       state.error = null;
     },
-    fetchAllOrderSuccess: (state, action) => {
+    fetchOrderByUserIdSuccess: (state, action) => {
       state.loading = false;
       state.orderById = action.payload.data;
     },
-    fetchAllOrderFailure: (state, action) => {
+    fetchOrderByUserIdFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
@@ -82,6 +84,23 @@ export const orderSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    fetchAllOrderHistorySuccess: (state, action) => {
+      state.loading = false;
+      state.orders = action.payload;
+    },
+    fetchAllOrderHistoryFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    fetchUpdateStatusSuccess: (state, action) => {
+      state.loading = false;
+      state.messageOrder = action.payload.message;
+      state.codeOrder = action.payload.code;
+    },
+    fetchUpdateStatusFailed: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
 
@@ -89,9 +108,9 @@ export const {
   fetchcreateOrderRequest,
   fetchcreateOrderSuccess,
   fetchcreateOrderFailure,
-  fetchAllOrderRequest,
-  fetchAllOrderSuccess,
-  fetchAllOrderFailure,
+  fetchOrderByUserIdRequest,
+  fetchOrderByUserIdSuccess,
+  fetchOrderByUserIdFailure,
   setCoordinates,
   fetchTransactionSuccess,
   fetchTransactionFailure,
@@ -103,6 +122,10 @@ export const {
   setMessageOrder,
   fetchOrderDeliverySuccess,
   fetchOrderDeliveryFailure,
+  fetchUpdateStatusSuccess,
+  fetchUpdateStatusFailed,
+  fetchAllOrderHistorySuccess,
+  fetchAllOrderHistoryFailure,
 } = orderSlice.actions;
 
 export default orderSlice.reducer;

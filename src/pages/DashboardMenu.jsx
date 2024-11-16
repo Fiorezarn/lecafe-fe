@@ -1,6 +1,5 @@
 "use client";
 
-import BreadcrumbComponent from "@/components/dashboard/Breadcrumb";
 import DataTableComponent from "@/components/dashboard/DataTables";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,12 +19,15 @@ import { cn } from "@/lib/utils";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import ModalMenu from "@/components/dashboard/ModalMenu";
 import { setIsOpen, setProductId, setType } from "@/features/menu/menuSlice";
+import { useNavigate } from "react-router-dom";
 
 function DashboardMenu() {
   const dispatch = useDispatch();
   const { toast } = useToast();
-  const { menu, message, code, loading, error, newData, editData, isOpen } =
-    useSelector((state) => state.menu);
+  const navigate = useNavigate();
+  const { menu, message, code, loading, error, isOpen } = useSelector(
+    (state) => state.menu
+  );
 
   useEffect(() => {
     if (error) {
@@ -45,10 +47,10 @@ function DashboardMenu() {
   }, [error, toast]);
 
   useEffect(() => {
-    if (!menu || newData || editData) {
+    if (!menu) {
       dispatch({ type: "menu/getAllMenu" });
     }
-  }, [dispatch, newData, editData, menu]);
+  }, [dispatch, menu]);
 
   useEffect(() => {
     if (code) {
@@ -64,6 +66,8 @@ function DashboardMenu() {
             "top-10 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
           ),
         });
+        // navigate(0);
+        dispatch({ type: "menu/getAllMenu" });
       } else {
         toast({
           variant: "destructive",
@@ -96,7 +100,7 @@ function DashboardMenu() {
     dispatch({ type: "menu/deleteMenu", payload: id });
   };
 
-  const data = menu?.data;
+  const data = menu?.data || [];
   const columns = [
     {
       name: "Image",
@@ -111,10 +115,12 @@ function DashboardMenu() {
       name: "Action",
       selector: (row) => (
         <div className="gap-2 flex justify-center">
-          <Button onClick={() => handleEdit(row.mn_id)}>edit</Button>
+          <Button size="sm" onClick={() => handleEdit(row.mn_id)}>
+            <Pen />
+          </Button>
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="destructive">
+              <Button size="sm" variant="destructive">
                 <Trash2 />
               </Button>
             </DialogTrigger>
@@ -150,7 +156,9 @@ function DashboardMenu() {
         { id: 2, title: "Menu", url: "/dashboard/menu" },
       ]}
     >
-      <h1 className="text-3xl mb-4">Menu Management</h1>
+      <h1 className="text-3xl lg:text-4xl mb-6 lg:mb-10 font-bold mt-10 text-earth">
+        Menu Management
+      </h1>
       <Button className="bg-green-900" onClick={handleCreate}>
         Create Menu
       </Button>

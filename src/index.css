@@ -6,6 +6,11 @@
 @tailwind components;
 @tailwind utilities;
 
+.swiper-button-next-custom,
+.swiper-button-prev-custom {
+  color: black !important;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

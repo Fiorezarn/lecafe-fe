@@ -1,6 +1,6 @@
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import DataTableComponent from "@/components/dashboard/DataTables";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Select,
@@ -20,13 +20,7 @@ function DashboardTracking() {
     dispatch({ type: "order/trackingOrder" });
   }, [dispatch]);
 
-  const data =
-    tracking?.data?.orders?.Order?.map((order) => ({
-      us_fullname: tracking.data.orders.us_fullname,
-      or_status_shipping: order.or_status_shipping,
-      or_site: order.or_site,
-      or_total_price: order.or_total_price,
-    })) || [];
+  const data = tracking?.data;
 
   const columns = [
     {
@@ -37,15 +31,21 @@ function DashboardTracking() {
     {
       name: "Shipping Status",
       selector: (row) => (
-        <Select>
+        <Select
+          onValueChange={(e) =>
+            dispatch({
+              type: "order/updateStatus",
+              payload: { id: row.Order[0]?.or_id, status: e },
+            })
+          }
+        >
           <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder={row.or_status_shipping} />
+            <SelectValue placeholder={row.Order[0]?.or_status_shipping} />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
               <SelectItem value="ongoing">On-Going</SelectItem>
               <SelectItem value="delivered">Delivered</SelectItem>
-              <SelectItem value="cancelled">Cancelled</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
@@ -54,12 +54,12 @@ function DashboardTracking() {
     },
     {
       name: "Address",
-      selector: (row) => row.or_site,
+      selector: (row) => row.Order[0]?.or_site,
       sortable: true,
     },
     {
       name: "Total Price",
-      selector: (row) => formatPrice(row.or_total_price),
+      selector: (row) => formatPrice(row.Order[0]?.or_total_price),
       sortable: true,
     },
   ];
@@ -71,6 +71,9 @@ function DashboardTracking() {
         { id: 2, title: "Tracking", url: "/dashboard/tracking" },
       ]}
     >
+      <h1 className="text-3xl lg:text-4xl mb-6 lg:mb-10 font-bold mt-10 text-earth">
+        Tracking
+      </h1>
       <DataTableComponent columns={columns} data={data} expand />
     </DashboardLayout>
   );

@@ -53,7 +53,7 @@ const schema = Joi.object({
   type: Joi.string().valid("create", "edit").required(),
 });
 
-function ModalMenu({ menuData }) {
+function ModalMenu() {
   const dispatch = useDispatch();
   const { isOpen, loading, type, productId, menuById, editData, newData } =
     useSelector((state) => state.menu);
@@ -73,7 +73,7 @@ function ModalMenu({ menuData }) {
   });
   useEffect(() => {
     const id = productId;
-    if (productId) {
+    if (productId && !menuById) {
       dispatch({ type: "menu/getMenuById", payload: id });
     }
   }, [dispatch]);
@@ -87,9 +87,6 @@ function ModalMenu({ menuData }) {
     }
   }, [type, menuById, setValue, reset]);
 
-  useEffect(() => {
-    console.log(loading);
-  }, [loading]);
   const onSubmit = async (data) => {
     try {
       const formData = new FormData();
@@ -110,7 +107,6 @@ function ModalMenu({ menuData }) {
         if (editData) {
           setIsOpen(false);
         }
-        dispatch(setIsOpen(false));
       }
 
       if (type === "create") {
@@ -170,10 +166,10 @@ function ModalMenu({ menuData }) {
 
             <div className="items-center">
               <Label htmlFor="image">Image</Label>
-              {type === "edit" && menuData?.mn_image && (
+              {type === "edit" && menuById?.mn_image && (
                 <img
-                  src={menuData.mn_image}
-                  alt={menuData.mn_name}
+                  src={menuById?.mn_image}
+                  alt={menuById?.mn_name}
                   className="mt-2 h-20 w-20 object-cover"
                 />
               )}
@@ -199,7 +195,7 @@ function ModalMenu({ menuData }) {
 
             <div className="items-center">
               <Label htmlFor="price">Price</Label>
-              <Input id="price" {...register("price")} type="text" />
+              <Input id="price" {...register("price")} type="number" />
               {errors.price && (
                 <span className="text-red-700">{errors.price.message}</span>
               )}

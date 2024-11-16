@@ -24,7 +24,7 @@ const fetchCreateOrder = async ({
   return await response.json();
 };
 
-const fetchAllOrder = async (id) => {
+const fetchOrderByUserId = async (id) => {
   const response = await fetch(`${BASE_URL}/order/${id}`);
   return await response.json();
 };
@@ -82,16 +82,37 @@ const fetchCancelPayments = async (id) => {
 };
 
 const fetchDeliveryOrder = async () => {
-  const response = await fetch(`${BASE_URL}/order/delivery`);
+  const response = await fetch(`${BASE_URL}/order/?status=ongoing`);
+  return await response.json();
+};
+
+const fetchAllOrderHistory = async () => {
+  const response = await fetch(`${BASE_URL}/order/?status=delivered`);
+  return await response.json();
+};
+
+const fetchUpdateStatus = async ({ id, status }) => {
+  const response = await fetch(`${BASE_URL}/order/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({
+      status,
+    }),
+  });
   return await response.json();
 };
 
 export {
   fetchCreateOrder,
-  fetchAllOrder,
+  fetchOrderByUserId,
+  fetchAllOrderHistory,
   fetchCoordinates,
   fetchPayments,
   verifyPayments,
   fetchCancelPayments,
   fetchDeliveryOrder,
+  fetchUpdateStatus,
 };
