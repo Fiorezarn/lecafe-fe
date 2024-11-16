@@ -4,16 +4,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { formatDate, formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { MessageCircleX, TruckIcon, Wallet } from "lucide-react";
@@ -23,7 +13,7 @@ import Extent from "@arcgis/core/geometry/Extent";
 import { useEffect, useRef, useState } from "react";
 import Map from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
-import NoData from "./NoData";
+import NoData from "@/components/orderStatus/NoData";
 
 function OnGoing({ orders, isOpenTab }) {
   const [isOpen, setIsOpen] = useState({});

@@ -1,4 +1,4 @@
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";

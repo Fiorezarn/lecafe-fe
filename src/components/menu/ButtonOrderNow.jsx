@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "../ui/textarea";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
 function ButtonOrderNow({ idMenu }) {

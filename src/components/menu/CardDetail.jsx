@@ -5,13 +5,13 @@ import {
   Plus,
   ShoppingCart,
 } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { cn, formatPrice } from "@/lib/utils";
 import { useNavigate, useParams } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import ButtonOrderNow from "./ButtonOrderNow";
+import ButtonOrderNow from "@/components/menu/ButtonOrderNow";
 function CardDetail() {
   const dispatch = useDispatch();
   const navigate = useNavigate();

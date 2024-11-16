@@ -10,12 +10,12 @@ import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import { cn, formatPrice } from "@/lib/utils";
 import { useDispatch, useSelector } from "react-redux";
-import { Input } from "../ui/input";
+import { Input } from "@/components/ui/input";
 import { CircleCheckBigIcon, ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import ButtonOrderNow from "./ButtonOrdernow";
-import CardSkeleton from "./CardSkeleton";
+import ButtonOrderNow from "@/components/menu/ButtonOrderNow";
+import CardSkeleton from "@/components/menu/CardSkeleton";
 
 function CardRecommended() {
   const { toast } = useToast();

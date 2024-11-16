@@ -1,4 +1,3 @@
-// components/SidebarWithBreadcrumb.js
 import {
   Sidebar,
   SidebarContent,

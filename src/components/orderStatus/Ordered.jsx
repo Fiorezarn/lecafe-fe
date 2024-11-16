@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/accordion";
 import { formatDate, formatPrice } from "@/lib/utils";
 import { CheckCircleIcon, WalletCards } from "lucide-react";
-import NoData from "./NoData";
+import NoData from "@/components/orderStatus/NoData";
 
 function Ordered({ orders }) {
   const orderedOrders = orders?.filter(

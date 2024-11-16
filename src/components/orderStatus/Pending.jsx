@@ -18,7 +18,7 @@ import { formatDate, formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ClockIcon, MessageCircleX, Wallet } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import NoData from "./NoData";
+import NoData from "@/components/orderStatus/NoData";
 
 function Pending({ orders }) {
   const dispatch = useDispatch();

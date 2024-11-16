@@ -14,7 +14,7 @@ import {
   PaginationItem,
   PaginationLink,
 } from "@/components/ui/pagination";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import {
   ChevronLeft,
   ChevronRight,
@@ -22,7 +22,7 @@ import {
   CircleX,
   ShoppingCart,
 } from "lucide-react";
-import { Input } from "../ui/input";
+import { Input } from "@/components/ui/input";
 import { cn, formatPrice } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { setPage } from "@/features/menu/menuSlice";
@@ -35,7 +35,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import ButtonOrderNow from "./ButtonOrdernow";
+import ButtonOrderNow from "@/components/menu/ButtonOrderNow";
 import NoData from "../orderStatus/NoData";
 import CardSkeleton from "./CardSkeleton";
 
