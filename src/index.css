@@ -11,6 +11,12 @@
   color: black !important;
 }
 
+@layer utilities {
+  .animate-pulse {
+    @apply bg-gray-200;
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
