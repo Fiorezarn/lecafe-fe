@@ -11,6 +11,8 @@ import {
   updateMenuFailure,
   deleteMenuSuccess,
   deleteMenuFailure,
+  fetchMenuRecommendedSuccess,
+  fetchMenuRecommendedFailure,
 } from "@/features/menu/menuSlice";
 import {
   fetchAllMenu,
@@ -18,14 +20,26 @@ import {
   fetchcreateMenu,
   fetchDeleteMenu,
   fetchEditMenu,
+  fetchMenuRecommended,
 } from "./menuApi";
 
 function* getAllMenu(action) {
   try {
+    yield put(setLoading(true));
     const response = yield fetchAllMenu(action.payload ? action.payload : {});
     yield put(fetchSuccessGetAllMenu(response));
   } catch (error) {
     yield put(fetchFailureGetAllMenu(error.message));
+  }
+}
+
+function* getMenuRecommended(action) {
+  try {
+    yield put(setLoading(true));
+    const response = yield fetchMenuRecommended(action.payload);
+    yield put(fetchMenuRecommendedSuccess(response));
+  } catch (error) {
+    yield put(fetchMenuRecommendedFailure(error.message));
   }
 }
 
@@ -75,4 +89,5 @@ export default function* menuSaga() {
   yield takeLatest("menu/createMenu", createMenu);
   yield takeLatest("menu/updateMenu", updateMenu);
   yield takeLatest("menu/deleteMenu", DeleteMenu);
+  yield takeLatest("menu/getMenuRecommended", getMenuRecommended);
 }

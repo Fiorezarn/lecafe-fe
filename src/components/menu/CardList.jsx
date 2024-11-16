@@ -37,11 +37,14 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import ButtonOrderNow from "./ButtonOrdernow";
 import NoData from "../orderStatus/NoData";
+import CardSkeleton from "./CardSkeleton";
 
 function CardList() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { menu, error, page, limit } = useSelector((state) => state.menu);
+  const { menu, error, page, limit, loading } = useSelector(
+    (state) => state.menu
+  );
   const { cookie } = useSelector((state) => state.auth);
   const { message, errorCart } = useSelector((state) => state.cart);
   const [search, setSearch] = useState("");
@@ -151,6 +154,13 @@ function CardList() {
         </Select>
       </div>
       <div>
+        {loading ? (
+          <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-1 gap-4">
+            {[...Array(8)].map((_, index) => (
+              <CardSkeleton key={index} />
+            ))}
+          </div>
+        ) : null}
         {menu?.totalItems === 0 ? (
           <NoData
             className="text-center"
@@ -160,7 +170,7 @@ function CardList() {
             }
           />
         ) : (
-          <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-1  gap-4">
+          <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-1 gap-4">
             {menu?.data?.map((item) => (
               <Card
                 key={item.mn_id}
