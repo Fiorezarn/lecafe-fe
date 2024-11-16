@@ -56,6 +56,9 @@ function CardList() {
   }, [dispatch]);
 
   useEffect(() => {
+    if (category === "all") {
+      setCategory("");
+    }
     dispatch({
       type: "menu/getAllMenu",
       payload: { page, limit, search, category },
@@ -65,6 +68,10 @@ function CardList() {
   const handlePageChange = (newPage) => {
     dispatch(setPage(newPage));
   };
+
+  useEffect(() => {
+    dispatch(setPage(1));
+  }, [category]);
 
   useEffect(() => {
     if (message) {
@@ -146,6 +153,7 @@ function CardList() {
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
+              <SelectItem value="all">All</SelectItem>
               <SelectItem value="coffee">Coffee</SelectItem>
               <SelectItem value="non-coffee">Non-Coffee</SelectItem>
               <SelectItem value="food">Food</SelectItem>
