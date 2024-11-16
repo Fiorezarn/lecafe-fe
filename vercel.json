@@ -3,7 +3,7 @@
   "rewrites": [{ "source": "/(.*)", "destination": "/" }],
   "builds": [
     {
-      "src": "vite.config.js",
+      "src": "package.json",
       "use": "@vercel/static-build"
     }
   ],
