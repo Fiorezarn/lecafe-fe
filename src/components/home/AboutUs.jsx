@@ -7,12 +7,12 @@ function AboutUs() {
           <h1 className="text-4xl text-center lg:text-left font-mono font-bold text-earth4">
             About Us
           </h1>
-          <p className="text-earth4 text-lg font-mono leading-relaxed text-justify">
+          <article className="text-earth4 text-lg font-mono leading-relaxed text-justify">
             We are dedicated to providing innovative, professional, and reliable
             solutions tailored to your needs. With a focus on excellence and
             client satisfaction, we ensure every project meets your
             expectations.
-          </p>
+          </article>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="relative group p-6 bg-white rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 border border-gray-300 text-center overflow-hidden">

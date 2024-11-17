@@ -38,6 +38,7 @@ function ButtonOrderNow({ idMenu }) {
   const [address, setAddress] = useState("");
   const navigate = useNavigate();
   const userId = cookie?.us_id;
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleOrderSubmit = () => {
     const site = orderType === "Dine-in" ? tableNumber : address;
@@ -102,86 +103,92 @@ function ButtonOrderNow({ idMenu }) {
       }
     }
   }, [codeOrder, messageOrder]);
+
+  const handleOrderNowClick = () => {
+    if (!cookie) {
+      navigate("/login");
+      return;
+    }
+    setIsDialogOpen(true);
+  };
+
   return (
-    <>
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button className="bg-earth font-mono shadow-md shadow-gray-500 hover:bg-earth-dark hover:shadow-lg hover:shadow-gray-600 transform hover:-translate-y-1 transition-all duration-300 ease-in-out text-white">
-            Order Now
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Place Your Order</DialogTitle>
-            <DialogDescription>
-              Choose your order type and provide details. Click proceed when
-              you're ready.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="mt-6">
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <DialogTrigger asChild>
+        <Button
+          onClick={handleOrderNowClick}
+          className="bg-earth font-mono shadow-md shadow-gray-500 hover:bg-earth-dark hover:shadow-lg hover:shadow-gray-600 transform hover:-translate-y-1 transition-all duration-300 ease-in-out text-white"
+        >
+          Order Now
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Place Your Order</DialogTitle>
+          <DialogDescription>
+            Choose your order type and provide details. Click proceed when
+            you're ready.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="mt-6">
+          <label className="block text-lg font-semibold mb-2">Order Type</label>
+          <Select onValueChange={(value) => setOrderType(value)}>
+            <SelectTrigger className="w-full text-black">
+              <SelectValue placeholder="Select Order Type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Order Type</SelectLabel>
+                <SelectItem value="Dine-in">Dine In</SelectItem>
+                <SelectItem value="Delivery">Delivery</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {orderType === "Dine-in" && (
+          <div className="mt-4">
             <label className="block text-lg font-semibold mb-2">
-              Order Type
+              Table Number
             </label>
-            <Select onValueChange={(value) => setOrderType(value)}>
-              <SelectTrigger className="w-full text-black">
-                <SelectValue placeholder="Select Order Type" />
+            <Select onValueChange={(value) => setTableNumber(value)}>
+              <SelectTrigger className="w-full mb-4 text-black">
+                <SelectValue placeholder="Select Table Number" />
               </SelectTrigger>
               <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Order Type</SelectLabel>
-                  <SelectItem value="Dine-in">Dine In</SelectItem>
-                  <SelectItem value="Delivery">Delivery</SelectItem>
-                </SelectGroup>
+                {[...Array(10).keys()].map((num) => (
+                  <SelectItem key={num + 1} value={String(num + 1)}>
+                    {num + 1}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
+        )}
 
-          {orderType === "Dine-in" && (
-            <div className="mt-4">
-              <label className="block text-lg font-semibold mb-2">
-                Table Number
-              </label>
-              <Select onValueChange={(value) => setTableNumber(value)}>
-                <SelectTrigger className="w-full mb-4 text-black">
-                  <SelectValue placeholder="Select Table Number" />
-                </SelectTrigger>
-                <SelectContent>
-                  {[...Array(10).keys()].map((num) => (
-                    <SelectItem key={num + 1} value={String(num + 1)}>
-                      {num + 1}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          )}
+        {orderType === "Delivery" && (
+          <div className="mt-4">
+            <label className="block text-lg font-semibold mb-2">Address</label>
+            <Textarea
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              className="w-full p-2 rounded-lg bg-brown-700 text-black"
+              placeholder="Enter delivery address"
+            />
+          </div>
+        )}
 
-          {orderType === "Delivery" && (
-            <div className="mt-4">
-              <label className="block text-lg font-semibold mb-2">
-                Address
-              </label>
-              <Textarea
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                className="w-full p-2 rounded-lg bg-brown-700 text-black"
-                placeholder="Enter delivery address"
-              />
-            </div>
-          )}
-
-          <DialogFooter onClick={handleOrderSubmit}>
-            <Button
-              onClick={handleOrderSubmit}
-              className="w-full mt-6 bg-earth text-white hover:bg-gray-800"
-              disabled={loading}
-            >
-              {loading ? "Loading..." : "Proceed to Checkout"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </>
+        <DialogFooter onClick={handleOrderSubmit}>
+          <Button
+            onClick={handleOrderSubmit}
+            className="w-full mt-6 bg-earth text-white hover:bg-gray-800"
+            disabled={loading}
+          >
+            {loading ? "Loading..." : "Proceed to Checkout"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 
