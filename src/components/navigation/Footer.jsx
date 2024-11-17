@@ -77,7 +77,6 @@ function Footer() {
             ))}
           </div>
 
-          {/* Copyright */}
           <p className="text-sm text-center md:text-right font-sans mt-4 md:mt-0 opacity-75">
             © 2021 Le Café, Inc. All rights reserved.
           </p>

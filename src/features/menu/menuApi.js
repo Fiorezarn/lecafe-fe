@@ -21,6 +21,10 @@ const fetchMenuRecommended = async () => {
 
 const fetchMenuById = async (id) => {
   const response = await fetch(`${BASE_URL}/menu/${id}`);
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw errorData;
+  }
   return await response.json();
 };
 

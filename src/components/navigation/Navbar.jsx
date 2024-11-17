@@ -22,7 +22,7 @@ function Navbar() {
   };
 
   return (
-    <nav className="bg-earth border-gray-200 sticky top-0 z-10 transition-all duration-300">
+    <nav className="bg-earth border-gray-200 sticky top-0 z-[9999] transition-all duration-300">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
           <img

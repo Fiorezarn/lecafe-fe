@@ -22,13 +22,9 @@ function CardDetail() {
   const { id } = useParams();
 
   useEffect(() => {
-    document
-      .getElementById("menu-detail")
-      .scrollIntoView({ behavior: "smooth" });
-  }, []);
-
-  useEffect(() => {
-    dispatch({ type: "menu/getMenuById", payload: id });
+    if (!menuById) {
+      dispatch({ type: "menu/getMenuById", payload: id });
+    }
   }, [dispatch]);
 
   const handleSubmit = () => {
@@ -88,12 +84,16 @@ function CardDetail() {
     }
   }, [message]);
 
+  useEffect(() => {
+    console.log(menuById);
+  }, [menuById]);
+
   return (
     <div className="flex flex-col lg:flex-row rounded-xl">
       <img
         className="w-full lg:w-1/2 rounded-t-xl lg:rounded-l-xl lg:rounded-tr-none"
         src={`${menuById?.mn_image}`}
-        alt={`${menuById?.mn_image}`}
+        alt={`${menuById?.mn_name}`}
       />
 
       <div className="w-full lg:w-1/2 rounded-b-xl lg:rounded-r-xl flex flex-col justify-between bg-earth4 p-4 md:p-6 lg:p-10">

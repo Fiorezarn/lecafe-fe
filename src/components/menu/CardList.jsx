@@ -136,7 +136,7 @@ function CardList() {
       <div className="flex lg:flex-row flex-col gap-4 lg:justify-between mb-8">
         <form onSubmit={handleSearchSubmit}>
           <Input
-            className="form-control"
+            className="form-control font-mono"
             placeholder="Search..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}

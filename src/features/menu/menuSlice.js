@@ -31,10 +31,6 @@ export const menuSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    fetchRequestGetByIdMenu: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
     fetchSuccessGetByIdMenu: (state, action) => {
       state.loading = false;
       state.menuById = action.payload.data;
@@ -110,7 +106,6 @@ export const {
   fetchRequestGetAllMenu,
   fetchSuccessGetAllMenu,
   fetchFailureGetAllMenu,
-  fetchRequestGetByIdMenu,
   fetchSuccessGetByIdMenu,
   fetchFailurGetByIdMenu,
   createMenuRequest,
