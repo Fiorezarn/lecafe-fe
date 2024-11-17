@@ -47,11 +47,10 @@ function Subcribe() {
     }
   }, []);
   return (
-    <section className="bg-earth6 py-16 px-20 items-center flex">
+    <section className="bg-earth6 py-16 md:px-20 items-center flex flex-col-reverse gap-4 md:flex-row">
       <div
-        className="mapDiv rounded-md"
+        className="mapDiv rounded-md w-[40vh] h-[50vh] md:w-[50%] md:h-[50vh]"
         ref={mapDiv}
-        style={{ height: "50vh", width: "50%" }}
       ></div>
       <div className="container mx-auto px-6 lg:px-20 text-center">
         <h2 className="text-3xl font-bold text-gray-800 mb-4 font-mono">

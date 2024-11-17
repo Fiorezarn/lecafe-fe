@@ -4,6 +4,8 @@ import CardList from "@/components/menu/CardList";
 import Footer from "@/components/navigation/Footer";
 import BannerSwiper from "@/components/menu/Banner";
 import { Separator } from "@/components/ui/separator";
+import { FaTruck } from "react-icons/fa6";
+import { HiBuildingStorefront } from "react-icons/hi2";
 
 function Menu() {
   return (
@@ -20,9 +22,13 @@ function Menu() {
             aria-hidden="true"
           />
           <div className="flex items-center space-x-4">
-            <span className="text-earth">●</span>
-            <h1 className="font-semibold font-sour">Pick-up</h1>
-            <span className="text-earth">●</span>
+            <span className="text-earth">
+              <HiBuildingStorefront />
+            </span>
+            <h1 className="font-semibold font-sour">Dine-in</h1>
+            <span className="text-earth">
+              <FaTruck />
+            </span>
             <h1 className="font-semibold font-sour">Delivery</h1>
           </div>
         </div>

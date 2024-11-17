@@ -46,7 +46,7 @@ function AvatarNav() {
               {generateAvatar(cookie?.us_username)}
             </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent>
+          <DropdownMenuContent className="z-[9999]">
             <DropdownMenuLabel>{cookie?.us_username}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>

@@ -1,4 +1,5 @@
 import { FaHandshake, FaLightbulb, FaUserTie } from "react-icons/fa";
+
 function AboutUs() {
   return (
     <section className="bg-earth1 py-16">
@@ -13,12 +14,11 @@ function AboutUs() {
             client satisfaction, we ensure every project meets your
             expectations.
           </article>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="relative group p-6 bg-white rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 border border-gray-300 text-center overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-earth3 to-earth4 opacity-0 group-hover:opacity-80 transition-opacity duration-300 z-0"></div>
-              <FaUserTie className="text-4xl text-earth4 mb-4 mx-auto z-10 relative group-hover:text-white transition-colors duration-300" />
-              <h2 className="text-xl font-semibold text-earth4 mb-2 z-10 relative group-hover:text-white transition-colors duration-300">
+              <FaUserTie className="text-4xl text-earth2 mb-4 mx-auto z-10 relative group-hover:text-white transition-colors duration-300" />
+              <h2 className="text-xl font-semibold text-earth2 mb-2 z-10 relative group-hover:text-white transition-colors duration-300">
                 Professional
               </h2>
               <p className="text-sm text-gray-600 font-mono z-10 relative group-hover:text-white transition-colors duration-300">
@@ -29,8 +29,8 @@ function AboutUs() {
 
             <div className="relative group p-6 bg-white rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 border border-gray-300 text-center overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-earth3 to-earth4 opacity-0 group-hover:opacity-80 transition-opacity duration-300 z-0"></div>
-              <FaLightbulb className="text-4xl text-earth4 mb-4 mx-auto z-10 relative group-hover:text-white transition-colors duration-300" />
-              <h2 className="text-xl font-semibold text-earth4 mb-2 z-10 relative group-hover:text-white transition-colors duration-300">
+              <FaLightbulb className="text-4xl text-earth2 mb-4 mx-auto z-10 relative group-hover:text-white transition-colors duration-300" />
+              <h2 className="text-xl font-semibold text-earth2 mb-2 z-10 relative group-hover:text-white transition-colors duration-300">
                 Innovative
               </h2>
               <p className="text-sm text-gray-600 font-mono z-10 relative group-hover:text-white transition-colors duration-300">
@@ -40,8 +40,8 @@ function AboutUs() {
 
             <div className="relative group p-6 bg-white rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 border border-gray-300 text-center overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-earth3 to-earth4 opacity-0 group-hover:opacity-80 transition-opacity duration-300 z-0"></div>
-              <FaHandshake className="text-4xl text-earth4 mb-4 mx-auto z-10 relative group-hover:text-white transition-colors duration-300" />
-              <h2 className="text-xl font-semibold text-earth4 mb-2 z-10 relative group-hover:text-white transition-colors duration-300">
+              <FaHandshake className="text-4xl text-earth2 mb-4 mx-auto z-10 relative group-hover:text-white transition-colors duration-300" />
+              <h2 className="text-xl font-semibold text-earth2 mb-2 z-10 relative group-hover:text-white transition-colors duration-300">
                 Reliable
               </h2>
               <p className="text-sm text-gray-600 font-mono z-10 relative group-hover:text-white transition-colors duration-300">
