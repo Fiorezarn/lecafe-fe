@@ -7,15 +7,25 @@ import {
 import { formatDate, formatPrice } from "@/lib/utils";
 import { CheckCircleIcon, WalletCards } from "lucide-react";
 import NoData from "@/components/orderStatus/NoData";
+import { useSelector } from "react-redux";
 
 function Ordered({ orders }) {
-  const orderedOrders = orders?.filter(
-    (order) =>
-      order?.or_status_shipping === "delivered" &&
-      order?.or_status_payment === "settlement"
-  );
+  const { loading } = useSelector((state) => state.order);
+  console.log(orders, "ini yang di ongoing");
 
-  if (!orderedOrders?.length)
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center">
+        <div className="flex gap-2">
+          <div className="w-6 h-6 bg-red-600 rounded-full animate-bounce"></div>
+          <div className="w-6 h-6 bg-red-600 rounded-full animate-bounce"></div>
+          <div className="w-6 h-6 bg-red-600 rounded-full animate-bounce"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!orders || orders.length === 0) {
     return (
       <NoData
         title={"No Ordered Orders"}
@@ -24,8 +34,9 @@ function Ordered({ orders }) {
         }
       />
     );
+  }
 
-  return orderedOrders.map((item, index) => {
+  return orders.map((item, index) => {
     const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
     return (
       <Accordion key={index} type="single" collapsible>

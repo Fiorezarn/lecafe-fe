@@ -5,7 +5,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { formatDate, formatPrice } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { MessageCircleX, TruckIcon, Wallet } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import Graphic from "@arcgis/core/Graphic";
@@ -22,12 +21,12 @@ function OnGoing({ orders, isOpenTab }) {
   const dispatch = useDispatch();
   const { orderById, coordinates } = useSelector((state) => state.order);
 
-  const ongoingOrders = orders?.filter(
-    (order) =>
-      order?.or_status_shipping === "ongoing" &&
-      order?.or_type_order === "Delivery" &&
-      order?.or_status_payment === "settlement"
-  );
+  // const orders = orders?.filter(
+  //   (order) =>
+  //     order?.or_status_shipping === "ongoing" &&
+  //     order?.or_type_order === "Delivery" &&
+  //     order?.or_status_payment === "settlement"
+  // );
 
   const handleOpenAccordion = (index) => {
     setIsOpen((prevState) => ({
@@ -37,7 +36,7 @@ function OnGoing({ orders, isOpenTab }) {
   };
 
   useEffect(() => {
-    ongoingOrders.forEach((order, index) => {
+    orders.forEach((order, index) => {
       if (isOpen[index] && mapRefs.current[index] && coordinates) {
         const map = new Map({
           basemap: "streets-navigation-vector",
@@ -119,11 +118,11 @@ function OnGoing({ orders, isOpenTab }) {
         }
       }
     });
-  }, [isOpen, ongoingOrders, coordinates, orderById]);
+  }, [isOpen, orders, coordinates, orderById]);
 
   useEffect(() => {
     if (orderById) {
-      const orderCoordinates = ongoingOrders
+      const orderCoordinates = orders
         .map((order, index) => ({
           id: index,
           destinationLongitude: order.or_longitude,
@@ -142,7 +141,7 @@ function OnGoing({ orders, isOpenTab }) {
     }
   }, [orderById]);
 
-  if (!ongoingOrders?.length)
+  if (!orders?.length)
     return (
       <NoData
         title={"No Ongoing Orders"}
@@ -152,7 +151,7 @@ function OnGoing({ orders, isOpenTab }) {
       />
     );
 
-  return ongoingOrders.map((item, index) => {
+  return orders.map((item, index) => {
     const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
 
     return (

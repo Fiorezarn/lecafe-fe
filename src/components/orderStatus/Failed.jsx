@@ -7,16 +7,24 @@ import {
 } from "@/components/ui/accordion";
 import { CircleAlert } from "lucide-react";
 import NoData from "@/components/orderStatus/NoData";
+import { useSelector } from "react-redux";
 
 function Failed({ orders }) {
-  const failedOrders = orders?.filter(
-    (order) =>
-      order?.or_status_payment === "expired" ||
-      (order?.or_status_payment === "cancelled" &&
-        order?.or_status_shipping === "cancelled")
-  );
+  const { loading } = useSelector((state) => state.order);
 
-  if (!failedOrders?.length)
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center">
+        <div className="flex gap-2">
+          <div className="w-6 h-6 bg-red-600 rounded-full animate-bounce"></div>
+          <div className="w-6 h-6 bg-red-600 rounded-full animate-bounce"></div>
+          <div className="w-6 h-6 bg-red-600 rounded-full animate-bounce"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!orders || orders.length === 0) {
     return (
       <NoData
         title={"No Failed Orders"}
@@ -25,8 +33,9 @@ function Failed({ orders }) {
         }
       />
     );
+  }
 
-  return failedOrders.map((item, index) => {
+  return orders.map((item, index) => {
     const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
     return (
       <Accordion key={index} type="single" collapsible>

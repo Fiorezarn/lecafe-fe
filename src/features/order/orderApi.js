@@ -24,8 +24,10 @@ const fetchCreateOrder = async ({
   return await response.json();
 };
 
-const fetchOrderByUserId = async (id) => {
-  const response = await fetch(`${BASE_URL}/order/${id}`);
+const fetchOrderByUserId = async ({ id, status }) => {
+  console.log(status, "ini status");
+
+  const response = await fetch(`${BASE_URL}/order/${id}/?status=${status}`);
   return await response.json();
 };
 
@@ -87,7 +89,7 @@ const fetchDeliveryOrder = async () => {
 };
 
 const fetchAllOrderHistory = async () => {
-  const response = await fetch(`${BASE_URL}/order/?status=delivered`);
+  const response = await fetch(`${BASE_URL}/order/?status=ordered`);
   return await response.json();
 };
 

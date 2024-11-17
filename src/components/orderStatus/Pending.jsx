@@ -23,6 +23,7 @@ import NoData from "@/components/orderStatus/NoData";
 function Pending({ orders }) {
   const dispatch = useDispatch();
   const { cookie } = useSelector((state) => state.auth);
+  const { loading } = useSelector((state) => state.order);
   const cancelPayments = (id) => {
     dispatch({ type: "payments/cancelPayments", payload: id });
     location.reload();
@@ -36,11 +37,19 @@ function Pending({ orders }) {
     });
   };
 
-  const pendingOrders = orders?.filter(
-    (order) => order?.or_status_payment === "pending"
-  );
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center">
+        <div className="flex gap-2">
+          <div className="w-6 h-6 bg-red-600 rounded-full animate-bounce"></div>
+          <div className="w-6 h-6 bg-red-600 rounded-full animate-bounce"></div>
+          <div className="w-6 h-6 bg-red-600 rounded-full animate-bounce"></div>
+        </div>
+      </div>
+    );
+  }
 
-  if (!pendingOrders?.length)
+  if (!orders || orders.length === 0)
     return (
       <NoData
         title={"No Pending Orders"}
@@ -50,7 +59,7 @@ function Pending({ orders }) {
       />
     );
 
-  return pendingOrders.map((item, index) => {
+  return orders.map((item, index) => {
     const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
     return (
       <Accordion key={index} type="single" collapsible>
