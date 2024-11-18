@@ -174,7 +174,7 @@ function CardList() {
             className="text-center"
             title={"No data found"}
             paragraph={
-              "Please check your internet connection or try again later."
+              "Menu not found. Please try again with different keyword."
             }
           />
         ) : (

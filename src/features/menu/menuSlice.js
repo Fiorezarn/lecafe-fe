@@ -48,7 +48,7 @@ export const menuSlice = createSlice({
       state.message = action.payload.message;
       state.code = action.payload.code;
       state.isOpen = false;
-      state.newData = action.payload;
+      state.menu = action.payload;
     },
     createMenuFailure: (state, action) => {
       state.loading = false;
@@ -62,9 +62,10 @@ export const menuSlice = createSlice({
     },
     updateMenuSuccess: (state, action) => {
       state.loading = false;
+      state.isOpen = false;
       state.message = action.payload.message;
       state.code = action.payload.code;
-      state.editData = action.payload;
+      state.menu = action.payload;
     },
     updateMenuFailure: (state, action) => {
       state.loading = false;
@@ -74,6 +75,7 @@ export const menuSlice = createSlice({
       state.loading = false;
       state.code = action.payload.code;
       state.message = action.payload.message;
+      state.menu = action.payload;
     },
     deleteMenuFailure: (state, action) => {
       state.loading = false;

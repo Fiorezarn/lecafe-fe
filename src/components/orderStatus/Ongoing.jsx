@@ -13,20 +13,26 @@ import { useEffect, useRef, useState } from "react";
 import Map from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
 import NoData from "@/components/orderStatus/NoData";
+import AccordionSkeleton from "./AccordionSkeleton";
 
 function OnGoing({ orders, isOpenTab }) {
   const [isOpen, setIsOpen] = useState({});
   const mapRefs = useRef([]);
   const mapViews = useRef({});
   const dispatch = useDispatch();
-  const { orderById, coordinates } = useSelector((state) => state.order);
+  const { orderById, coordinates, loading } = useSelector(
+    (state) => state.order
+  );
 
-  // const orders = orders?.filter(
-  //   (order) =>
-  //     order?.or_status_shipping === "ongoing" &&
-  //     order?.or_type_order === "Delivery" &&
-  //     order?.or_status_payment === "settlement"
-  // );
+  // if (loading) {
+  //   return (
+  //     <div className="space-y-4">
+  //       {[...Array(3)].map((_, index) => (
+  //         <AccordionSkeleton key={index} />
+  //       ))}
+  //     </div>
+  //   );
+  // }
 
   const handleOpenAccordion = (index) => {
     setIsOpen((prevState) => ({
@@ -36,92 +42,94 @@ function OnGoing({ orders, isOpenTab }) {
   };
 
   useEffect(() => {
-    orders.forEach((order, index) => {
-      if (isOpen[index] && mapRefs.current[index] && coordinates) {
-        const map = new Map({
-          basemap: "streets-navigation-vector",
-        });
+    if (orders) {
+      orders.map((order, index) => {
+        if (isOpen[index] && mapRefs.current[index] && coordinates) {
+          const map = new Map({
+            basemap: "streets-navigation-vector",
+          });
 
-        const mapView = new MapView({
-          map: map,
-          container: mapRefs.current[index],
-          center: [106.7829375, -6.2443009],
-          zoom: 15,
-        });
+          const mapView = new MapView({
+            map: map,
+            container: mapRefs.current[index],
+            center: [106.7829375, -6.2443009],
+            zoom: 15,
+          });
 
-        const originPoint = {
-          type: "point",
-          longitude: order.or_longitude,
-          latitude: order.or_latitude,
-        };
-        const destinationPoint = {
-          type: "point",
-          longitude: orderById.origins.longitude,
-          latitude: orderById.origins.latitude,
-        };
+          const originPoint = {
+            type: "point",
+            longitude: order.or_longitude,
+            latitude: order.or_latitude,
+          };
+          const destinationPoint = {
+            type: "point",
+            longitude: orderById.origins.longitude,
+            latitude: orderById.origins.latitude,
+          };
 
-        const originGraphic = new Graphic({
-          geometry: originPoint,
-          symbol: {
-            type: "picture-marker",
-            url: "https://res.cloudinary.com/dsxnvgy7a/image/upload/v1731410974/store_wxaob8.png",
-            width: "30px",
-            height: "30px",
-            outline: {
-              color: [255, 255, 255],
-              width: 2,
-            },
-          },
-        });
-        const destinationGraphic = new Graphic({
-          geometry: destinationPoint,
-          symbol: {
-            type: "picture-marker",
-            url: "https://res.cloudinary.com/dsxnvgy7a/image/upload/v1731410682/motorcycle_l2iuvl.png",
-            width: "30px",
-            height: "30px",
-            outline: {
-              color: [255, 255, 255],
-              width: 2,
-            },
-          },
-        });
-
-        mapView.graphics.addMany([originGraphic, destinationGraphic]);
-
-        const extent = new Extent({
-          xmin: Math.min(originPoint.longitude, destinationPoint.longitude),
-          ymin: Math.min(originPoint.latitude, destinationPoint.latitude),
-          xmax: Math.max(originPoint.longitude, destinationPoint.longitude),
-          ymax: Math.max(originPoint.latitude, destinationPoint.latitude),
-          spatialReference: { wkid: 4326 },
-        });
-        mapView.extent = extent.expand(1.5);
-        const coordinate = coordinates.find(
-          (coordinate) => coordinate.id === index
-        );
-
-        const path = coordinate?.coord?.map((coord) => [coord[0], coord[1]]);
-        if (path) {
-          const routeGraphic = new Graphic({
-            geometry: {
-              type: "polyline",
-              paths: [path],
-            },
+          const originGraphic = new Graphic({
+            geometry: originPoint,
             symbol: {
-              type: "simple-line",
-              color: [0, 0, 255, 0.8],
-              width: 4,
+              type: "picture-marker",
+              url: "https://res.cloudinary.com/dsxnvgy7a/image/upload/v1731410974/store_wxaob8.png",
+              width: "30px",
+              height: "30px",
+              outline: {
+                color: [255, 255, 255],
+                width: 2,
+              },
             },
           });
-          mapView.graphics.add(routeGraphic);
+          const destinationGraphic = new Graphic({
+            geometry: destinationPoint,
+            symbol: {
+              type: "picture-marker",
+              url: "https://res.cloudinary.com/dsxnvgy7a/image/upload/v1731410682/motorcycle_l2iuvl.png",
+              width: "30px",
+              height: "30px",
+              outline: {
+                color: [255, 255, 255],
+                width: 2,
+              },
+            },
+          });
+
+          mapView.graphics.addMany([originGraphic, destinationGraphic]);
+
+          const extent = new Extent({
+            xmin: Math.min(originPoint.longitude, destinationPoint.longitude),
+            ymin: Math.min(originPoint.latitude, destinationPoint.latitude),
+            xmax: Math.max(originPoint.longitude, destinationPoint.longitude),
+            ymax: Math.max(originPoint.latitude, destinationPoint.latitude),
+            spatialReference: { wkid: 4326 },
+          });
+          mapView.extent = extent.expand(1.5);
+          const coordinate = coordinates.find(
+            (coordinate) => coordinate.id === index
+          );
+
+          const path = coordinate?.coord?.map((coord) => [coord[0], coord[1]]);
+          if (path) {
+            const routeGraphic = new Graphic({
+              geometry: {
+                type: "polyline",
+                paths: [path],
+              },
+              symbol: {
+                type: "simple-line",
+                color: [0, 0, 255, 0.8],
+                width: 4,
+              },
+            });
+            mapView.graphics.add(routeGraphic);
+          }
         }
-      }
-    });
+      });
+    }
   }, [isOpen, orders, coordinates, orderById]);
 
   useEffect(() => {
-    if (orderById) {
+    if (orderById && orders) {
       const orderCoordinates = orders
         .map((order, index) => ({
           id: index,
@@ -141,7 +149,7 @@ function OnGoing({ orders, isOpenTab }) {
     }
   }, [orderById]);
 
-  if (!orders?.length)
+  if (!orders || orders.length === 0) {
     return (
       <NoData
         title={"No Ongoing Orders"}
@@ -150,6 +158,7 @@ function OnGoing({ orders, isOpenTab }) {
         }
       />
     );
+  }
 
   return orders.map((item, index) => {
     const menus = JSON.parse(item.OrderDetail[0].od_mn_json);

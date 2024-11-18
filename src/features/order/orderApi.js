@@ -25,8 +25,6 @@ const fetchCreateOrder = async ({
 };
 
 const fetchOrderByUserId = async ({ id, status }) => {
-  console.log(status, "ini status");
-
   const response = await fetch(`${BASE_URL}/order/${id}/?status=${status}`);
   return await response.json();
 };

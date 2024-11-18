@@ -17,6 +17,7 @@ import VerifySuccess from "./pages/VerifySucess";
 import Dashboard from "./pages/Dashboard";
 import DashboardTracking from "./pages/DashboardTracking";
 import DashboardOrderHistory from "./pages/DashboardOrderHistory";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
       <Route path="/menu/:id" element={<DetailMenu />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
       <Route path="/verify-success" element={<VerifySuccess />} />
+      <Route path="*" element={<NotFound />} />
       <Route path="/verify-failed" element={<VerifyFailed />} />
       <Route element={<PublicRoute />}>
         <Route path="/login" element={<Login />} />

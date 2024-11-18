@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { ClockIcon, MessageCircleX, Wallet } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import NoData from "@/components/orderStatus/NoData";
+import AccordionSkeleton from "./AccordionSkeleton";
 
 function Pending({ orders }) {
   const dispatch = useDispatch();
@@ -39,12 +40,10 @@ function Pending({ orders }) {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center">
-        <div className="flex gap-2">
-          <div className="w-6 h-6 bg-red-600 rounded-full animate-bounce"></div>
-          <div className="w-6 h-6 bg-red-600 rounded-full animate-bounce"></div>
-          <div className="w-6 h-6 bg-red-600 rounded-full animate-bounce"></div>
-        </div>
+      <div className="space-y-4">
+        {[...Array(3)].map((_, index) => (
+          <AccordionSkeleton key={index} />
+        ))}
       </div>
     );
   }
