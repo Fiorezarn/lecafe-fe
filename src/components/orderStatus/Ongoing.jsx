@@ -180,10 +180,10 @@ function OnGoing({ orders, isOpenTab }) {
           <AccordionContent>
             <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
               <div
-                className="w-full md:w-1/2 p-8 rounded"
+                className="w-full h-[400px] md:h-[500px] md:w-1/2 p-8 rounded"
                 ref={(el) => (mapRefs.current[index] = el)}
               />
-              <div className="w-full md:w-1/2 p-8 flex flex-col justify-between">
+              <div className="w-full md:w-1/2  p-8 flex flex-col justify-between">
                 <ul className="overflow-y-auto max-h-[300px] space-y-6">
                   {menus.map((menu) => {
                     return (
