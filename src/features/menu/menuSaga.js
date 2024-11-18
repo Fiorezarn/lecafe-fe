@@ -56,7 +56,18 @@ function* createMenu(action) {
   try {
     yield put(setLoading(true));
     const response = yield fetchcreateMenu(action.payload);
-    yield put(createMenuSuccess(response));
+    const responseGet = yield fetchAllMenu({
+      page: 1,
+      limit: 8,
+    });
+
+    yield put(
+      createMenuSuccess({
+        data: responseGet.data,
+        message: response.message,
+        code: response.code,
+      })
+    );
   } catch (error) {
     yield put(createMenuFailure(error));
   }
@@ -67,7 +78,17 @@ function* updateMenu(action) {
     yield put(setLoading(true));
     const { id, formData } = action.payload;
     const response = yield fetchEditMenu(id, formData);
-    yield put(updateMenuSuccess(response));
+    const responseGet = yield fetchAllMenu({
+      page: 1,
+      limit: 8,
+    });
+    yield put(
+      updateMenuSuccess({
+        data: responseGet.data,
+        message: response.message,
+        code: response.code,
+      })
+    );
   } catch (error) {
     yield put(updateMenuFailure(error.message));
   }
@@ -77,7 +98,17 @@ function* DeleteMenu(action) {
   try {
     yield put(setLoading(true));
     const response = yield fetchDeleteMenu(action.payload);
-    yield put(deleteMenuSuccess(response));
+    const responseGet = yield fetchAllMenu({
+      page: 1,
+      limit: 8,
+    });
+    yield put(
+      deleteMenuSuccess({
+        data: responseGet.data,
+        message: response.message,
+        code: response.code,
+      })
+    );
   } catch (error) {
     yield put(deleteMenuFailure(error.message));
   }

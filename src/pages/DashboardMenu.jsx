@@ -47,10 +47,8 @@ function DashboardMenu() {
   }, [error, toast]);
 
   useEffect(() => {
-    if (!menu) {
-      dispatch({ type: "menu/getAllMenu" });
-    }
-  }, [dispatch, menu]);
+    dispatch({ type: "menu/getAllMenu" });
+  }, [dispatch]);
 
   useEffect(() => {
     if (code) {
@@ -66,8 +64,6 @@ function DashboardMenu() {
             "top-10 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
           ),
         });
-        // navigate(0);
-        dispatch({ type: "menu/getAllMenu" });
       } else {
         toast({
           variant: "destructive",

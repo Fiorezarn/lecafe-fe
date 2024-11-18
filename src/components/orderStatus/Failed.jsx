@@ -7,16 +7,23 @@ import {
 } from "@/components/ui/accordion";
 import { CircleAlert } from "lucide-react";
 import NoData from "@/components/orderStatus/NoData";
+import { useSelector } from "react-redux";
+import AccordionSkeleton from "./AccordionSkeleton";
 
 function Failed({ orders }) {
-  const failedOrders = orders?.filter(
-    (order) =>
-      order?.or_status_payment === "expired" ||
-      (order?.or_status_payment === "cancelled" &&
-        order?.or_status_shipping === "cancelled")
-  );
+  const { loading } = useSelector((state) => state.order);
 
-  if (!failedOrders?.length)
+  if (loading) {
+    return (
+      <div className="space-y-4">
+        {[...Array(3)].map((_, index) => (
+          <AccordionSkeleton key={index} />
+        ))}
+      </div>
+    );
+  }
+
+  if (!orders || orders.length === 0) {
     return (
       <NoData
         title={"No Failed Orders"}
@@ -25,8 +32,9 @@ function Failed({ orders }) {
         }
       />
     );
+  }
 
-  return failedOrders.map((item, index) => {
+  return orders.map((item, index) => {
     const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
     return (
       <Accordion key={index} type="single" collapsible>

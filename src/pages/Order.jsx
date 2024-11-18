@@ -81,31 +81,39 @@ function Order() {
     }
   }, [transactions]);
 
-  useEffect(() => {
-    if (id) {
-      dispatch({ type: "order/getOrderByUserId", payload: id });
-    }
-  }, [id]);
+  const handleTabChange = (value) => {
+    setIsOpenTab(value);
+    dispatch({
+      type: "order/getOrderByUserId",
+      payload: { id, status: value },
+    });
+  };
+
+  // useEffect(() => {
+  //   if (id) {
+  //     dispatch({ type: "order/getOrderByUserId", payload: id });
+  //   }
+  // }, [id]);
 
   return (
     <>
-      <Navbar navClass={"bg-earth border-gray-200 z-10"} />
+      <Navbar />
       <div className="p-10 bg-earth5 h-screen overflow-y-auto">
         <Tabs
           defaultValue="pending"
           className="w-full"
-          onValueChange={(value) => setIsOpenTab(value)}
+          onValueChange={handleTabChange}
         >
           <TabsList className="grid w-full grid-cols-4 font-mono">
             <TabsTrigger value="pending">Pending</TabsTrigger>
-            <TabsTrigger value="on-going">On-going</TabsTrigger>
+            <TabsTrigger value="ongoing">On-going</TabsTrigger>
             <TabsTrigger value="ordered">Ordered</TabsTrigger>
             <TabsTrigger value="failed">Failed</TabsTrigger>
           </TabsList>
           <TabsContent value="pending">
             <Pending orders={orderById?.orders?.Order} />
           </TabsContent>
-          <TabsContent value="on-going">
+          <TabsContent value="ongoing">
             <OnGoing isOpenTab={isOpenTab} orders={orderById?.orders?.Order} />
           </TabsContent>
           <TabsContent value="ordered">

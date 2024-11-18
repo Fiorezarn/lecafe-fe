@@ -7,15 +7,23 @@ import {
 import { formatDate, formatPrice } from "@/lib/utils";
 import { CheckCircleIcon, WalletCards } from "lucide-react";
 import NoData from "@/components/orderStatus/NoData";
+import { useSelector } from "react-redux";
+import AccordionSkeleton from "./AccordionSkeleton";
 
 function Ordered({ orders }) {
-  const orderedOrders = orders?.filter(
-    (order) =>
-      order?.or_status_shipping === "delivered" &&
-      order?.or_status_payment === "settlement"
-  );
+  const { loading } = useSelector((state) => state.order);
 
-  if (!orderedOrders?.length)
+  if (loading) {
+    return (
+      <div className="space-y-4">
+        {[...Array(3)].map((_, index) => (
+          <AccordionSkeleton key={index} />
+        ))}
+      </div>
+    );
+  }
+
+  if (!orders || orders.length === 0) {
     return (
       <NoData
         title={"No Ordered Orders"}
@@ -24,8 +32,9 @@ function Ordered({ orders }) {
         }
       />
     );
+  }
 
-  return orderedOrders.map((item, index) => {
+  return orders.map((item, index) => {
     const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
     return (
       <Accordion key={index} type="single" collapsible>

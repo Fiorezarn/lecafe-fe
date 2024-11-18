@@ -48,6 +48,7 @@ function* createOrder(action) {
 
 function* getOrderByUserId(action) {
   try {
+    yield put(setLoading(true));
     const response = yield fetchOrderByUserId(action.payload);
     yield put(fetchOrderByUserIdSuccess(response));
   } catch (error) {

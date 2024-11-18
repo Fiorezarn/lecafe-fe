@@ -19,10 +19,12 @@ import { Button } from "@/components/ui/button";
 import { ClockIcon, MessageCircleX, Wallet } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import NoData from "@/components/orderStatus/NoData";
+import AccordionSkeleton from "./AccordionSkeleton";
 
 function Pending({ orders }) {
   const dispatch = useDispatch();
   const { cookie } = useSelector((state) => state.auth);
+  const { loading } = useSelector((state) => state.order);
   const cancelPayments = (id) => {
     dispatch({ type: "payments/cancelPayments", payload: id });
     location.reload();
@@ -36,11 +38,17 @@ function Pending({ orders }) {
     });
   };
 
-  const pendingOrders = orders?.filter(
-    (order) => order?.or_status_payment === "pending"
-  );
+  if (loading) {
+    return (
+      <div className="space-y-4">
+        {[...Array(3)].map((_, index) => (
+          <AccordionSkeleton key={index} />
+        ))}
+      </div>
+    );
+  }
 
-  if (!pendingOrders?.length)
+  if (!orders || orders.length === 0)
     return (
       <NoData
         title={"No Pending Orders"}
@@ -50,7 +58,7 @@ function Pending({ orders }) {
       />
     );
 
-  return pendingOrders.map((item, index) => {
+  return orders.map((item, index) => {
     const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
     return (
       <Accordion key={index} type="single" collapsible>
