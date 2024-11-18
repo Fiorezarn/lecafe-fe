@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { setMessage } from "../cart/cartSlice";
-import { fetchUpdateStatus } from "./orderApi";
 
 export const orderSlice = createSlice({
   name: "order",
@@ -15,6 +13,7 @@ export const orderSlice = createSlice({
     error: null,
     tracking: null,
     orders: null,
+    isOpen: false,
   },
   reducers: {
     fetchcreateOrderRequest: (state) => {
@@ -96,10 +95,14 @@ export const orderSlice = createSlice({
       state.loading = false;
       state.messageOrder = action.payload.message;
       state.codeOrder = action.payload.code;
+      state.tracking = action.payload.data;
     },
     fetchUpdateStatusFailed: (state, action) => {
       state.loading = false;
       state.error = action.payload;
+    },
+    setIsOpenModal: (state, action) => {
+      state.isOpen = action.payload;
     },
   },
 });
@@ -126,6 +129,7 @@ export const {
   fetchUpdateStatusFailed,
   fetchAllOrderHistorySuccess,
   fetchAllOrderHistoryFailure,
+  setIsOpenModal,
 } = orderSlice.actions;
 
 export default orderSlice.reducer;

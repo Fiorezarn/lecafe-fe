@@ -2,7 +2,11 @@ import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import DataTableComponent from "@/components/dashboard/DataTables";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { formatPrice } from "@/lib/utils";
+import { cn, formatDate, formatPrice } from "@/lib/utils";
+import { FaFileCsv } from "react-icons/fa";
+import { Button } from "@/components/ui/button";
+import { CircleCheckBigIcon } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 function convertArrayOfObjectsToCSV(array) {
   const columnDelimiter = ",";
@@ -52,8 +56,11 @@ function downloadCSV(array) {
 }
 
 function DashboardOrderHistory() {
-  const { orders } = useSelector((state) => state.order);
+  const { orders, codeOrder, messageOrder } = useSelector(
+    (state) => state.order
+  );
   const dispatch = useDispatch();
+  const { toast } = useToast();
 
   useEffect(() => {
     dispatch({ type: "order/getAllOrderHistory" });
@@ -64,32 +71,32 @@ function DashboardOrderHistory() {
   const columns = [
     {
       name: "Name",
-      selector: (row) => row.us_fullname,
+      selector: (row) => row.User?.us_fullname,
       sortable: true,
     },
     {
       name: "Shipping Status",
-      selector: (row) => row.Order[0]?.or_status_shipping,
+      selector: (row) => row.or_status_shipping,
       sortable: true,
     },
     {
       name: "Payment Status",
-      selector: (row) => row.Order[0]?.or_status_payment,
+      selector: (row) => row.or_status_payment,
       sortable: true,
     },
     {
       name: "Order Type",
-      selector: (row) => row.Order[0]?.or_type_order,
+      selector: (row) => row.or_type_order,
       sortable: true,
       conditionalCellStyles: [
         {
-          when: (row) => row.Order[0]?.or_type_order === "Dine-in",
+          when: (row) => row.or_type_order === "Dine-in",
           style: {
             backgroundColor: "#FBBF24",
           },
         },
         {
-          when: (row) => row.Order[0]?.or_type_order === "Delivery",
+          when: (row) => row.or_type_order === "Delivery",
           style: {
             backgroundColor: "#4ADE80",
           },
@@ -98,20 +105,38 @@ function DashboardOrderHistory() {
     },
     {
       name: "Site",
-      selector: (row) => row.Order[0]?.or_site,
+      selector: (row) => row.or_site,
       sortable: true,
     },
     {
       name: "Date",
-      selector: (row) => row.Order[0]?.createdAt,
+      selector: (row) => formatDate(row.createdAt),
       sortable: true,
     },
     {
       name: "Total Price",
-      selector: (row) => formatPrice(row.Order[0]?.or_total_price),
+      selector: (row) => formatPrice(row.or_total_price),
       sortable: true,
     },
   ];
+
+  useEffect(() => {
+    if (codeOrder) {
+      if (codeOrder === 201 || codeOrder === 200) {
+        toast({
+          description: (
+            <div className="flex gap-2 font-bold">
+              <CircleCheckBigIcon className="text-green-600" />
+              <p>{messageOrder}</p>
+            </div>
+          ),
+          className: cn(
+            "top-10 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+          ),
+        });
+      }
+    }
+  }, [codeOrder, messageOrder]);
 
   return (
     <DashboardLayout
@@ -124,12 +149,13 @@ function DashboardOrderHistory() {
         Order History
       </h1>
       <div className="mb-4">
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+        <Button
+          className="bg-green-900 text-white font-bold px-4 py-2 rounded"
           onClick={() => downloadCSV(data)}
         >
+          <FaFileCsv />
           Export CSV
-        </button>
+        </Button>
       </div>
       <DataTableComponent columns={columns} data={data} expand />
     </DashboardLayout>

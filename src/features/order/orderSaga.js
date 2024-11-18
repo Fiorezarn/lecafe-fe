@@ -113,9 +113,16 @@ function* getAllOrderHistory(action) {
 
 function* updateStatus(action) {
   try {
-    yield fetchUpdateStatus(action.payload);
+    setLoading(true);
+    const data = yield fetchUpdateStatus(action.payload);
     const response = yield fetchDeliveryOrder(action.payload);
-    yield put(fetchUpdateStatusSuccess(response));
+    yield put(
+      fetchUpdateStatusSuccess({
+        data: response.data,
+        message: data.message,
+        code: data.code,
+      })
+    );
   } catch (error) {
     yield put(fetchUpdateStatusFailed(error.message));
   }

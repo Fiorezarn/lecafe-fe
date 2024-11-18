@@ -34,7 +34,7 @@ function Login() {
           description: (
             <div className="flex items-center gap-2 font-bold">
               <CircleCheckBigIcon className="text-green-600" />
-              <p className="text-white">{error?.message}</p>
+              <p className="text-black">{error?.message}</p>
             </div>
           ),
           action: (

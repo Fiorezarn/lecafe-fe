@@ -1,6 +1,13 @@
 import DataTable from "react-data-table-component";
 
-function DataTableComponent({ columns, data }) {
+function DataTableComponent({
+  columns,
+  data,
+  pagination,
+  paginationServer,
+  onChangePage,
+  onChangeRowsPerPage,
+}) {
   return (
     <div className="overflow-auto">
       <DataTable
@@ -8,7 +15,10 @@ function DataTableComponent({ columns, data }) {
         columns={columns}
         data={data}
         responsive={true}
-        pagination
+        pagination={pagination}
+        paginationServer={paginationServer}
+        onChangePage={onChangePage}
+        onChangeRowsPerPage={onChangeRowsPerPage}
       />
     </div>
   );

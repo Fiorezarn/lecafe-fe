@@ -12,11 +12,11 @@ function VerifySuccess() {
         features.
       </p>
       <button
-        onClick={() => (window.location.href = "/")}
+        onClick={() => (window.location.href = "/login")}
         className="mt-8 px-6 py-3 rounded-md font-semibold text-white bg-earth2 hover:bg-earth3 transition-colors duration-300"
         style={{ backgroundColor: "#AB886D", color: "#E4E0E1" }}
       >
-        Go to Home
+        Login Now
       </button>
     </div>
   );

@@ -27,6 +27,10 @@ function Register() {
   };
 
   useEffect(() => {
+    console.log(user?.code);
+  }, [user]);
+
+  useEffect(() => {
     if (error) {
       const code = error?.code;
       if (code !== 201) {
@@ -42,19 +46,19 @@ function Register() {
             "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
           ),
         });
-      } else {
-        toast({
-          description: (
-            <div className="flex gap-2 font-bold">
-              <CircleCheckBigIcon className="text-green-600" />
-              <p>We have sent you an email to verify your account.</p>
-            </div>
-          ),
-          className: cn(
-            "top-10 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
-          ),
-        });
       }
+    } else if (user?.code === 201) {
+      toast({
+        description: (
+          <div className="flex gap-2 font-bold">
+            <CircleCheckBigIcon className="text-green-600" />
+            <p>We have sent you an email to verify your account.</p>
+          </div>
+        ),
+        className: cn(
+          "top-10 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+        ),
+      });
     }
   }, [error]);
 
