@@ -15,6 +15,7 @@ export const menuSlice = createSlice({
     page: 1,
     limit: 8,
     totalItems: 0,
+    search: "",
     type: "create",
     productId: null,
     menuRecommended: null,
@@ -92,6 +93,9 @@ export const menuSlice = createSlice({
     setType: (state, action) => {
       state.type = action.payload;
     },
+    setSearch: (state, action) => {
+      state.search = action.payload;
+    },
     setProductId: (state, action) => {
       state.productId = action.payload;
     },
@@ -125,6 +129,7 @@ export const {
   setLimit,
   setType,
   setProductId,
+  setSearch,
   fetchMenuRecommendedSuccess,
   fetchMenuRecommendedFailure,
 } = menuSlice.actions;

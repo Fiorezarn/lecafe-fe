@@ -22,6 +22,7 @@ import {
   setType,
   setPage,
   setLimit,
+  setSearch,
 } from "@/features/menu/menuSlice";
 
 function DashboardMenu() {
@@ -37,6 +38,7 @@ function DashboardMenu() {
     limit,
     page,
     totalItems,
+    search,
   } = useSelector((state) => state.menu);
 
   useEffect(() => {
@@ -59,7 +61,7 @@ function DashboardMenu() {
   useEffect(() => {
     dispatch({
       type: "menu/getAllMenu",
-      payload: { page, limit },
+      payload: { page, limit, search },
     });
   }, [dispatch, page, limit]);
 
@@ -115,6 +117,10 @@ function DashboardMenu() {
 
   const handleLimitChange = (newLimit) => {
     dispatch(setLimit(newLimit));
+  };
+
+  const handleSearch = (e) => {
+    dispatch(setSearch(e.target.value));
   };
 
   const data = menu?.data || [];
@@ -200,6 +206,15 @@ function DashboardMenu() {
         Create Menu
       </Button>
       {isOpen && <ModalMenu />}
+      <div className="flex justify-end mb-4">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={search}
+          onChange={(e) => handleSearch(e)}
+          className="border border-gray-300 rounded-l-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
       <DataTableComponent
         columns={columns}
         data={data}
