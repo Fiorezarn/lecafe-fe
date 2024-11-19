@@ -25,7 +25,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { cn, formatPrice } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
-import { setPage } from "@/features/menu/menuSlice";
+import { setCategory, setPage, setSearch } from "@/features/menu/menuSlice";
 import {
   Select,
   SelectContent,
@@ -42,13 +42,11 @@ import CardSkeleton from "./CardSkeleton";
 function CardList() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { menu, error, page, limit, loading } = useSelector(
+  const { menu, error, page, limit, search, loading, category } = useSelector(
     (state) => state.menu
   );
   const { cookie } = useSelector((state) => state.auth);
   const { message, errorCart } = useSelector((state) => state.cart);
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("");
   const { toast } = useToast();
 
   useEffect(() => {
@@ -57,7 +55,7 @@ function CardList() {
 
   useEffect(() => {
     if (category === "all") {
-      setCategory("");
+      dispatch(setCategory(""));
     }
     dispatch({
       type: "menu/getAllMenu",
@@ -107,11 +105,11 @@ function CardList() {
   };
 
   const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    dispatch({
-      type: "menu/getAllMenu",
-      payload: { page, limit, search, category },
-    });
+    dispatch(setSearch(e.target.value));
+  };
+
+  const handleCategorySubmit = (value) => {
+    dispatch(setCategory(value));
   };
 
   useEffect(() => {
@@ -134,20 +132,13 @@ function CardList() {
   return (
     <div className="flex flex-col">
       <div className="flex lg:flex-row flex-col gap-4 lg:justify-between mb-8">
-        <form onSubmit={handleSearchSubmit}>
-          <Input
-            className="form-control font-mono"
-            placeholder="Search..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleSearchSubmit(e);
-              }
-            }}
-          />
-        </form>
-        <Select value={category} onValueChange={setCategory}>
+        <Input
+          className="form-control font-mono"
+          placeholder="Search..."
+          value={search}
+          onChange={(e) => handleSearchSubmit(e)}
+        />
+        <Select value={category} onValueChange={handleCategorySubmit}>
           <SelectTrigger className="w-full lg:w-[180px]">
             <SelectValue placeholder="Select a category" />
           </SelectTrigger>
