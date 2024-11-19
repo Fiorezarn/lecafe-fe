@@ -47,12 +47,13 @@ function Subcribe() {
     }
   }, []);
   return (
-    <section className="bg-earth6 py-16 md:px-20 items-center flex flex-col-reverse gap-4 md:flex-row">
+    <section className="bg-earth6 py-16 px-6 md:px-20 flex flex-col-reverse md:flex-row items-center gap-8">
       <div
-        className="mapDiv rounded-md w-[40vh] h-[50vh] md:w-[50%] md:h-[50vh]"
+        className="mapDiv rounded-md w-full max-w-[500px] aspect-[4/3] md:w-[50%] md:aspect-auto md:h-[50vh]"
         ref={mapDiv}
       ></div>
-      <div className="container mx-auto px-6 lg:px-20 text-center">
+
+      <div className="text-center md:w-[50%] px-4">
         <h2 className="text-3xl font-bold text-gray-800 mb-4 font-mono">
           Stay Updated!
         </h2>
@@ -63,11 +64,11 @@ function Subcribe() {
         <form className="flex flex-col md:flex-row items-center justify-center gap-4">
           <Input
             type="email"
-            className="w-full md:w-[400px] px-4 py-2 border font-mono border-gray-300 rounded-md focus:ring-2 focus:ring-earth3 focus:outline-none"
+            className="w-full md:w-[300px] px-4 py-2 border font-mono border-gray-300 rounded-md focus:ring-2 focus:ring-earth3 focus:outline-none"
             placeholder="Enter your email address"
             required
           />
-          <Button className="px-6 py-2 bg-earth3 text-white font-medium rounded-md hover:bg-earth4 transition-colors duration-300">
+          <Button className="px-6 py-2 bg-earth text-white rounded-md hover:bg-earth2 font-mono font-semibold transition-colors duration-300">
             Subscribe
           </Button>
         </form>

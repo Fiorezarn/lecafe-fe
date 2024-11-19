@@ -14,6 +14,7 @@ export const menuSlice = createSlice({
     code: null,
     page: 1,
     limit: 8,
+    totalItems: 0,
     type: "create",
     productId: null,
     menuRecommended: null,
@@ -26,6 +27,7 @@ export const menuSlice = createSlice({
     fetchSuccessGetAllMenu: (state, action) => {
       state.loading = false;
       state.menu = action.payload;
+      state.totalItems = action.payload.totalItems;
     },
     fetchFailureGetAllMenu: (state, action) => {
       state.loading = false;

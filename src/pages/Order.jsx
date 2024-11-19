@@ -19,7 +19,6 @@ function Order() {
   );
   const { cookie } = useSelector((state) => state.auth);
   const id = cookie?.us_id;
-  const [isOpenTab, setIsOpenTab] = useState(false);
   const [value, setValue] = useState("");
   const queryParams = new URLSearchParams(window.location.search);
   const orderIdMidtrans = queryParams.get("order_id");
@@ -92,7 +91,6 @@ function Order() {
   }, [dispatch, id]);
 
   const handleTabChange = (value) => {
-    setIsOpenTab(value);
     setValue(value);
     dispatch({
       type: "order/getOrderByUserId",
@@ -119,7 +117,7 @@ function Order() {
             <Pending orders={orderById?.orders?.Order} />
           </TabsContent>
           <TabsContent value="ongoing">
-            <OnGoing isOpenTab={isOpenTab} orders={orderById?.orders?.Order} />
+            <OnGoing orders={orderById?.orders?.Order} />
           </TabsContent>
           <TabsContent value="ordered">
             <Ordered orders={orderById?.orders?.Order} />

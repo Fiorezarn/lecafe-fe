@@ -77,7 +77,10 @@ function* createPayments(action) {
 function* createVerifyPayments(action) {
   try {
     yield verifyPayments(action.payload.orderIdMidtrans);
-    const response = yield fetchOrderByUserId(action.payload.userId);
+    const response = yield fetchOrderByUserId({
+      id: action.payload.userId,
+      status: "pending",
+    });
     yield put(fetchOrderByUserIdSuccess(response));
   } catch (error) {
     yield put(fetchVerifyTransactionFailed(error.message));

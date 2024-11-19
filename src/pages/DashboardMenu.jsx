@@ -27,8 +27,17 @@ import {
 function DashboardMenu() {
   const dispatch = useDispatch();
   const { toast } = useToast();
-  const { menu, message, code, loading, error, isOpen, limit, page } =
-    useSelector((state) => state.menu);
+  const {
+    menu,
+    message,
+    code,
+    loading,
+    error,
+    isOpen,
+    limit,
+    page,
+    totalItems,
+  } = useSelector((state) => state.menu);
 
   useEffect(() => {
     if (error) {
@@ -197,6 +206,7 @@ function DashboardMenu() {
         pagination
         paginationServer
         onChangePage={handlePageChange}
+        totalRows={totalItems}
         onChangeRowsPerPage={handleLimitChange}
       />
     </DashboardLayout>

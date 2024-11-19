@@ -7,6 +7,7 @@ function DataTableComponent({
   paginationServer,
   onChangePage,
   onChangeRowsPerPage,
+  totalRows,
 }) {
   return (
     <div className="overflow-auto">
@@ -19,6 +20,7 @@ function DataTableComponent({
         paginationServer={paginationServer}
         onChangePage={onChangePage}
         onChangeRowsPerPage={onChangeRowsPerPage}
+        paginationTotalRows={totalRows}
       />
     </div>
   );
