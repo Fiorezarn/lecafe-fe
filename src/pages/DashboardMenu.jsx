@@ -63,7 +63,7 @@ function DashboardMenu() {
       type: "menu/getAllMenu",
       payload: { page, limit, search },
     });
-  }, [dispatch, page, limit]);
+  }, [dispatch, page, limit, search]);
 
   useEffect(() => {
     if (code) {
