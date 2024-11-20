@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useDispatch, useSelector } from "react-redux";
-import { CircleX, Minus, Plus, Trash } from "lucide-react";
+import { CircleX, Coffee, Minus, Plus, Trash } from "lucide-react";
 import { cn, formatPrice } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router-dom";
@@ -261,6 +261,24 @@ function Cart() {
                 id="typeOrder"
                 onValueChange={(value) => setTableNumber(value)}
               >
+                <SelectTrigger
+                  id="tableNumber"
+                  className="w-full text-amber-900 border-earth1 focus:border-earth1"
+                >
+                  <SelectValue placeholder="Select Table Number" />
+                </SelectTrigger>
+                <SelectContent>
+                  {[...Array(10).keys()].map((num) => (
+                    <SelectItem key={num + 1} value={String(num + 1)}>
+                      Table {num + 1}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {/* <Select
+                id="typeOrder"
+                onValueChange={(value) => setTableNumber(value)}
+              >
                 <SelectTrigger className="w-full mb-4 text-black">
                   <SelectValue placeholder="Type Order" />
                 </SelectTrigger>
@@ -276,7 +294,7 @@ function Cart() {
                   <SelectItem value="9">9</SelectItem>
                   <SelectItem value="10">10</SelectItem>
                 </SelectContent>
-              </Select>
+              </Select> */}
             </div>
           )}
 
@@ -294,13 +312,17 @@ function Cart() {
               />
             </div>
           )}
-
           <Button
-            className="w-full mt-6 bg-earth text-white font-mono text-lg hover:bg-gray-800"
             onClick={handleSubmit}
+            className="w-full mt-6 bg-earth text-white font-mono text-lg hover:bg-gray-800"
             disabled={loading}
           >
-            {loading ? "Loading..." : "Proceed to Checkout"}
+            {loading ? (
+              <Coffee className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Coffee className="mr-2 h-4 w-4" />
+            )}
+            {loading ? "Processing..." : "Proceed to Checkout"}
           </Button>
         </aside>
       </div>

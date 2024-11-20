@@ -11,7 +11,7 @@ function Hero() {
       }}
     >
       <div className="absolute w-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center group">
-        <h1 className="font-semibold font-sour text-3xl md:text-5xl lg:text-7xl text-white drop-shadow-lg cursor-pointer">
+        <h1 className="font-semibold font-sour text-3xl md:text-5xl lg:text-7xl text-white drop-shadow-lg">
           Welcome to Le Café {cookie?.us_username}!
         </h1>
 

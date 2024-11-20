@@ -12,7 +12,7 @@ function Navbar() {
   const dispatch = useDispatch();
   const userId = cookie?.us_id;
 
-  const location = useLocation(); // Mengambil lokasi URL saat ini
+  const location = useLocation();
 
   useEffect(() => {
     if (userId) {
@@ -27,7 +27,7 @@ function Navbar() {
   const isActive = (path) => (location.pathname === path ? "text-earth3" : "");
 
   return (
-    <nav className="bg-earth border-gray-200 sticky top-0 z-[99] transition-all duration-300">
+    <nav className="bg-earth border-gray-200 sticky top-0 z-50 transition-all duration-300">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
           <img

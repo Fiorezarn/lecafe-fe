@@ -84,10 +84,6 @@ function CardDetail() {
     }
   }, [message]);
 
-  useEffect(() => {
-    console.log(menuById);
-  }, [menuById]);
-
   return (
     <div className="flex flex-col lg:flex-row rounded-xl">
       <img
@@ -114,7 +110,7 @@ function CardDetail() {
           </span>
 
           <div className="flex space-x-2 md:space-x-4 mt-4">
-            <div className="bg-white flex justify-between items-center border border-black rounded-md p-1">
+            <div className="bg-white flex justify-between items-center border w-32 border-black rounded-md p-1">
               <Button
                 variant="transparant"
                 size="xs"
@@ -126,7 +122,7 @@ function CardDetail() {
               <input
                 id="quantity"
                 type="number"
-                className="placeholder:leading-loose text-black w-[30%] h-full font-mono mx-2 placeholder:text-center focus:outline-none focus:border-none focus:ring-0 text-center [&::-webkit-inner-spin-button]:appearance-none"
+                className="placeholder:leading-loose text-black w-[20%] h-full font-mono mx-2 placeholder:text-center focus:outline-none focus:border-none focus:ring-0 text-center [&::-webkit-inner-spin-button]:appearance-none"
                 placeholder="0"
                 value={count}
                 readOnly

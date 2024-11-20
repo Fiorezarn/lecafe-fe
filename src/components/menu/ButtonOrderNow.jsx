@@ -1,5 +1,3 @@
-"use client";
-
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { CircleX, Coffee, MapPin, UtensilsCrossed } from "lucide-react";
@@ -29,8 +27,9 @@ import { Button } from "@/components/ui/button";
 import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
 import { Card, CardContent } from "../ui/card";
+import PropTypes from "prop-types";
 
-export default function ButtonOrderNow({ idMenu }) {
+function ButtonOrderNow({ idMenu }) {
   const { toast } = useToast();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -44,27 +43,6 @@ export default function ButtonOrderNow({ idMenu }) {
   const [address, setAddress] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const userId = cookie?.us_id;
-
-  useEffect(() => {
-    if (codeOrder && messageOrder) {
-      if (codeOrder !== 201) {
-        toast({
-          variant: "destructive",
-          description: (
-            <div className="flex items-center gap-2 font-bold">
-              <CircleX className="text-white" />
-              <p>{messageOrder}</p>
-            </div>
-          ),
-          className: cn(
-            "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
-          ),
-        });
-      } else {
-        navigate("/order");
-      }
-    }
-  }, [codeOrder, messageOrder, navigate, toast]);
 
   const handleOrderNowClick = () => {
     if (!cookie) {
@@ -114,6 +92,28 @@ export default function ButtonOrderNow({ idMenu }) {
       });
     }
   };
+
+  useEffect(() => {
+    if (codeOrder && messageOrder) {
+      if (codeOrder !== 201) {
+        toast({
+          variant: "destructive",
+          description: (
+            <div className="flex items-center gap-2 font-bold">
+              <CircleX className="text-white" />
+              <p>{messageOrder}</p>
+            </div>
+          ),
+          className: cn(
+            "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+          ),
+        });
+      } else {
+        window.scrollTo(0, 0);
+        navigate("/order");
+      }
+    }
+  }, [codeOrder, messageOrder]);
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -256,3 +256,9 @@ export default function ButtonOrderNow({ idMenu }) {
     </Dialog>
   );
 }
+
+export default ButtonOrderNow;
+
+ButtonOrderNow.propTypes = {
+  idMenu: PropTypes.oneOfType([PropTypes.number]),
+};

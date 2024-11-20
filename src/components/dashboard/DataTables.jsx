@@ -8,6 +8,10 @@ function DataTableComponent({
   onChangePage,
   onChangeRowsPerPage,
   totalRows,
+  expandedRows,
+  onRowExpand,
+  expandable,
+  ExpandedComponent,
 }) {
   return (
     <div className="overflow-auto">
@@ -21,6 +25,10 @@ function DataTableComponent({
         onChangePage={onChangePage}
         onChangeRowsPerPage={onChangeRowsPerPage}
         paginationTotalRows={totalRows}
+        expandableRows={expandable}
+        expandableRowsComponent={ExpandedComponent}
+        expandedRows={expandedRows}
+        onRowExpand={onRowExpand}
       />
     </div>
   );

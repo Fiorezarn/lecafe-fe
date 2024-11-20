@@ -1,16 +1,11 @@
-import DashboardLayout from "@/components/dashboard/DashboardLayout";
-import DataTableComponent from "@/components/dashboard/DataTables";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { cn, formatPrice } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { CheckCircleIcon, CircleX } from "lucide-react";
+import DataTableComponent from "@/components/dashboard/DataTables";
+import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import {
   Dialog,
   DialogClose,
@@ -20,10 +15,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { CheckCircleIcon, CircleCheckBigIcon, CircleX } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import ExpandedRowComponent from "@/components/dashboard/ExpandedRow";
 
 function DashboardTracking() {
   const { tracking, loading, codeOrder, messageOrder } = useSelector(
@@ -32,6 +25,7 @@ function DashboardTracking() {
   const dispatch = useDispatch();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [expandedRows, setExpandedRows] = useState([]);
 
   useEffect(() => {
     dispatch({ type: "order/trackingOrder" });
@@ -104,6 +98,10 @@ function DashboardTracking() {
     },
   ];
 
+  const handleRowExpand = (state) => {
+    setExpandedRows(state);
+  };
+
   useEffect(() => {
     if (codeOrder) {
       if (codeOrder === 201 || codeOrder === 200) {
@@ -135,7 +133,14 @@ function DashboardTracking() {
       <h1 className="text-3xl lg:text-4xl mb-6 lg:mb-10 font-bold mt-10 text-earth">
         Tracking
       </h1>
-      <DataTableComponent columns={columns} data={data} expand />
+      <DataTableComponent
+        columns={columns}
+        data={data}
+        expandable={true}
+        expandedRows={expandedRows}
+        onRowExpand={handleRowExpand}
+        ExpandedComponent={ExpandedRowComponent}
+      />
     </DashboardLayout>
   );
 }

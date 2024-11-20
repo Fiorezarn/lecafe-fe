@@ -1,12 +1,13 @@
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import DataTableComponent from "@/components/dashboard/DataTables";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { cn, formatDate, formatPrice } from "@/lib/utils";
 import { FaFileCsv } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { CircleCheckBigIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import ExpandedRowComponent from "@/components/dashboard/ExpandedRow";
 
 function convertArrayOfObjectsToCSV(array) {
   const columnDelimiter = ",";
@@ -61,6 +62,7 @@ function DashboardOrderHistory() {
   );
   const dispatch = useDispatch();
   const { toast } = useToast();
+  const [expandedRows, setExpandedRows] = useState([]);
 
   useEffect(() => {
     dispatch({ type: "order/getAllOrderHistory" });
@@ -138,6 +140,9 @@ function DashboardOrderHistory() {
     }
   }, [codeOrder, messageOrder]);
 
+  const handleRowExpand = (state) => {
+    setExpandedRows(state);
+  };
   return (
     <DashboardLayout
       breadcrumbLinks={[
@@ -157,7 +162,14 @@ function DashboardOrderHistory() {
           Export CSV
         </Button>
       </div>
-      <DataTableComponent columns={columns} data={data} expand />
+      <DataTableComponent
+        columns={columns}
+        data={data}
+        expandable={true}
+        expandedRows={expandedRows}
+        onRowExpand={handleRowExpand}
+        ExpandedComponent={ExpandedRowComponent}
+      />
     </DashboardLayout>
   );
 }
