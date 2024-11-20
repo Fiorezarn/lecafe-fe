@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import AvatarNav from "./Avatar";
 import { Menu, ShoppingCart } from "lucide-react";
 import { Separator } from "../ui/separator";
@@ -11,6 +12,8 @@ function Navbar() {
   const dispatch = useDispatch();
   const userId = cookie?.us_id;
 
+  const location = useLocation(); // Mengambil lokasi URL saat ini
+
   useEffect(() => {
     if (userId) {
       dispatch({ type: "cart/cartCount", payload: userId });
@@ -20,6 +23,8 @@ function Navbar() {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  const isActive = (path) => (location.pathname === path ? "text-earth3" : "");
 
   return (
     <nav className="bg-earth border-gray-200 sticky top-0 z-[99] transition-all duration-300">
@@ -68,7 +73,9 @@ function Navbar() {
             <li>
               <a
                 href="/"
-                className="block py-2 px-3 text-white rounded hover:bg-earth"
+                className={`block py-2 px-3 text-white rounded hover:text-earth3 ${isActive(
+                  "/"
+                )}`}
               >
                 Home
               </a>
@@ -76,7 +83,9 @@ function Navbar() {
             <li>
               <a
                 href="/menu"
-                className="block py-2 px-3 text-white rounded hover:bg-earth"
+                className={`block py-2 px-3 text-white rounded hover:text-earth3 ${isActive(
+                  "/menu"
+                )}`}
               >
                 Menu
               </a>
@@ -84,7 +93,9 @@ function Navbar() {
             <li>
               <a
                 href="/order"
-                className="block py-2 px-3 text-white rounded hover:bg-earth"
+                className={`block py-2 px-3 text-white rounded hover:text-earth3 ${isActive(
+                  "/order"
+                )}`}
               >
                 Order
               </a>
