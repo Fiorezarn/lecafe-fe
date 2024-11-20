@@ -14,6 +14,8 @@ import Map from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
 import NoData from "@/components/orderStatus/NoData";
 import AccordionSkeleton from "./AccordionSkeleton";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 
 function OnGoing({ orders, isOpenTab }) {
   const [isOpen, setIsOpen] = useState({});
@@ -178,46 +180,75 @@ function OnGoing({ orders, isOpenTab }) {
             </div>
           </AccordionTrigger>
           <AccordionContent>
-            <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
+            <div className="flex flex-col md:flex-row bg-earth6 shadow-lg rounded-lg overflow-hidden border-2 border-earth1">
               <div
-                className="w-full h-[400px] md:h-[500px] md:w-1/2 p-8 rounded"
+                className="w-full h-[400px] md:h-[500px] md:w-1/2 p-2 rounded"
                 ref={(el) => (mapRefs.current[index] = el)}
               />
-              <div className="w-full md:w-1/2  p-8 flex flex-col justify-between">
-                <ul className="overflow-y-auto max-h-[300px] space-y-6">
-                  {menus.map((menu) => {
-                    return (
-                      <li
-                        key={menu.id}
-                        className="flex justify-between items-center mb-4"
-                      >
-                        <div className="flex items-center gap-4">
-                          <img
-                            className="w-10 h-10 md:w-20 md:h-20  rounded-lg object-cover"
-                            src={`${menu?.image}`}
-                            alt="Menu item"
-                          />
-                          <h1 className="text-xs md:text-sm lg:text-xl font-semibold text-gray-800">
-                            {menu?.name}
-                          </h1>
+              <div className="w-full md:w-1/2 p-6 flex flex-col justify-between bg-earth4/10">
+                <div className="space-y-6">
+                  <h3 className="text-earth text-xl font-semibold">
+                    Order Details
+                  </h3>
+                  <ScrollArea className="h-[300px] pr-4">
+                    <div className="space-y-4">
+                      {menus.map((menu) => (
+                        <div key={menu.id} className="group">
+                          <div className="flex items-center justify-between p-4 rounded-lg bg-earth4/30 transition-all duration-300 hover:bg-earth4/50">
+                            <div className="flex items-center gap-4">
+                              <div className="relative h-16 w-16 rounded-lg overflow-hidden">
+                                <img
+                                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                  src={menu?.image}
+                                  alt={menu?.name || "Menu item"}
+                                />
+                              </div>
+                              <div>
+                                <h4 className="text-earth font-medium text-sm md:text-base lg:text-lg truncate max-w-[150px]">
+                                  {menu?.name}
+                                </h4>
+                                <p className="text-earth1 text-xs md:text-sm mt-1">
+                                  {formatPrice(menu?.price)} x {menu?.quantity}
+                                </p>
+                              </div>
+                            </div>
+                            <p className="text-earth2 text-sm md:text-base lg:text-lg font-medium">
+                              {formatPrice(menu?.price * menu?.quantity)}
+                            </p>
+                          </div>
                         </div>
-                        <p className="text-xs md:text-sm lg:text-xl text-gray-700">
-                          {formatPrice(menu?.price)} x {menu?.quantity}
-                        </p>
-                      </li>
-                    );
-                  })}
-                </ul>
-                <div className="mt-4 space-y-4">
-                  <h1 className="text-sm md:text-sm lg:text-xl font-bold text-gray-800">
-                    Total Price: {formatPrice(item?.or_total_price)}
-                  </h1>
-                  <p className="text-sm md:text-sm lg:text-xl text-gray-600">
-                    Delivery on: {item?.or_site}
-                  </p>
-                  <p className="text-sm md:text-sm lg:text-xl text-gray-600">
-                    Payment Method: {item?.payment_method}
-                  </p>
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </div>
+                <div className="mt-6 space-y-4 bg-earth6 rounded-lg p-4 shadow-inner">
+                  <div className="flex justify-between items-center">
+                    <span className="text-earth1 text-base md:text-lg">
+                      Total Price
+                    </span>
+                    <span className="text-earth text-base md:text-lg font-bold">
+                      {formatPrice(item?.or_total_price)}
+                    </span>
+                  </div>
+                  <Separator className="bg-earth3/50" />
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-earth1 text-sm md:text-base">
+                        Delivery Address
+                      </span>
+                      <span className="text-earth text-sm md:text-base">
+                        {item?.or_site}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-earth1 text-sm md:text-base">
+                        Payment Method
+                      </span>
+                      <span className="text-earth text-sm md:text-base">
+                        {item?.payment_method}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

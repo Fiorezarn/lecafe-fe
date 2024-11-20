@@ -220,31 +220,33 @@ function DashboardMenu() {
       <h1 className="text-3xl lg:text-4xl mb-6 lg:mb-10 font-bold mt-10 text-earth">
         Menu Management
       </h1>
-      <Button className="bg-green-900 mb-9" onClick={handleCreate}>
-        Create Menu
-      </Button>
       {isOpen && <ModalMenu />}
-      <div className="flex justify-end mb-4 gap-2">
-        <Select value={category} onValueChange={handleCategorySubmit}>
-          <SelectTrigger className="w-full lg:w-[180px]">
-            <SelectValue placeholder="Select a category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="all">All</SelectItem>
-              <SelectItem value="coffee">Coffee</SelectItem>
-              <SelectItem value="non-coffee">Non-Coffee</SelectItem>
-              <SelectItem value="food">Food</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <Input
-          type="text"
-          placeholder="Search..."
-          value={search}
-          onChange={(e) => handleSearch(e)}
-          className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+      <div className="flex justify-between gap-2">
+        <Button className="bg-green-900 mb-9" onClick={handleCreate}>
+          Create Menu
+        </Button>
+        <div className="flex gap-2">
+          <Select value={category} onValueChange={handleCategorySubmit}>
+            <SelectTrigger className="w-full lg:w-[180px]">
+              <SelectValue placeholder="Select a category" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="all">All</SelectItem>
+                <SelectItem value="coffee">Coffee</SelectItem>
+                <SelectItem value="non-coffee">Non-Coffee</SelectItem>
+                <SelectItem value="food">Food</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <Input
+            type="text"
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => handleSearch(e)}
+            className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
       </div>
       <DataTableComponent
         columns={columns}

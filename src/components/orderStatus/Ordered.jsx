@@ -5,7 +5,14 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { formatDate, formatPrice } from "@/lib/utils";
-import { CheckCircleIcon, WalletCards } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import {
+  WalletCards,
+  CheckCircleIcon,
+  MapPin,
+  UtensilsCrossed,
+} from "lucide-react";
 import NoData from "@/components/orderStatus/NoData";
 import { useSelector } from "react-redux";
 import AccordionSkeleton from "./AccordionSkeleton";
@@ -51,43 +58,86 @@ function Ordered({ orders }) {
             </div>
           </AccordionTrigger>
           <AccordionContent>
-            <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
-              <div className="w-full md:w-1/2 p-8">
-                <ul className="overflow-y-auto max-h-[300px] space-y-4">
-                  {menus.map((menu, index) => (
-                    <li
-                      key={index}
-                      className="flex justify-between items-center"
-                    >
-                      <div className="flex items-center gap-4">
-                        <img
-                          className="w-20 h-20 rounded-lg object-cover"
-                          src={`${menu?.image}`}
-                          alt="Menu item"
-                        />
-                        <h1 className="text-lg font-semibold text-gray-800">
-                          {menu?.name}
-                        </h1>
+            <div className="flex flex-col md:flex-row bg-earth6 shadow-lg rounded-lg overflow-hidden border-2 border-earth1">
+              <div className="w-full md:w-3/5 p-6">
+                <h3 className="text-earth text-xl font-semibold mb-4">
+                  Order Items
+                </h3>
+                <ScrollArea className="h-[400px] pr-4">
+                  <div className="space-y-4">
+                    {menus.map((menu, index) => (
+                      <div key={index} className="group">
+                        <div className="flex items-center justify-between p-4 rounded-lg bg-earth4/30 transition-all duration-300 hover:bg-earth4/50">
+                          <div className="flex items-center gap-4">
+                            <div className="relative h-20 w-20 rounded-lg overflow-hidden">
+                              <img
+                                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                src={menu?.image}
+                                alt={menu?.name || "Menu item"}
+                              />
+                            </div>
+                            <div>
+                              <h4 className="text-earth font-medium text-lg md:text-xl truncate max-w-[200px]">
+                                {menu?.name}
+                              </h4>
+                              <p className="text-earth1 text-sm md:text-base mt-1">
+                                {formatPrice(menu?.price)} x {menu?.quantity}
+                              </p>
+                            </div>
+                          </div>
+                          <p className="text-earth2 text-base md:text-lg font-medium">
+                            {formatPrice(menu?.price * menu?.quantity)}
+                          </p>
+                        </div>
                       </div>
-                      <p className="text-lg text-gray-700">
-                        {menu?.price} x {menu?.quantity}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
+                    ))}
+                  </div>
+                </ScrollArea>
               </div>
-              <div className="w-full md:w-1/2 p-8 flex flex-col justify-end">
-                <h1 className="text-2xl font-bold text-green-800">
-                  Total Price: {formatPrice(item?.or_total_price)}
-                </h1>
-                <p className="text-xl flex text-gray-600">
-                  <WalletCards />: {item?.payment_method}
-                </p>
-                <p className="text-xl text-gray-600">
-                  {isNaN(Number(item?.or_site))
-                    ? "Delivery: " + item?.or_site
-                    : "Dine in Table: " + item?.or_site}
-                </p>
+              <div className="w-full md:w-2/5 bg-earth4/20 p-6 flex flex-col justify-between">
+                <div className="space-y-6">
+                  <h3 className="text-earth text-xl font-semibold">
+                    Order Summary
+                  </h3>
+                  <div className="space-y-4 bg-earth6 rounded-lg p-6 shadow-inner">
+                    <div className="flex justify-between items-center">
+                      <span className="text-earth1 text-lg">Total Price</span>
+                      <span className="text-earth text-xl font-bold">
+                        {formatPrice(item?.or_total_price)}
+                      </span>
+                    </div>
+                    <Separator className="my-2 bg-earth3/50" />
+                    <div className="space-y-3">
+                      <div className="flex items-center text-earth1">
+                        <WalletCards className="w-5 h-5 mr-2" />
+                        <span className="text-base">Payment Method:</span>
+                        <span className="ml-2 text-earth font-medium">
+                          {item?.payment_method}
+                        </span>
+                      </div>
+                      <div className="flex items-center text-earth1">
+                        {isNaN(Number(item?.or_site)) ? (
+                          <MapPin className="w-5 h-5 mr-2" />
+                        ) : (
+                          <UtensilsCrossed className="w-5 h-5 mr-2" />
+                        )}
+                        <span className="text-base">
+                          {isNaN(Number(item?.or_site))
+                            ? "Delivery Address:"
+                            : "Dine-in Table:"}
+                        </span>
+                        <span className="ml-2 text-earth font-medium">
+                          {item?.or_site}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-6 bg-earth2/20 rounded-lg p-4">
+                  <p className="text-earth text-center font-medium">
+                    Thank you for your order!
+                  </p>
+                </div>
               </div>
             </div>
           </AccordionContent>

@@ -60,7 +60,7 @@ function Register() {
         ),
       });
     }
-  }, [error]);
+  }, [error, user]);
 
   return (
     <div className="flex h-screen justify-between items-center">

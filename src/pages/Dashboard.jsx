@@ -1,10 +1,11 @@
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import { formatPrice } from "@/lib/utils";
 import { Box, Coffee, TrendingUp, UserRound } from "lucide-react";
 import { useEffect } from "react";
 import { FaMoneyBill } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 
-const StatCard = ({ icon: Icon, title, value, bgColor, percentage }) => {
+const StatCard = ({ icon: Icon, title, value, bgColor }) => {
   return (
     <div className="transform transition-all duration-300 hover:scale-105">
       <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -13,14 +14,6 @@ const StatCard = ({ icon: Icon, title, value, bgColor, percentage }) => {
             <div className={`p-4 ${bgColor} rounded-xl`}>
               <Icon className="h-8 w-8 text-white" />
             </div>
-            {percentage && (
-              <div className="flex items-center space-x-1">
-                <TrendingUp className="h-4 w-4 text-green-500" />
-                <span className="text-sm font-semibold text-green-500">
-                  +{percentage}%
-                </span>
-              </div>
-            )}
           </div>
           <div className="mt-4">
             <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider">
@@ -51,28 +44,24 @@ function Dashboard() {
       title: "Total Users",
       value: countData?.user,
       bgColor: "bg-indigo-500",
-      percentage: 12,
     },
     {
       icon: Box,
       title: "Total Orders",
       value: countData?.order,
       bgColor: "bg-blue-500",
-      percentage: 8,
     },
     {
       icon: Coffee,
       title: "Total Menu Items",
       value: countData?.menu,
       bgColor: "bg-amber-500",
-      percentage: 5,
     },
     {
       icon: FaMoneyBill,
       title: "Total Revenue",
-      value: countData?.menu,
+      value: formatPrice(countData?.revenue),
       bgColor: "bg-green-500",
-      percentage: 5,
     },
   ];
 
@@ -93,7 +82,6 @@ function Dashboard() {
               title={stat.title}
               value={stat.value}
               bgColor={stat.bgColor}
-              percentage={stat.percentage}
             />
           ))}
         </div>
