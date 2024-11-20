@@ -6,6 +6,7 @@ const fetchCreateOrder = async ({
   typeOrder,
   totalPrice,
   menuJson,
+  nameRecipient,
 }) => {
   const response = await fetch(`${BASE_URL}/order`, {
     method: "POST",
@@ -19,6 +20,7 @@ const fetchCreateOrder = async ({
       typeOrder,
       totalPrice,
       menuJson,
+      nameRecipient,
     }),
   });
   return await response.json();

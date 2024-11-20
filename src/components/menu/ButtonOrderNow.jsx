@@ -28,6 +28,7 @@ import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
 import { Card, CardContent } from "../ui/card";
 import PropTypes from "prop-types";
+import { Input } from "../ui/input";
 
 function ButtonOrderNow({ idMenu }) {
   const { toast } = useToast();
@@ -41,6 +42,7 @@ function ButtonOrderNow({ idMenu }) {
   const [orderType, setOrderType] = useState("");
   const [tableNumber, setTableNumber] = useState("");
   const [address, setAddress] = useState("");
+  const [nameRecipient, setNameRecipient] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const userId = cookie?.us_id;
 
@@ -80,6 +82,7 @@ function ButtonOrderNow({ idMenu }) {
           quantity: 1,
         },
       ]);
+
       dispatch({
         type: "order/createOrder",
         payload: {
@@ -88,6 +91,7 @@ function ButtonOrderNow({ idMenu }) {
           site,
           totalPrice: menuById?.mn_price,
           menuJson: menuJson,
+          nameRecipient,
         },
       });
     }
@@ -152,7 +156,19 @@ function ButtonOrderNow({ idMenu }) {
               </div>
             </CardContent>
           </Card>
-
+          <div className="space-y-2">
+            <label className="block font-mono text-lg font-semibold mb-2">
+              Name of Recipient
+            </label>
+            <Input
+              className="text-black"
+              id="nameRecipient"
+              type="text"
+              placeholder="Enter your name"
+              value={nameRecipient}
+              onChange={(e) => setNameRecipient(e.target.value)}
+            />
+          </div>
           <div className="space-y-2">
             <Label
               htmlFor="orderType"

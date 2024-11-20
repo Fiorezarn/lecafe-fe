@@ -1,7 +1,7 @@
 import { formatPrice } from "@/lib/utils";
 
 function ExpandedRowComponent({ data }) {
-  const orderDetails = JSON.parse(data.OrderDetail[0].od_mn_json); // The `OrderDetail` can have multiple items now.
+  const orderDetails = JSON.parse(data.OrderDetail[0].od_mn_json);
 
   return (
     <div className="p-6 bg-white border-t border-gray-200 shadow-md">

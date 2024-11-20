@@ -143,6 +143,7 @@ function DashboardOrderHistory() {
   const handleRowExpand = (state) => {
     setExpandedRows(state);
   };
+
   return (
     <DashboardLayout
       breadcrumbLinks={[

@@ -88,7 +88,7 @@ function Order() {
         payload: { id, status: "pending" },
       });
     }
-  }, [dispatch, id]);
+  }, [dispatch, id, value]);
 
   const handleTabChange = (value) => {
     setValue(value);

@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import NoData from "@/components/orderStatus/NoData";
 import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
 
 function Cart() {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ function Cart() {
   const { toast } = useToast();
   const [orderType, setOrderType] = useState("Dine In");
   const [address, setAddress] = useState("");
+  const [nameRecipient, setNameRecipient] = useState("");
   const [tableNumber, setTableNumber] = useState("");
   const { cart, count } = useSelector((state) => state.cart);
   const { messageOrder, codeOrder, loading } = useSelector(
@@ -56,7 +58,6 @@ function Cart() {
       type: "cart/updateQuantity",
       payload: { id, quantity, userId },
     });
-    navigate(0);
   };
 
   const handleIncrement = (itemId, count) => {
@@ -66,7 +67,6 @@ function Cart() {
       type: "cart/updateQuantity",
       payload: { id, quantity, userId },
     });
-    navigate(0);
   };
 
   const handleSubmit = async (e) => {
@@ -107,6 +107,7 @@ function Cart() {
         site,
         totalPrice,
         menuJson,
+        nameRecipient,
       },
     });
   };
@@ -236,6 +237,19 @@ function Cart() {
           <Separator className="h-1 w-py bg-gray-200" aria-hidden="true" />
           <div className="mt-6">
             <label className="block font-mono text-lg font-semibold mb-2">
+              Name of Recipient
+            </label>
+            <Input
+              className="text-black"
+              id="nameRecipient"
+              type="text"
+              placeholder="Enter your name"
+              value={nameRecipient}
+              onChange={(e) => setNameRecipient(e.target.value)}
+            />
+          </div>
+          <div className="mt-6">
+            <label className="block font-mono text-lg font-semibold mb-2">
               Order Type
             </label>
             <Select onValueChange={(value) => setOrderType(value)}>
@@ -275,26 +289,6 @@ function Cart() {
                   ))}
                 </SelectContent>
               </Select>
-              {/* <Select
-                id="typeOrder"
-                onValueChange={(value) => setTableNumber(value)}
-              >
-                <SelectTrigger className="w-full mb-4 text-black">
-                  <SelectValue placeholder="Type Order" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="1">1</SelectItem>
-                  <SelectItem value="2">2</SelectItem>
-                  <SelectItem value="3">3</SelectItem>
-                  <SelectItem value="4">4</SelectItem>
-                  <SelectItem value="5">5</SelectItem>
-                  <SelectItem value="6">6</SelectItem>
-                  <SelectItem value="7">7</SelectItem>
-                  <SelectItem value="8">8</SelectItem>
-                  <SelectItem value="9">9</SelectItem>
-                  <SelectItem value="10">10</SelectItem>
-                </SelectContent>
-              </Select> */}
             </div>
           )}
 
@@ -314,7 +308,7 @@ function Cart() {
           )}
           <Button
             onClick={handleSubmit}
-            className="w-full mt-6 bg-earth text-white font-mono text-lg hover:bg-gray-800"
+            className="w-full mt-6 bg-earth text-white font-mono text-xs lg:text-lg hover:bg-gray-800"
             disabled={loading}
           >
             {loading ? (

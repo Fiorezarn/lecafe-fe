@@ -47,6 +47,8 @@ function* deleteCart(action) {
   try {
     yield fetchDeleteCart(action.payload);
     const response = yield fetchGetCartByUserId(action.payload.userId);
+    const responseCount = yield fetchCountCart(action.payload.userId);
+    yield put(cartCountSuccess(responseCount));
     yield put(getCartByUserIdSuccess(response));
   } catch (error) {
     yield put(getCartByUserIdFailure(error.message));
@@ -57,6 +59,8 @@ function* updateQuantity(action) {
   try {
     yield fetchUpdateQuantity(action.payload);
     const response = yield fetchGetCartByUserId(action.payload.userId);
+    const responseCount = yield fetchCountCart(action.payload.userId);
+    yield put(cartCountSuccess(responseCount));
     yield put(updateCartSuccess(response));
   } catch (error) {
     yield put(updateCartFailure(error.message));

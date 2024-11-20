@@ -33,7 +33,10 @@ function* createOrder(action) {
   try {
     yield put(setLoading(true));
     const responseAdd = yield fetchCreateOrder(action.payload);
-    const responseGet = yield fetchOrderByUserId(action.payload.userId);
+    const responseGet = yield fetchOrderByUserId({
+      id: action.payload.userId,
+      status: "pending",
+    });
     yield put(
       fetchcreateOrderSuccess({
         data: responseGet.data,
