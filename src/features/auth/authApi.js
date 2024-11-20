@@ -1,3 +1,5 @@
+import Cookies from "js-cookie";
+
 const BASE_API = import.meta.env.VITE_BASE_URL_BE;
 
 async function fetchRegister({
@@ -62,6 +64,7 @@ async function fetchLogout() {
   const response = await fetch(`${BASE_API}/auth/logout`, {
     credentials: "include",
   });
+  Cookies.remove("user_leecafe");
   return await response.json();
 }
 

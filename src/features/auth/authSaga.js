@@ -5,10 +5,11 @@ import {
   setLoading,
   loginSuccess,
   loginFailure,
-  setCookie,
+  setDecodeToken,
 } from "./authSlice";
-import { fetchlogin, fetchRegister } from "./authApi";
+import { fetchlogin, fetchLoginGoogle, fetchRegister } from "./authApi";
 import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 function* register(action) {
   try {
@@ -24,6 +25,18 @@ function* login(action) {
   try {
     yield put(setLoading(true));
     const response = yield fetchlogin(action.payload);
+    Cookies.set("user_leecafe", response.data.token);
+    yield put(loginSuccess(response));
+  } catch (error) {
+    yield put(loginFailure(error));
+  }
+}
+
+function* loginWithGoogle(action) {
+  try {
+    yield put(setLoading(true));
+    const response = yield fetchLoginGoogle(action.payload);
+    Cookies.set("user_leecafe", response.data.token);
     yield put(loginSuccess(response));
   } catch (error) {
     yield put(loginFailure(error));
@@ -31,16 +44,26 @@ function* login(action) {
 }
 
 function* getCookie() {
-  const cookie = Cookies.get("user");
+  const cookie = Cookies.get("user_leecafe");
+
   if (!cookie) {
     return;
   }
-  const userData = JSON.parse(cookie);
-  yield put(setCookie(userData));
+  const decoded = jwtDecode(`${cookie}`);
+  yield put(
+    setDecodeToken({
+      us_id: decoded.us_id,
+      us_email: decoded.us_email,
+      us_fullname: decoded.us_fullname,
+      us_username: decoded.us_username,
+      us_role: decoded.us_role,
+    })
+  );
 }
 
 export default function* authSaga() {
   yield takeLatest("auth/registerRequest", register);
   yield takeLatest("auth/loginRequest", login);
   yield takeLatest("auth/getCookie", getCookie);
+  yield takeLatest("auth/loginWithGoogle", loginWithGoogle);
 }

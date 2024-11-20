@@ -7,7 +7,7 @@ export const authSlice = createSlice({
     user: null,
     cookie: null,
     loading: false,
-    isAuthenticated: !!Cookies.get("user"),
+    isAuthenticated: !!Cookies.get("user_leecafe"),
     error: null,
   },
   reducers: {
@@ -36,7 +36,7 @@ export const authSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    setCookie: (state, action) => {
+    setDecodeToken: (state, action) => {
       state.cookie = action.payload;
     },
     setLoading: (state, action) => {
@@ -52,7 +52,7 @@ export const {
   loginRequest,
   loginSuccess,
   loginFailure,
-  setCookie,
+  setDecodeToken,
   setLoading,
 } = authSlice.actions;
 

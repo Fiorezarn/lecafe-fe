@@ -25,24 +25,6 @@ function OnGoing({ orders, isOpenTab }) {
   const { orderById, coordinates, loading } = useSelector(
     (state) => state.order
   );
-
-  // if (loading) {
-  //   return (
-  //     <div className="space-y-4">
-  //       {[...Array(3)].map((_, index) => (
-  //         <AccordionSkeleton key={index} />
-  //       ))}
-  //     </div>
-  //   );
-  // }
-
-  const handleOpenAccordion = (index) => {
-    setIsOpen((prevState) => ({
-      ...prevState,
-      [index]: !prevState[index],
-    }));
-  };
-
   useEffect(() => {
     if (orders) {
       orders.map((order, index) => {
@@ -150,6 +132,23 @@ function OnGoing({ orders, isOpenTab }) {
       }
     }
   }, [orderById]);
+
+  if (loading) {
+    return (
+      <div className="space-y-4">
+        {[...Array(3)].map((_, index) => (
+          <AccordionSkeleton key={index} />
+        ))}
+      </div>
+    );
+  }
+
+  const handleOpenAccordion = (index) => {
+    setIsOpen((prevState) => ({
+      ...prevState,
+      [index]: !prevState[index],
+    }));
+  };
 
   if (!orders || orders.length === 0) {
     return (
