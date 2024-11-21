@@ -16,6 +16,7 @@ import {
 import NoData from "@/components/orderStatus/NoData";
 import { useSelector } from "react-redux";
 import AccordionSkeleton from "./AccordionSkeleton";
+import { DownloadInvoice } from "./Invoice";
 
 function Ordered({ orders }) {
   const { loading } = useSelector((state) => state.order);
@@ -137,6 +138,7 @@ function Ordered({ orders }) {
                   <p className="text-earth text-center font-medium">
                     Thank you for your order!
                   </p>
+                  <DownloadInvoice orderData={item} />
                 </div>
               </div>
             </div>

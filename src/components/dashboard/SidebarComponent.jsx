@@ -69,7 +69,7 @@ function SidebarComponent() {
                       className={`flex items-center gap-2 py-2 px-3 rounded-lg transition-all ${
                         location.pathname === item.url
                           ? "bg-white text-black"
-                          : "text-white hover:bg-earth hover:text-white"
+                          : "text-white"
                       } ${
                         location.pathname === item.url ? "hover:bg-white" : ""
                       }`}
