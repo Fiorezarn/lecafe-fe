@@ -16,14 +16,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User2, ChevronUp } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchLogout } from "@/features/auth/authApi";
+import { History, Home, MapPinHouse, Menu } from "lucide-react";
 
-function SidebarComponent({ items }) {
+function SidebarComponent() {
   const { cookie } = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const location = useLocation(); // Mendapatkan URL saat ini
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -43,6 +45,13 @@ function SidebarComponent({ items }) {
     }
   };
 
+  const items = [
+    { title: "Home", url: "/dashboard", icon: Home },
+    { title: "Menu Management", url: "/dashboard/menu", icon: Menu },
+    { title: "Tracking", url: "/dashboard/tracking", icon: MapPinHouse },
+    { title: "Order History", url: "/dashboard/order", icon: History },
+  ];
+
   return (
     <Sidebar collapsible="icon">
       <SidebarContent className="bg-earth2">
@@ -55,7 +64,16 @@ function SidebarComponent({ items }) {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a className="text-white" href={item.url}>
+                    <a
+                      href={item.url}
+                      className={`flex items-center gap-2 py-2 px-3 rounded-lg transition-all ${
+                        location.pathname === item.url
+                          ? "bg-white text-black"
+                          : "text-white hover:bg-earth hover:text-white"
+                      } ${
+                        location.pathname === item.url ? "hover:bg-white" : ""
+                      }`}
+                    >
                       <item.icon />
                       <span>{item.title}</span>
                     </a>

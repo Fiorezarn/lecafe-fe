@@ -1,4 +1,4 @@
-import { put, takeLatest } from "redux-saga/effects";
+import { put, takeLatest, call } from "redux-saga/effects";
 import {
   registerSuccess,
   registerFailure,
@@ -37,6 +37,7 @@ function* loginWithGoogle(action) {
     yield put(setLoading(true));
     const response = yield fetchLoginGoogle(action.payload);
     Cookies.set("user_leecafe", response.data.token);
+    yield call(getCookie);
     yield put(loginSuccess(response));
   } catch (error) {
     yield put(loginFailure(error));

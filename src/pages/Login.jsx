@@ -30,17 +30,17 @@ function Login() {
     if (error) {
       if (error.type === "notverify") {
         toast({
-          variant: "success",
+          variant: "destructive",
           description: (
             <div className="flex items-center gap-2 font-bold">
-              <CircleCheckBigIcon className="text-green-600" />
-              <p className="text-black">{error?.message}</p>
+              <CircleX className="text-white" />
+              <p className="text-white">{error?.message}</p>
             </div>
           ),
           action: (
             <ToastAction
               onClick={() => navigate("/send-email?action=verify-email")}
-              className="bg-white"
+              className="bg-red-800"
               altText="Goto verify email"
             >
               Click Here
