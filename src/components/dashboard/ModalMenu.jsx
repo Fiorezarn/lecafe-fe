@@ -70,12 +70,12 @@ function ModalMenu() {
       type,
     },
   });
+
   useEffect(() => {
-    const id = productId;
-    if (productId && !menuById) {
-      dispatch({ type: "menu/getMenuById", payload: id });
+    if (productId) {
+      dispatch({ type: "menu/getMenuById", payload: productId });
     }
-  }, [dispatch]);
+  }, [dispatch, productId]);
 
   useEffect(() => {
     if (type === "edit" && menuById) {
