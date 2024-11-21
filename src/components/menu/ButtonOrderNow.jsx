@@ -29,6 +29,7 @@ import { Separator } from "../ui/separator";
 import { Card, CardContent } from "../ui/card";
 import PropTypes from "prop-types";
 import { Input } from "../ui/input";
+import { setMessageOrder } from "@/features/order/orderSlice";
 
 function ButtonOrderNow({ idMenu }) {
   const { toast } = useToast();
@@ -112,6 +113,8 @@ function ButtonOrderNow({ idMenu }) {
             "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
           ),
         });
+        dispatch(setMessageOrder(null));
+        return;
       } else {
         window.scrollTo(0, 0);
         navigate("/order");

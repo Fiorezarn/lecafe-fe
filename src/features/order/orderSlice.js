@@ -74,6 +74,7 @@ export const orderSlice = createSlice({
     },
     setMessageOrder: (state, action) => {
       state.messageOrder = action.payload;
+      state.codeOrder = action.payload;
     },
     fetchOrderDeliverySuccess: (state, action) => {
       state.loading = false;

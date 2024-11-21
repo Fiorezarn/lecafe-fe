@@ -11,7 +11,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useDispatch, useSelector } from "react-redux";
-import { CircleX, Coffee, Minus, Plus, Trash } from "lucide-react";
+import {
+  CircleX,
+  Coffee,
+  MapPin,
+  Minus,
+  Plus,
+  Trash,
+  UtensilsCrossed,
+} from "lucide-react";
 import { cn, formatPrice } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +27,7 @@ import { useToast } from "@/hooks/use-toast";
 import NoData from "@/components/orderStatus/NoData";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
+import { setMessageOrder } from "@/features/order/orderSlice";
 
 function Cart() {
   const dispatch = useDispatch();
@@ -127,6 +136,8 @@ function Cart() {
             "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
           ),
         });
+        dispatch(setMessageOrder(null));
+        return;
       } else {
         navigate("/order");
       }
@@ -188,7 +199,7 @@ function Cart() {
                           type="number"
                           className="placeholder:leading-loose text-black h-full font-mono mx-2 placeholder:text-center focus:outline-none focus:border-none focus:ring-0 text-center [&::-webkit-inner-spin-button]:appearance-none w-16"
                           placeholder="0"
-                          defaultValue={item.Cart?.cr_quantity}
+                          value={item.Cart?.cr_quantity}
                           readOnly
                         />
                         <Button
@@ -253,14 +264,33 @@ function Cart() {
               Order Type
             </label>
             <Select onValueChange={(value) => setOrderType(value)}>
-              <SelectTrigger className="w-full text-black">
+              <SelectTrigger
+                id="orderType"
+                className="w-full text-earth border-earth3 focus:ring-earth2"
+              >
                 <SelectValue placeholder="Select Order Type" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-earth6">
                 <SelectGroup>
-                  <SelectLabel>Order Type</SelectLabel>
-                  <SelectItem value="Dine-in">Dine In</SelectItem>
-                  <SelectItem value="Delivery">Delivery</SelectItem>
+                  <SelectLabel className="text-earth1">Order Type</SelectLabel>
+                  <SelectItem
+                    value="Dine-in"
+                    className="text-earth hover:bg-earth4"
+                  >
+                    <div className="flex items-center">
+                      <UtensilsCrossed className="w-4 h-4 mr-2 text-earth2" />
+                      Dine In
+                    </div>
+                  </SelectItem>
+                  <SelectItem
+                    value="Delivery"
+                    className="text-earth hover:bg-earth4"
+                  >
+                    <div className="flex items-center">
+                      <MapPin className="w-4 h-4 mr-2 text-earth2" />
+                      Delivery
+                    </div>
+                  </SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>

@@ -19,9 +19,9 @@ import { User2, ChevronUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { fetchLogout } from "@/features/auth/authApi";
 
 function SidebarComponent({ items }) {
-  const BASE_URL = import.meta.env.VITE_BASE_URL_BE;
   const { cookie } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -32,13 +32,12 @@ function SidebarComponent({ items }) {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/auth/logout`, {
-        credentials: "include",
-      });
-      if (!response.ok) {
-        throw new Error("Logout failed");
+      const response = await fetchLogout();
+      if (response.code === 200) {
+        navigate(0);
+      } else {
+        console.error(response.message);
       }
-      navigate(0);
     } catch (error) {
       console.error("Error during logout:", error);
     }
