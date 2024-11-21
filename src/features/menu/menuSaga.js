@@ -3,7 +3,7 @@ import {
   fetchFailureGetAllMenu,
   fetchSuccessGetAllMenu,
   fetchSuccessGetByIdMenu,
-  fetchFailurGetByIdMenu,
+  fetchFailureGetByIdMenu,
   createMenuSuccess,
   createMenuFailure,
   setLoading,
@@ -48,7 +48,7 @@ function* getMenuById(action) {
     const response = yield fetchMenuById(action.payload);
     yield put(fetchSuccessGetByIdMenu(response));
   } catch (error) {
-    yield put(fetchFailurGetByIdMenu(error.message));
+    yield put(fetchFailureGetByIdMenu(error.message));
   }
 }
 

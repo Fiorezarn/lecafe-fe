@@ -25,7 +25,7 @@ import { History, Home, MapPinHouse, Menu } from "lucide-react";
 function SidebarComponent() {
   const { cookie } = useSelector((state) => state.auth);
   const navigate = useNavigate();
-  const location = useLocation(); // Mendapatkan URL saat ini
+  const location = useLocation();
   const dispatch = useDispatch();
 
   useEffect(() => {
