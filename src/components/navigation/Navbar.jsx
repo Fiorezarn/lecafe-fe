@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import AvatarNav from "./Avatar";
 import { Menu, ShoppingCart } from "lucide-react";
 import { Separator } from "../ui/separator";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,8 +11,13 @@ function Navbar() {
   const { cookie } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const userId = cookie?.us_id;
-
+  const [isActive, setIsActive] = useState("");
   const location = useLocation();
+
+  useEffect(() => {
+    const currentPath = location.pathname;
+    setIsActive(currentPath);
+  }, [location]);
 
   useEffect(() => {
     if (userId) {
@@ -23,8 +28,6 @@ function Navbar() {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
-  const isActive = (path) => (location.pathname === path ? "text-earth3" : "");
 
   return (
     <nav className="bg-earth border-gray-200 sticky top-0 z-50 transition-all duration-300">
@@ -69,13 +72,13 @@ function Navbar() {
           } w-full md:flex md:w-auto md:order-1`}
           id="navbar-user"
         >
-          <ul className="flex flex-col items-center text-xl font-mono p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-earth2 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-earth">
+          <ul className="flex flex-col items-center text-xl font-mono p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-earth1 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-earth">
             <li>
               <a
                 href="/"
-                className={`block py-2 px-3 text-white rounded hover:text-earth3 ${isActive(
-                  "/"
-                )}`}
+                className={`block py-2 px-3 rounded ${
+                  isActive === "/" ? "text-earth5" : "text-white"
+                }`}
               >
                 Home
               </a>
@@ -83,9 +86,9 @@ function Navbar() {
             <li>
               <a
                 href="/menu"
-                className={`block py-2 px-3 text-white rounded hover:text-earth3 ${isActive(
-                  "/menu"
-                )}`}
+                className={`block py-2 px-3 rounded ${
+                  isActive === "/menu" ? "text-earth5" : "text-white"
+                }`}
               >
                 Menu
               </a>
@@ -93,9 +96,9 @@ function Navbar() {
             <li>
               <a
                 href="/order"
-                className={`block py-2 px-3 text-white rounded hover:text-earth3 ${isActive(
-                  "/order"
-                )}`}
+                className={`block py-2 px-3 rounded ${
+                  isActive === "/order" ? "text-earth5" : "text-white"
+                }`}
               >
                 Order
               </a>
