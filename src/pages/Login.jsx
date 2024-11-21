@@ -14,7 +14,7 @@ function Login() {
   const { toast } = useToast();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user, loading, error } = useSelector((state) => state.auth);
+  const { loading, error } = useSelector((state) => state.auth);
   const handlelogin = async (e) => {
     e.preventDefault();
     const input = e.target.email.value;

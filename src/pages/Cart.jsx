@@ -37,7 +37,7 @@ function Cart() {
   const [address, setAddress] = useState("");
   const [nameRecipient, setNameRecipient] = useState("");
   const [tableNumber, setTableNumber] = useState("");
-  const { cart, count } = useSelector((state) => state.cart);
+  const { cart } = useSelector((state) => state.cart);
   const { messageOrder, codeOrder, loading } = useSelector(
     (state) => state.order
   );
@@ -117,6 +117,7 @@ function Cart() {
         totalPrice,
         menuJson,
         nameRecipient,
+        isOrderNow: false,
       },
     });
   };

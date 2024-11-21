@@ -56,6 +56,15 @@ function ButtonOrderNow({ idMenu }) {
     dispatch({ type: "menu/getMenuById", payload: idMenu });
   };
 
+  useEffect(() => {
+    if (isDialogOpen) {
+      setOrderType("");
+      setTableNumber("");
+      setAddress("");
+      setNameRecipient("");
+    }
+  }, [isDialogOpen]);
+
   const handleOrderSubmit = () => {
     const site = orderType === "Dine-in" ? tableNumber : address;
     if (!site) {
@@ -93,6 +102,7 @@ function ButtonOrderNow({ idMenu }) {
           totalPrice: menuById?.mn_price,
           menuJson: menuJson,
           nameRecipient,
+          isOrderNow: true,
         },
       });
     }

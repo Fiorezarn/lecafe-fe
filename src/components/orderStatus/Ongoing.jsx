@@ -5,7 +5,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { formatDate, formatPrice } from "@/lib/utils";
-import { MessageCircleX, TruckIcon, Wallet } from "lucide-react";
+import { TruckIcon } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import Graphic from "@arcgis/core/Graphic";
 import Extent from "@arcgis/core/geometry/Extent";
@@ -17,10 +17,9 @@ import AccordionSkeleton from "./AccordionSkeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 
-function OnGoing({ orders, isOpenTab }) {
+function OnGoing({ orders }) {
   const [isOpen, setIsOpen] = useState({});
   const mapRefs = useRef([]);
-  const mapViews = useRef({});
   const dispatch = useDispatch();
   const { orderById, coordinates, loading } = useSelector(
     (state) => state.order
