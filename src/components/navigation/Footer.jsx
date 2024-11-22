@@ -44,12 +44,12 @@ function Footer() {
         </div>
 
         <div className="flex flex-col md:items-end space-y-6">
-          <nav className="flex flex-wrap justify-center md:justify-end space-x-6">
-            {["About", "Blog", "Team", "Pricing", "Contact", "Terms"].map(
+          <nav className="flex flex-wrap justify-center capitalize md:justify-end space-x-6">
+            {["home", "menu", "order", "cart", "about", "contact"].map(
               (link) => (
                 <a
                   key={link}
-                  href="/"
+                  href={`/${link}`}
                   className="text-sm md:text-base font-mono hover:text-gray-300 transition-colors"
                 >
                   {link}

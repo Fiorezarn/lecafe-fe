@@ -43,7 +43,9 @@ function Navbar() {
           <div className="flex gap-6 md:gap-10 items-center">
             <a className="relative" href="/cart">
               <ShoppingCart
-                className="text-white"
+                className={`text-white ${
+                  isActive === "/cart" ? "text-[#FFA500]" : "text-white"
+                }`}
                 size={24}
                 strokeWidth={1.75}
               />

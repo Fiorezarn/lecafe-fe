@@ -26,13 +26,13 @@ function convertArrayOfObjectsToCSV(array) {
 
   array.forEach((item) => {
     const row = [
-      item.us_fullname,
-      item.Order[0]?.or_status_shipping || "",
-      item.Order[0]?.or_status_payment || "",
-      item.Order[0]?.or_type_order || "",
-      item.Order[0]?.or_site || "",
-      item.Order[0]?.createdAt || "",
-      item.Order[0]?.or_total_price || 0,
+      item?.User?.us_fullname,
+      item?.or_status_shipping || "",
+      item?.or_status_payment || "",
+      item?.or_type_order || "",
+      item?.or_site || "",
+      formatDate(item?.createdAt) || "",
+      item?.or_total_price || 0,
     ];
     result += row.join(columnDelimiter) + lineDelimiter;
   });
@@ -73,7 +73,7 @@ function DashboardOrderHistory() {
   const columns = [
     {
       name: "Name",
-      selector: (row) => row.User?.us_fullname,
+      selector: (row) => row.or_name_recipient,
       sortable: true,
     },
     {

@@ -42,7 +42,7 @@ export function DownloadInvoice({ orderData }) {
     doc.setFont("helvetica", "bold");
     doc.text("Bill To:", 20, 75);
     doc.setFont("helvetica", "normal");
-    doc.text("Customer Name", 20, 80);
+    doc.text(orderData.or_name_recipient, 20, 80);
     if (isNaN(Number(orderData.or_site))) {
       doc.text(`Delivery Address: ${orderData.or_site}`, 20, 85);
     } else {

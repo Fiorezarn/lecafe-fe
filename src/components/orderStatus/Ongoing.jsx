@@ -5,7 +5,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { formatDate, formatPrice } from "@/lib/utils";
-import { TruckIcon } from "lucide-react";
+import { Contact, MapPin, TruckIcon, WalletCards } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import Graphic from "@arcgis/core/Graphic";
 import Extent from "@arcgis/core/geometry/Extent";
@@ -16,6 +16,12 @@ import NoData from "@/components/orderStatus/NoData";
 import AccordionSkeleton from "./AccordionSkeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 function OnGoing({ orders }) {
   const [isOpen, setIsOpen] = useState({});
@@ -162,6 +168,7 @@ function OnGoing({ orders }) {
 
   return orders.map((item, index) => {
     const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
+    console.log(item);
 
     return (
       <Accordion key={item.or_id} type="single" collapsible>
@@ -219,7 +226,7 @@ function OnGoing({ orders }) {
                     </div>
                   </ScrollArea>
                 </div>
-                <div className="mt-6 space-y-4 bg-earth6 rounded-lg p-4 shadow-inner">
+                <div className="mt-6 space-y-6 bg-earth6 rounded-lg p-6 shadow-inner">
                   <div className="flex justify-between items-center">
                     <span className="text-earth1 text-base md:text-lg">
                       Total Price
@@ -229,18 +236,39 @@ function OnGoing({ orders }) {
                     </span>
                   </div>
                   <Separator className="bg-earth3/50" />
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center">
+                  <div className="grid gap-y-4">
+                    <div className="grid grid-cols-[auto_1fr_auto] items-center gap-x-4">
+                      <Contact className="w-5 h-5" />
                       <span className="text-earth1 text-sm md:text-base">
-                        Delivery Address
+                        Name Recipient :
                       </span>
                       <span className="text-earth text-sm md:text-base">
-                        {item?.or_site}
+                        {item?.or_name_recipient}
                       </span>
                     </div>
-                    <div className="flex justify-between items-center">
+                    <div className="grid grid-cols-[auto_1fr_auto] items-center gap-x-4">
+                      <WalletCards className="w-5 h-5" />
                       <span className="text-earth1 text-sm md:text-base">
-                        Payment Method
+                        Delivery Address :
+                      </span>
+
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            {item?.or_site.substring(0, 25)}...
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <span className="text-earth text-sm md:text-base">
+                              {item?.or_site}
+                            </span>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </div>
+                    <div className="grid grid-cols-[auto_1fr_auto] items-center gap-x-4">
+                      <MapPin className="w-5 h-5" />
+                      <span className="text-earth1 text-sm md:text-base">
+                        Payment Method :
                       </span>
                       <span className="text-earth text-sm md:text-base">
                         {item?.payment_method}

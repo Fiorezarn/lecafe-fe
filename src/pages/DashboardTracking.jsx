@@ -41,7 +41,7 @@ function DashboardTracking() {
     },
     {
       name: "Receiver",
-      selector: (row) => row.User?.us_fullname,
+      selector: (row) => row.or_name_recipient,
       sortable: true,
     },
     {

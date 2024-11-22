@@ -144,6 +144,12 @@ function DashboardMenu() {
   const data = menu?.data || [];
   const columns = [
     {
+      name: "No",
+      selector: (_, index) => (page - 1) * limit + index + 1,
+      sortable: false,
+      width: "50px",
+    },
+    {
       name: "Image",
       selector: (row) => (
         <img className="w-20 h-20" src={`${row.mn_image}`} alt={row.mn_name} />

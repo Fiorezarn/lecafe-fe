@@ -52,7 +52,7 @@ const testimonials = [
 
 function Testimoni() {
   return (
-    <section className="bg-[#F6EEE8]">
+    <section className="bg-earth6">
       <div className="mx-auto max-w-screen-xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <p className="text-center font-sour text-2xl md:text-3xl">
           Come and Join

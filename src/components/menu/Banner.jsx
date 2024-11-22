@@ -29,7 +29,7 @@ function BannerSwiper() {
   ];
 
   return (
-    <div className="px-6 lg:px-28 py-10 bg-earth3">
+    <div className="px-6 lg:px-28 py-10 bg-earth6">
       <Swiper
         slidesPerView={1}
         grabCursor={true}

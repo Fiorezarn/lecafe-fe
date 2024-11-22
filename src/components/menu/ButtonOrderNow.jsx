@@ -185,7 +185,7 @@ function ButtonOrderNow({ idMenu }) {
           <div className="space-y-2">
             <Label
               htmlFor="orderType"
-              className="text-lg font-semibold text-earth1"
+              className="block font-mono text-lg font-semibold mb-2"
             >
               Order Type
             </Label>

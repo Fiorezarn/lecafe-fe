@@ -10,6 +10,7 @@ import OnGoing from "@/components/orderStatus/Ongoing";
 import Ordered from "@/components/orderStatus/Ordered";
 import Failed from "@/components/orderStatus/Failed";
 import { CircleCheckBigIcon } from "lucide-react";
+import Footer from "@/components/navigation/Footer";
 
 function Order() {
   const dispatch = useDispatch();
@@ -127,6 +128,7 @@ function Order() {
           </TabsContent>
         </Tabs>
       </div>
+      <Footer />
     </>
   );
 }

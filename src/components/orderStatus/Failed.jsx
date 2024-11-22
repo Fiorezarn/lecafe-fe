@@ -14,6 +14,7 @@ import {
   MapPin,
   UtensilsCrossed,
   CircleAlert,
+  Contact,
 } from "lucide-react";
 import AccordionSkeleton from "./AccordionSkeleton";
 
@@ -109,6 +110,13 @@ function Failed({ orders }) {
                     </div>
                     <Separator className="my-2 bg-earth3/50" />
                     <div className="space-y-3">
+                      <div className="flex items-center text-earth1">
+                        <Contact className="w-5 h-5 mr-2" />
+                        <span className="text-base">Name Recipient :</span>
+                        <span className="ml-2 text-earth font-medium">
+                          {item?.or_name_recipient}
+                        </span>
+                      </div>
                       <div className="flex items-center text-earth1">
                         {isNaN(Number(item?.or_site)) ? (
                           <MapPin className="w-5 h-5 mr-2" />

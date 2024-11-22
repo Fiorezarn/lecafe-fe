@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
-import Joi from "joi";
 import {
   Select,
   SelectContent,
@@ -24,33 +23,7 @@ import { Label } from "@/components/ui/label";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { setIsOpen } from "@/features/menu/menuSlice";
-
-const schema = Joi.object({
-  name: Joi.string()
-    .required()
-    .messages({ "string.empty": "Menu is required" }),
-  description: Joi.string()
-    .required()
-    .messages({ "string.empty": "Description is required" }),
-  price: Joi.number()
-    .required()
-    .messages({ "number.base": "Price must be a number" }),
-  category: Joi.string()
-    .valid("coffee", "non-coffee", "food")
-    .required()
-    .messages({
-      "string.empty": "Category is required",
-      "any.only": "Please select a valid category",
-    }),
-  image: Joi.alternatives().conditional("type", {
-    is: "create",
-    then: Joi.any()
-      .required()
-      .messages({ "any.required": "Image is required" }),
-    otherwise: Joi.any().optional(),
-  }),
-  type: Joi.string().valid("create", "edit").required(),
-});
+import menuSchema from "@/schemas/menuSchema";
 
 function ModalMenu() {
   const dispatch = useDispatch();
@@ -65,7 +38,7 @@ function ModalMenu() {
     watch,
   } = useForm({
     mode: "onSubmit",
-    resolver: joiResolver(schema),
+    resolver: joiResolver(menuSchema),
     defaultValues: {
       type,
     },

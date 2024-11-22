@@ -181,7 +181,7 @@ function Cart() {
                       </p>
                     </div>
                     <div className="flex items-center w-full lg:w-auto mt-4 lg:mt-0 justify-between gap-2">
-                      <div className="bg-white flex items-center border border-black rounded-md p-1 w-full max-w-xs">
+                      <div className="bg-white flex items-center justify-between border border-black rounded-md p-1 w-full max-w-xs">
                         <Button
                           variant="transparent"
                           size="xs"
