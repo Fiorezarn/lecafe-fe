@@ -36,7 +36,7 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import ButtonOrderNow from "@/components/menu/ButtonOrderNow";
-import NoData from "../orderStatus/NoData";
+import NoData from "../order/NoData";
 import CardSkeleton from "./CardSkeleton";
 
 function CardList() {

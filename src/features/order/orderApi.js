@@ -8,6 +8,8 @@ const fetchCreateOrder = async ({
   menuJson,
   nameRecipient,
   isOrderNow,
+  note,
+  phoneNumber,
 }) => {
   const response = await fetch(`${BASE_URL}/order`, {
     method: "POST",
@@ -23,6 +25,8 @@ const fetchCreateOrder = async ({
       menuJson,
       nameRecipient,
       isOrderNow,
+      note,
+      phoneNumber,
     }),
   });
   return await response.json();
@@ -108,6 +112,17 @@ const fetchUpdateStatus = async ({ id, status }) => {
   });
   return await response.json();
 };
+const fetchCreateDistance = async (data) => {
+  const response = await fetch(`${BASE_URL}/maps/create-distance/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+
+  return await response.json();
+};
 
 export {
   fetchCreateOrder,
@@ -119,4 +134,5 @@ export {
   fetchCancelPayments,
   fetchDeliveryOrder,
   fetchUpdateStatus,
+  fetchCreateDistance,
 };

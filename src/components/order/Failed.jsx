@@ -1,25 +1,24 @@
+import { formatDate, formatPrice } from "@/lib/utils";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { formatDate, formatPrice } from "@/lib/utils";
+import NoData from "@/components/order/NoData";
+import { useSelector } from "react-redux";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import {
-  WalletCards,
-  CheckCircleIcon,
+  AlertTriangle,
   MapPin,
   UtensilsCrossed,
+  CircleAlert,
   Contact,
 } from "lucide-react";
-import NoData from "@/components/orderStatus/NoData";
-import { useSelector } from "react-redux";
 import AccordionSkeleton from "./AccordionSkeleton";
-import { DownloadInvoice } from "./Invoice";
 
-function Ordered({ orders }) {
+function Failed({ orders }) {
   const { loading } = useSelector((state) => state.order);
 
   if (loading) {
@@ -35,9 +34,9 @@ function Ordered({ orders }) {
   if (!orders || orders.length === 0) {
     return (
       <NoData
-        title={"No Ordered Orders"}
+        title={"No Failed Orders"}
         paragraph={
-          "You currently have no ordered orders. Check back here to track active orders."
+          "There are no failed orders at the moment. All orders have been successfully processed."
         }
       />
     );
@@ -49,9 +48,9 @@ function Ordered({ orders }) {
       <Accordion key={index} type="single" collapsible>
         <AccordionItem value="item-1">
           <AccordionTrigger>
-            <div className="flex justify-between items-center w-full p-4 bg-green-100 rounded-lg shadow-sm">
-              <h1 className="text-sm lg:text-2xl font-semibold text-green-800 flex items-center gap-2">
-                <CheckCircleIcon className="w-6 h-6 text-green-600" />
+            <div className="flex justify-between items-center w-full p-4 bg-red-100 rounded-lg shadow-sm">
+              <h1 className="text-sm lg:text-2xl font-semibold text-red-800 flex items-center gap-2">
+                <CircleAlert className="w-6 h-6 text-red-600" />
                 ORDER-{item.or_id}
               </h1>
               <p className="text-gray-700 text-sm lg:text-xl">
@@ -62,8 +61,9 @@ function Ordered({ orders }) {
           <AccordionContent>
             <div className="flex flex-col md:flex-row bg-earth6 shadow-lg rounded-lg overflow-hidden border-2 border-earth1">
               <div className="w-full md:w-3/5 p-6">
-                <h3 className="text-earth text-xl font-semibold mb-4">
-                  Order Items
+                <h3 className="text-earth text-xl font-semibold mb-4 flex items-center">
+                  <AlertTriangle className="w-6 h-6 text-earth1 mr-2" />
+                  Failed Order
                 </h3>
                 <ScrollArea className="h-[400px] pr-4">
                   <div className="space-y-4">
@@ -104,7 +104,7 @@ function Ordered({ orders }) {
                   <div className="space-y-4 bg-earth6 rounded-lg p-6 shadow-inner">
                     <div className="flex justify-between items-center">
                       <span className="text-earth1 text-lg">Total Price</span>
-                      <span className="text-earth text-xl font-bold">
+                      <span className="text-earth1 text-xl font-bold line-through">
                         {formatPrice(item?.or_total_price)}
                       </span>
                     </div>
@@ -112,16 +112,9 @@ function Ordered({ orders }) {
                     <div className="space-y-3">
                       <div className="flex items-center text-earth1">
                         <Contact className="w-5 h-5 mr-2" />
-                        <span className="text-base">Name Recipient</span>
+                        <span className="text-base">Name Recipient :</span>
                         <span className="ml-2 text-earth font-medium">
                           {item?.or_name_recipient}
-                        </span>
-                      </div>
-                      <div className="flex items-center text-earth1">
-                        <WalletCards className="w-5 h-5 mr-2" />
-                        <span className="text-base">Payment Method:</span>
-                        <span className="ml-2 text-earth font-medium">
-                          {item?.payment_method}
                         </span>
                       </div>
                       <div className="flex items-center text-earth1">
@@ -142,11 +135,12 @@ function Ordered({ orders }) {
                     </div>
                   </div>
                 </div>
-                <div className="mt-6 bg-earth2/20 rounded-lg p-4">
-                  <p className="text-earth text-center font-medium">
-                    Thank you for your order!
+                <div className="mt-6 bg-earth1/20 rounded-lg p-4">
+                  <p className="text-earth1 text-center font-medium flex items-center justify-center">
+                    <AlertTriangle className="w-5 h-5 mr-2" />
+                    This order has failed. Please contact support for
+                    assistance.
                   </p>
-                  <DownloadInvoice orderData={item} />
                 </div>
               </div>
             </div>
@@ -157,4 +151,4 @@ function Ordered({ orders }) {
   });
 }
 
-export default Ordered;
+export default Failed;

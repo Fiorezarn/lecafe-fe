@@ -14,6 +14,7 @@ export const orderSlice = createSlice({
     tracking: null,
     orders: null,
     isOpen: false,
+    distance: null,
   },
   reducers: {
     fetchcreateOrderRequest: (state) => {
@@ -102,6 +103,14 @@ export const orderSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    fetchCreateDistanceSuccess: (state, action) => {
+      state.loading = false;
+      state.distance = action.payload;
+    },
+    fetchCreateDistanceFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
     setIsOpenModal: (state, action) => {
       state.isOpen = action.payload;
     },
@@ -131,6 +140,8 @@ export const {
   fetchAllOrderHistorySuccess,
   fetchAllOrderHistoryFailure,
   setIsOpenModal,
+  fetchCreateDistanceSuccess,
+  fetchCreateDistanceFailure,
 } = orderSlice.actions;
 
 export default orderSlice.reducer;

@@ -5,10 +5,10 @@ import { cn } from "@/lib/utils";
 import Navbar from "@/components/navigation/Navbar";
 import { useToast } from "@/hooks/use-toast";
 import { setMessageOrder } from "@/features/order/orderSlice";
-import Pending from "@/components/orderStatus/Pending";
-import OnGoing from "@/components/orderStatus/Ongoing";
-import Ordered from "@/components/orderStatus/Ordered";
-import Failed from "@/components/orderStatus/Failed";
+import Pending from "@/components/order/Pending";
+import OnGoing from "@/components/order/Ongoing";
+import Ordered from "@/components/order/Ordered";
+import Failed from "@/components/order/Failed";
 import { CircleCheckBigIcon } from "lucide-react";
 import Footer from "@/components/navigation/Footer";
 

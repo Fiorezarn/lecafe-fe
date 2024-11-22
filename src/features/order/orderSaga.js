@@ -16,6 +16,8 @@ import {
   fetchUpdateStatusSuccess,
   fetchAllOrderHistorySuccess,
   fetchAllOrderHistoryFailure,
+  fetchCreateDistanceSuccess,
+  fetchCreateDistanceFailure,
 } from "@/features/order/orderSlice";
 import {
   fetchOrderByUserId,
@@ -27,6 +29,7 @@ import {
   fetchDeliveryOrder,
   fetchUpdateStatus,
   fetchAllOrderHistory,
+  fetchCreateDistance,
 } from "./orderApi";
 
 function* createOrder(action) {
@@ -134,6 +137,15 @@ function* updateStatus(action) {
   }
 }
 
+function* createDistance(action) {
+  try {
+    const response = yield fetchCreateDistance(action.payload);
+    yield put(fetchCreateDistanceSuccess(response));
+  } catch (error) {
+    yield put(fetchCreateDistanceFailure(error.message));
+  }
+}
+
 export default function* orderSaga() {
   yield takeLatest("order/createOrder", createOrder);
   yield takeLatest("order/getAllOrderHistory", getAllOrderHistory);
@@ -144,4 +156,5 @@ export default function* orderSaga() {
   yield takeLatest("payments/cancelPayments", cancelPayments);
   yield takeLatest("order/trackingOrder", trackingOrder);
   yield takeLatest("order/updateStatus", updateStatus);
+  yield takeLatest("order/createDistance", createDistance);
 }

@@ -12,7 +12,7 @@ import Extent from "@arcgis/core/geometry/Extent";
 import { useEffect, useRef, useState } from "react";
 import Map from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
-import NoData from "@/components/orderStatus/NoData";
+import NoData from "@/components/order/NoData";
 import AccordionSkeleton from "./AccordionSkeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";

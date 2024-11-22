@@ -18,7 +18,7 @@ import { formatDate, formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ClockIcon, MessageCircleX, Wallet } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import NoData from "@/components/orderStatus/NoData";
+import NoData from "@/components/order/NoData";
 import AccordionSkeleton from "./AccordionSkeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
@@ -125,12 +125,12 @@ function Pending({ orders }) {
                           </span>
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-earth1">Order Type</span>
                           <span className="text-earth">
                             {isNaN(Number(item?.or_site))
-                              ? `Delivery: ${item?.or_site}`
-                              : `Table: ${item?.or_site}`}
+                              ? `Delivery: `
+                              : `Table: `}
                           </span>
+                          <span className="text-earth">{item?.or_site}</span>
                         </div>
                       </div>
                     </div>

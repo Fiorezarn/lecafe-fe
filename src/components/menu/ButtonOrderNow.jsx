@@ -142,7 +142,7 @@ function ButtonOrderNow({ idMenu }) {
           Order Now
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-white">
+      <DialogContent className="overflow-y-auto h-[60vh] bg-white">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-earth">
             Place Your Order
