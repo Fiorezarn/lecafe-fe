@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import heroImage from "../assets/images/hero.jpg";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { CircleCheckBigIcon, CircleX } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -15,6 +15,7 @@ function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.auth);
+  const [email, setEmail] = useState("");
   const handlelogin = async (e) => {
     e.preventDefault();
     const input = e.target.email.value;
@@ -29,28 +30,7 @@ function Login() {
   useEffect(() => {
     if (error) {
       if (error.type === "notverify") {
-        toast({
-          variant: "destructive",
-          description: (
-            <div className="flex items-center gap-2 font-bold">
-              <CircleX className="text-white" />
-              <p className="text-white">{error?.message}</p>
-            </div>
-          ),
-          action: (
-            <ToastAction
-              onClick={() => navigate("/send-email?action=verify-email")}
-              className="bg-red-800"
-              altText="Goto verify email"
-            >
-              Click Here
-            </ToastAction>
-          ),
-          className: cn(
-            "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
-          ),
-        });
-        return;
+        navigate(`/send-email?action=verify-email&email=${email}`);
       } else if (error.type === "invalidpassword" || error?.code !== 200) {
         toast({
           variant: "destructive",
@@ -67,7 +47,7 @@ function Login() {
         return;
       }
     }
-  }, [error]);
+  }, [error, email]);
 
   return (
     <div className="flex h-screen justify-between items-center">
@@ -92,12 +72,14 @@ function Login() {
             className="text-sm w-full px-4 py-2 border border-solid border-gray-300 rounded"
             type="text"
             placeholder="Email or Username"
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
             required
           />
           <Input
             id="password"
             className="mt-2"
-            isPassword
             type="password"
             placeholder="Password"
             required

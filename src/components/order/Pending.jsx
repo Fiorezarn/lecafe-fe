@@ -14,7 +14,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { formatDate, formatPrice } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ClockIcon, MessageCircleX, Wallet } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,6 +22,7 @@ import NoData from "@/components/order/NoData";
 import AccordionSkeleton from "./AccordionSkeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import PaymentInfo from "./PaymentInfo";
 
 function Pending({ orders }) {
   const dispatch = useDispatch();
@@ -61,7 +62,10 @@ function Pending({ orders }) {
     );
 
   return orders.map((item, index) => {
-    const menus = JSON.parse(item.OrderDetail[0].od_mn_json);
+    const detailMenu = JSON.parse(item.OrderDetail[0].od_mn_json);
+    const menus = detailMenu.filter((menu) => menu.id !== "SHIPPING");
+    const shipping = detailMenu.filter((menu) => menu.id === "SHIPPING");
+
     return (
       <Accordion key={index} type="single" collapsible>
         <AccordionItem value="item-1">
@@ -77,33 +81,33 @@ function Pending({ orders }) {
             </div>
           </AccordionTrigger>
           <AccordionContent>
-            <div className="bg-earth6 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl border-2 border-earth1">
-              <div className="flex flex-col md:flex-row">
-                <div className="w-full md:w-1/2 p-6">
-                  <h3 className="text-earth font-semibold mb-4">Order Items</h3>
-                  <ScrollArea className="h-[300px] pr-4">
+            <div className="bg-earth6 rounded-lg overflow-hidden shadow-md border border-gray-200">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+                <div>
+                  <h3 className="font-semibold mb-4 text-lg">Order Items</h3>
+                  <ScrollArea className="h-[400px] pr-4">
                     <div className="space-y-4">
                       {menus.map((menu, index) => (
                         <div key={index} className="group">
-                          <div className="flex items-center gap-4 p-3 rounded-lg bg-earth4/20 transition-all duration-300 hover:bg-earth4/40">
+                          <div className="flex items-center gap-4 p-3 rounded-lg transition-all duration-300">
                             <div className="relative h-20 w-20 rounded-lg overflow-hidden">
                               <img
-                                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                className="h-full w-full object-cover"
                                 src={menu?.image}
                                 alt={menu?.name || "Menu item"}
                               />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <h4 className="text-earth font-medium text-sm md:text-base truncate">
+                              <h4 className="font-medium text-sm md:text-base truncate">
                                 {menu?.name}
                               </h4>
-                              <p className="text-earth1 text-sm">
+                              <p className="text-sm">
                                 {menu?.price} x {menu?.quantity}
                               </p>
                             </div>
                           </div>
                           {index < menus.length - 1 && (
-                            <Separator className="my-4 bg-earth3/50" />
+                            <Separator className="my-4" />
                           )}
                         </div>
                       ))}
@@ -111,81 +115,64 @@ function Pending({ orders }) {
                   </ScrollArea>
                 </div>
 
-                <div className="w-full md:w-1/2 bg-earth4/10 p-6">
-                  <div className="h-full flex flex-col justify-between">
-                    <div className="space-y-4">
-                      <h3 className="text-earth font-semibold">
-                        Order Summary
-                      </h3>
-                      <div className="space-y-2">
-                        <div className="flex justify-between items-center">
-                          <span className="text-earth1">Total Amount</span>
-                          <span className="text-earth font-semibold">
-                            {formatPrice(item?.or_total_price)}
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-earth">
-                            {isNaN(Number(item?.or_site))
-                              ? `Delivery: `
-                              : `Table: `}
-                          </span>
-                          <span className="text-earth">{item?.or_site}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="mt-6 grid grid-cols-2 gap-4">
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button
-                            variant="outline"
-                            className="w-full bg-earth6 text-earth hover:bg-earth3/20 border-earth3 transition-all duration-300"
-                          >
-                            <MessageCircleX className="w-4 h-4 mr-2" />
-                            Cancel
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent className="bg-earth6 border-earth3">
-                          <DialogHeader>
-                            <DialogTitle className="text-earth">
-                              Cancel Order
-                            </DialogTitle>
-                            <DialogDescription className="text-earth1">
-                              Are you sure you want to cancel this order?
-                            </DialogDescription>
-                          </DialogHeader>
-                          <DialogFooter className="gap-2 sm:gap-0">
-                            <DialogClose asChild>
-                              <Button
-                                variant="outline"
-                                className="w-full bg-earth6 text-earth hover:bg-earth3/20 border-earth3"
-                              >
-                                No, keep it
-                              </Button>
-                            </DialogClose>
-                            <Button
-                              onClick={() => cancelPayments(item?.or_id)}
-                              className="w-full bg-earth text-earth6 hover:bg-earth1"
-                            >
-                              Yes, cancel
-                            </Button>
-                          </DialogFooter>
-                        </DialogContent>
-                      </Dialog>
-
-                      <Button
-                        onClick={() =>
-                          handlePayment(item?.or_id, item?.or_total_price)
-                        }
-                        className="w-full bg-earth text-earth6 hover:bg-earth1 transition-all duration-300"
-                      >
-                        <Wallet className="w-4 h-4 mr-2" />
-                        Payment
-                      </Button>
-                    </div>
-                  </div>
+                <div>
+                  <h3 className="font-semibold mb-4 text-lg">Order Summary</h3>
+                  <PaymentInfo
+                    item={item}
+                    shipping={shipping}
+                    isPaymentMethod={false}
+                  />
                 </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="w-full bg-earth6 text-earth hover:bg-earth3/20 border-earth3 transition-all duration-300"
+                    >
+                      <MessageCircleX className="w-4 h-4 mr-2" />
+                      Cancel
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="bg-earth6 border-earth3">
+                    <DialogHeader>
+                      <DialogTitle className="text-earth">
+                        Cancel Order
+                      </DialogTitle>
+                      <DialogDescription className="text-earth1">
+                        Are you sure you want to cancel this order?
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter className="gap-2 sm:gap-0">
+                      <DialogClose asChild>
+                        <Button
+                          variant="outline"
+                          className="w-full bg-earth6 text-earth hover:bg-earth3/20 border-earth3"
+                        >
+                          No, keep it
+                        </Button>
+                      </DialogClose>
+                      <Button
+                        onClick={() => cancelPayments(item?.or_id)}
+                        className="w-full bg-earth text-earth6 hover:bg-earth1"
+                      >
+                        Yes, cancel
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+
+                <Button
+                  onClick={() =>
+                    handlePayment(item?.or_id, item?.or_total_price)
+                  }
+                  className="w-full"
+                >
+                  <Wallet className="w-4 h-4 mr-2" />
+                  Payment
+                </Button>
               </div>
             </div>
           </AccordionContent>

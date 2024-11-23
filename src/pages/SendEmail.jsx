@@ -10,6 +10,9 @@ function SendEmail() {
   const [loading, setLoading] = useState(false);
   const queryParams = new URLSearchParams(window.location.search);
   const action = queryParams.get("action");
+  const email = queryParams.get("email");
+  console.log(email);
+
   const BASE_URL = import.meta.env.VITE_BASE_URL_BE;
 
   const handleSubmit = async (e) => {
@@ -81,6 +84,7 @@ function SendEmail() {
             id="email"
             className="w-full mt-4"
             type="email"
+            defaultValue={email}
             placeholder="Email"
           />
           <Button className="w-full bg-earth" type="submit" disabled={loading}>

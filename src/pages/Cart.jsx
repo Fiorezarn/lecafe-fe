@@ -55,7 +55,7 @@ function Cart() {
   return (
     <>
       <Navbar />
-      <div className="flex flex-col md:flex-row p-8 gap-8 h-screen bg-earth3">
+      <div className="flex flex-col md:flex-row p-8 gap-8 md:h-screen bg-earth3">
         <CartItems />
         <OrderSummary />
       </div>

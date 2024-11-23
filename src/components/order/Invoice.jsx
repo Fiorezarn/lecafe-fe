@@ -21,13 +21,11 @@ export function DownloadInvoice({ orderData }) {
     doc.setFont("helvetica", "bold");
     doc.setFontSize(20);
     doc.setTextColor(44, 62, 80);
-
     doc.text("INVOICE", 140, 25);
 
     doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(52, 73, 94);
-
     doc.text(`Invoice Number: INV-${orderData.or_id}`, 140, 35);
     doc.text(`Date: ${formatDate(orderData.createdAt)}`, 140, 40);
     doc.text(`Order ID: ORDER-${orderData.or_id}`, 140, 45);
@@ -43,14 +41,20 @@ export function DownloadInvoice({ orderData }) {
     doc.text("Bill To:", 20, 75);
     doc.setFont("helvetica", "normal");
     doc.text(orderData.or_name_recipient, 20, 80);
+    doc.text(`Phone: ${orderData.or_phonenumber}`, 20, 85);
+
     if (isNaN(Number(orderData.or_site))) {
-      doc.text(`Delivery Address: ${orderData.or_site}`, 20, 85);
+      doc.text(`Delivery Address: ${orderData.or_site}`, 20, 90);
     } else {
-      doc.text(`Dine-in Table: ${orderData.or_site}`, 20, 85);
+      doc.text(`Dine-in Table: ${orderData.or_site}`, 20, 90);
+    }
+
+    if (orderData.or_note) {
+      doc.text(`Note: ${orderData.or_note}`, 20, 95);
     }
 
     doc.autoTable({
-      startY: 95,
+      startY: 105,
       head: [["Item", "Price", "Quantity", "Total"]],
       body: menus.map((menu) => [
         menu.name,
@@ -69,13 +73,13 @@ export function DownloadInvoice({ orderData }) {
     });
 
     const finalY = doc.lastAutoTable.finalY || 120;
-    doc.setFontSize(10);
     doc.setFont("helvetica", "bold");
     doc.text(
       `Total: ${formatPrice(orderData.or_total_price)}`,
       150,
       finalY + 10
     );
+
     doc.setFont("helvetica", "normal");
     doc.text(`Payment Method: ${orderData.payment_method}`, 20, finalY + 20);
 

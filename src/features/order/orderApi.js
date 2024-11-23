@@ -119,6 +119,9 @@ const fetchCreateDistance = async (data) => {
       "Content-Type": "application/json",
     },
     credentials: "include",
+    body: JSON.stringify({
+      data,
+    }),
   });
 
   return await response.json();

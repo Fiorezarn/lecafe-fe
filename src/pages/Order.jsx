@@ -11,6 +11,7 @@ import Ordered from "@/components/order/Ordered";
 import Failed from "@/components/order/Failed";
 import { CircleCheckBigIcon } from "lucide-react";
 import Footer from "@/components/navigation/Footer";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Order() {
   const dispatch = useDispatch();
@@ -23,6 +24,8 @@ function Order() {
   const [value, setValue] = useState("");
   const queryParams = new URLSearchParams(window.location.search);
   const orderIdMidtrans = queryParams.get("order_id");
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (orderIdMidtrans && id) {
@@ -67,20 +70,26 @@ function Order() {
     if (token) {
       window.snap.pay(token, {
         onSuccess: (result) => {
-          console.log("Payment success:", result);
+          if (result?.order_id) {
+            navigate(location.pathname + "?order_id=" + result.order_id);
+          }
         },
         onPending: (result) => {
-          console.log("Payment pending:", result);
+          if (result?.order_id) {
+            navigate(location.pathname + "?order_id=" + result.order_id);
+          }
         },
         onError: (result) => {
-          console.log("Payment error:", result);
+          if (result?.order_id) {
+            navigate(location.pathname + "?order_id=" + result.order_id);
+          }
         },
         onClose: () => {
           console.log("Payment closed");
         },
       });
     }
-  }, [transactions]);
+  }, [transactions, dispatch, location.pathname, navigate]);
 
   useEffect(() => {
     if (value === "" && id) {
@@ -128,7 +137,6 @@ function Order() {
           </TabsContent>
         </Tabs>
       </div>
-      <Footer />
     </>
   );
 }
