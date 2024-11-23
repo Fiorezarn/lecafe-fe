@@ -111,10 +111,10 @@ function Order() {
   return (
     <>
       <Navbar />
-      <div className="p-10 bg-earth5 h-screen overflow-y-auto">
+      <div className="p-10 bg-earth5 h-screen">
         <Tabs
           defaultValue="pending"
-          className="w-full"
+          className="w-full h-full"
           onValueChange={handleTabChange}
         >
           <TabsList className="grid w-full grid-cols-4 font-mono">

@@ -30,14 +30,14 @@ async function fetchRegister({
   return await response.json();
 }
 
-async function fetchlogin({ input, password }) {
+async function fetchlogin({ input, password, rememberme }) {
   const response = await fetch(`${BASE_API}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     credentials: "include",
-    body: JSON.stringify({ input, password }),
+    body: JSON.stringify({ input, password, rememberme }),
   });
   if (!response.ok) {
     const errorData = await response.json();

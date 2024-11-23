@@ -2,12 +2,10 @@ import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
 import firebaseConfig from "../../../firebaseconfig";
 import { useDispatch } from "react-redux";
 
 function ButtonGoogle({ text }) {
-  const navigate = useNavigate();
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
@@ -20,7 +18,6 @@ function ButtonGoogle({ text }) {
       const user = result.user;
       const idToken = await user.getIdToken();
       dispatch({ type: "auth/loginWithGoogle", payload: idToken });
-      navigate("/");
     } catch (error) {
       console.error("Login Failed:", error);
     }

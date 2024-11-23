@@ -29,7 +29,7 @@ export function CartItems() {
   };
 
   return (
-    <section className="flex-1 h-full md:overflow-auto">
+    <section className="flex-1 h-full overflow-auto">
       <h2 className="text-2xl font-bold mb-4 text-earth font-mono">
         Your Cart
       </h2>

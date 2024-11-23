@@ -95,8 +95,18 @@ function* createVerifyPayments(action) {
 
 function* cancelPayments(action) {
   try {
-    const response = yield fetchCancelPayments(action.payload);
-    yield put(fetchVerifyTransactionSuccess(response));
+    const response = yield fetchCancelPayments(action.payload.id);
+    const responseGet = yield fetchOrderByUserId({
+      id: action.payload.userId,
+      status: "pending",
+    });
+    yield put(
+      fetchVerifyTransactionSuccess({
+        data: responseGet.data,
+        message: response.message,
+        code: response.code,
+      })
+    );
   } catch (error) {
     yield put(fetchVerifyTransactionFailed(error.message));
   }

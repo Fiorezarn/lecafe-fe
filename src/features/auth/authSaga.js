@@ -25,7 +25,9 @@ function* login(action) {
   try {
     yield put(setLoading(true));
     const response = yield fetchlogin(action.payload);
-    Cookies.set("user_leecafe", response.data.token);
+    Cookies.set("user_leecafe", response.data.token, {
+      expires: response.rememberme ? 30 : 1,
+    });
     yield put(loginSuccess(response));
   } catch (error) {
     yield put(loginFailure(error));

@@ -29,8 +29,11 @@ function Pending({ orders }) {
   const { cookie } = useSelector((state) => state.auth);
   const { loading } = useSelector((state) => state.order);
   const cancelPayments = (id) => {
-    dispatch({ type: "payments/cancelPayments", payload: id });
-    location.reload();
+    const userId = cookie?.us_id;
+    dispatch({
+      type: "payments/cancelPayments",
+      payload: { id: id, userId: userId },
+    });
   };
 
   const handlePayment = (id, amount) => {
@@ -81,7 +84,7 @@ function Pending({ orders }) {
             </div>
           </AccordionTrigger>
           <AccordionContent>
-            <div className="bg-earth6 rounded-lg overflow-hidden shadow-md border border-gray-200">
+            <div className="bg-earth6 rounded-lg shadow-md border border-gray-200">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
                 <div>
                   <h3 className="font-semibold mb-4 text-lg">Order Items</h3>

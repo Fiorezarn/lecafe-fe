@@ -1,23 +1,26 @@
 import { Button } from "@/components/ui/button";
 import heroImage from "../assets/images/hero.jpg";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { CircleCheckBigIcon, CircleX } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ButtonGoogle from "@/components/auth/Google";
+import "react-phone-number-input/style.css";
+import PhoneInput from "react-phone-number-input";
 
 function Register() {
   const { toast } = useToast();
   const dispatch = useDispatch();
   const { user, loading, error } = useSelector((state) => state.auth);
+  const [phoneNumber, setPhoneNumber] = useState("");
   const handleSubmit = (e) => {
     e.preventDefault();
     const fullname = e.target.fullname.value;
     const username = e.target.username.value;
     const email = e.target.email.value;
-    const phonenumber = e.target.phonenumber.value;
+    const phonenumber = phoneNumber;
     const password = e.target.password.value;
 
     dispatch({
@@ -25,10 +28,6 @@ function Register() {
       payload: { fullname, username, email, phonenumber, password },
     });
   };
-
-  useEffect(() => {
-    console.log(user?.code);
-  }, [user]);
 
   useEffect(() => {
     if (error) {
@@ -90,11 +89,13 @@ function Register() {
             placeholder="Username"
             required
           />
-          <Input
+          <PhoneInput
             id="phonenumber"
-            className="mt-2"
-            type="text"
-            placeholder="Phone Number"
+            placeholder="Enter phone number"
+            defaultCountry="ID"
+            value={phoneNumber}
+            onChange={setPhoneNumber}
+            className="w-full p-2 mt-2 rounded-lg border text-sm bg-white focus:outline-none focus:ring-2 focus:ring-earth2"
             required
           />
           <Input

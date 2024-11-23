@@ -4,10 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
-import { CircleCheckBigIcon, CircleX } from "lucide-react";
+import { CircleX } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { ToastAction } from "@/components/ui/toast";
 import ButtonGoogle from "@/components/auth/Google";
 
 function Login() {
@@ -16,15 +15,21 @@ function Login() {
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.auth);
   const [email, setEmail] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
   const handlelogin = async (e) => {
     e.preventDefault();
     const input = e.target.email.value;
     const password = e.target.password.value;
+    const rememberme = isChecked;
 
     dispatch({
       type: "auth/loginRequest",
-      payload: { input, password },
+      payload: { input, password, rememberme },
     });
+  };
+
+  const checkHandler = () => {
+    setIsChecked(!isChecked);
   };
 
   useEffect(() => {
@@ -47,7 +52,7 @@ function Login() {
         return;
       }
     }
-  }, [error, email]);
+  }, [error]);
 
   return (
     <div className="flex h-screen justify-between items-center">
@@ -82,11 +87,17 @@ function Login() {
             className="mt-2"
             type="password"
             placeholder="Password"
+            isPassword
             required
           />
           <div className="mt-4 flex justify-between font-semibold text-sm">
             <label className="flex text-slate-500 hover:text-slate-600 cursor-pointer">
-              <input className="mr-1" type="checkbox" />
+              <input
+                type="checkbox"
+                className="mr-1"
+                checked={isChecked}
+                onChange={checkHandler}
+              />
               <span>Remember Me</span>
             </label>
             <a
@@ -111,7 +122,7 @@ function Login() {
             </div>
           </div>
         </form>
-        <ButtonGoogle text=" Login with google" />
+        <ButtonGoogle text="Login with google" />
         <div className="mt-4 font-semibold flex justify-between text-sm text-slate-500 text-center md:text-left">
           <a
             className="text-[#C0AF90] hover:underline hover:underline-offset-4"

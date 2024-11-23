@@ -56,7 +56,9 @@ export const orderSlice = createSlice({
     },
     fetchVerifyTransactionSuccess: (state, action) => {
       state.loading = false;
-      state.transactions = action.payload;
+      state.order = action.payload;
+      state.messageOrder = action.payload.message;
+      state.codeOrder = action.payload.code;
     },
     fetchVerifyTransactionFailed: (state, action) => {
       state.loading = false;
@@ -65,6 +67,7 @@ export const orderSlice = createSlice({
     fetchCancelTransactionSuccess: (state, action) => {
       state.loading = false;
       state.transactions = action.payload;
+      state.order = action.payload;
     },
     fetchCancelTransactionFailed: (state, action) => {
       state.loading = false;

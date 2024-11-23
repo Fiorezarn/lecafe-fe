@@ -228,7 +228,7 @@ export function OrderSummary() {
   return (
     <aside
       className={`md:w-1/3 ${
-        orderType === "Delivery" ? "md:h-[85vh]" : "md:h-[80vh]"
+        orderType === "Delivery" ? "md:h-[85vh]" : "md:h-[90vh]"
       } md:overflow-y-auto bg-brown-900 p-6 text-white rounded-lg shadow-lg md:sticky md:top-8 bg-earth2 ${
         cart?.Menu?.length === 0 ? "hidden" : ""
       }`}
