@@ -87,7 +87,10 @@ function Order() {
             navigate(location.pathname + "?order_id=" + result.order_id);
           }
         },
-        onClose: () => {
+        onClose: (result) => {
+          if (result?.order_id) {
+            navigate(location.pathname + "?order_id=" + result.order_id);
+          }
           console.log("Payment closed");
         },
       });
@@ -114,7 +117,7 @@ function Order() {
   return (
     <>
       <Navbar />
-      <div className="p-10 bg-earth5 h-screen">
+      <div className="p-4 md:p-10 bg-earth5 h-screen">
         <Tabs
           defaultValue="pending"
           className="w-full h-full"
