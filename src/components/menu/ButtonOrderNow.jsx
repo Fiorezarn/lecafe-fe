@@ -1,5 +1,5 @@
 import { useToast } from "@/hooks/use-toast";
-import { cn, formatPrice } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { CircleX, Coffee, MapPin, UtensilsCrossed } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -393,7 +393,7 @@ function ButtonOrderNow({ idMenu }) {
                 className="mapDiv rounded-md w-full max-w-[500px] aspect-[4/3] md:w-[100%] md:aspect-auto md:h-[30vh]"
                 ref={mapDiv}
               ></div>
-              <span className="text-earth6 text-sm">
+              <span className="text-earth text-sm">
                 Please click on the map to select your address or search your
                 address
               </span>
@@ -402,7 +402,7 @@ function ButtonOrderNow({ idMenu }) {
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 className="w-full p-2 rounded-lg bg-earth6 text-earth border-earth3 focus:ring-earth2"
-                placeholder="Enter delivery address"
+                placeholder="Search your address or click on the map to select your address"
                 disabled
               />
             </div>
@@ -444,5 +444,5 @@ function ButtonOrderNow({ idMenu }) {
 export default ButtonOrderNow;
 
 ButtonOrderNow.propTypes = {
-  idMenu: PropTypes.oneOfType([PropTypes.number]),
+  idMenu: PropTypes.number,
 };

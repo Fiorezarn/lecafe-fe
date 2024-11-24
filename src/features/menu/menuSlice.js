@@ -111,6 +111,10 @@ export const menuSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    setMessage: (state, action) => {
+      state.message = action.payload;
+      state.code = action.payload;
+    },
   },
 });
 
@@ -137,6 +141,7 @@ export const {
   setCategory,
   fetchMenuRecommendedSuccess,
   fetchMenuRecommendedFailure,
+  setMessage,
 } = menuSlice.actions;
 
 export default menuSlice.reducer;

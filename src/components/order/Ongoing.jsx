@@ -16,6 +16,7 @@ import NoData from "@/components/order/NoData";
 import AccordionSkeleton from "./AccordionSkeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import PaymentInfo from "./PaymentInfo";
+import PropTypes from "prop-types";
 
 function OnGoing({ orders }) {
   const [isOpen, setIsOpen] = useState({});
@@ -235,3 +236,6 @@ function OnGoing({ orders }) {
 }
 
 export default OnGoing;
+OnGoing.propTypes = {
+  orders: PropTypes.array,
+};

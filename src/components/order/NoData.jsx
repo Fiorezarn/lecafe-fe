@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 function NoData({ title, paragraph }) {
   return (
     <div className="flex flex-col items-center justify-center p-8 text-gray-500">
@@ -13,3 +15,7 @@ function NoData({ title, paragraph }) {
 }
 
 export default NoData;
+NoData.propTypes = {
+  title: PropTypes.string,
+  paragraph: PropTypes.string,
+};

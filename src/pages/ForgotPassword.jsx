@@ -84,6 +84,7 @@ function ForgotPassword() {
         <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
           <Input
             id="password"
+            isPassword
             className="w-full"
             type="password"
             placeholder="Password"
@@ -95,8 +96,9 @@ function ForgotPassword() {
             type="password"
             placeholder="Repeat Password"
             required
+            isPassword
           />
-          <Button className="w-full bg-earth" type="submit">
+          <Button className="w-full bg-earth" type="submit" disabled={loading}>
             {loading ? "Loading..." : "Submit"}
           </Button>
         </form>

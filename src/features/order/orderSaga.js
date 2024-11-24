@@ -7,7 +7,6 @@ import {
   setCoordinates,
   fetchTransactionSuccess,
   fetchTransactionFailure,
-  fetchVerifyTransactionSuccess,
   fetchVerifyTransactionFailed,
   setLoading,
   fetchOrderDeliverySuccess,
@@ -18,6 +17,8 @@ import {
   fetchAllOrderHistoryFailure,
   fetchCreateDistanceSuccess,
   fetchCreateDistanceFailure,
+  fetchCancelTransactionSuccess,
+  fetchCancelTransactionFailed,
 } from "@/features/order/orderSlice";
 import {
   fetchOrderByUserId,
@@ -95,20 +96,21 @@ function* createVerifyPayments(action) {
 
 function* cancelPayments(action) {
   try {
+    yield put(setLoading(true));
     const response = yield fetchCancelPayments(action.payload.id);
     const responseGet = yield fetchOrderByUserId({
       id: action.payload.userId,
       status: "pending",
     });
     yield put(
-      fetchVerifyTransactionSuccess({
+      fetchCancelTransactionSuccess({
         data: responseGet.data,
         message: response.message,
         code: response.code,
       })
     );
   } catch (error) {
-    yield put(fetchVerifyTransactionFailed(error.message));
+    yield put(fetchCancelTransactionFailed(error.message));
   }
 }
 

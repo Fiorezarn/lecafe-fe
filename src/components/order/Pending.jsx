@@ -16,18 +16,20 @@ import {
 } from "@/components/ui/dialog";
 import { formatDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ClockIcon, MessageCircleX, Wallet } from "lucide-react";
+import { ClockIcon, Loader2, MessageCircleX, Wallet } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import NoData from "@/components/order/NoData";
 import AccordionSkeleton from "./AccordionSkeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import PaymentInfo from "./PaymentInfo";
+import { setIsOpenModal } from "@/features/order/orderSlice";
+import PropTypes from "prop-types";
 
 function Pending({ orders }) {
   const dispatch = useDispatch();
   const { cookie } = useSelector((state) => state.auth);
-  const { loading } = useSelector((state) => state.order);
+  const { loading, isOpen } = useSelector((state) => state.order);
   const cancelPayments = (id) => {
     const userId = cookie?.us_id;
     dispatch({
@@ -42,6 +44,14 @@ function Pending({ orders }) {
       type: "payments/createPayments",
       payload: { email, amount, id },
     });
+  };
+
+  const handleModalCancel = () => {
+    dispatch(setIsOpenModal(true));
+  };
+
+  const handleModalClose = () => {
+    dispatch(setIsOpenModal(false));
   };
 
   if (loading) {
@@ -129,11 +139,17 @@ function Pending({ orders }) {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
-                <Dialog>
+                <Dialog
+                  open={isOpen}
+                  onOpenChange={(open) =>
+                    open ? handleModalCancel() : handleModalClose()
+                  }
+                >
                   <DialogTrigger asChild>
                     <Button
+                      onClick={handleModalCancel}
                       variant="outline"
-                      className="w-full bg-earth6 text-earth hover:bg-earth3/20 border-earth3 transition-all duration-300"
+                      className="w-full bg-earth3 text-earth hover:bg-earth3/20 border-earth3 transition-all duration-300"
                     >
                       <MessageCircleX className="w-4 h-4 mr-2" />
                       Cancel
@@ -151,6 +167,7 @@ function Pending({ orders }) {
                     <DialogFooter className="gap-2 sm:gap-0">
                       <DialogClose asChild>
                         <Button
+                          onClick={handleModalClose}
                           variant="outline"
                           className="w-full bg-earth6 text-earth hover:bg-earth3/20 border-earth3"
                         >
@@ -158,10 +175,15 @@ function Pending({ orders }) {
                         </Button>
                       </DialogClose>
                       <Button
+                        disabled={loading}
                         onClick={() => cancelPayments(item?.or_id)}
                         className="w-full bg-earth text-earth6 hover:bg-earth1"
                       >
-                        Yes, cancel
+                        {loading ? (
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        ) : (
+                          "Yes, cancel"
+                        )}
                       </Button>
                     </DialogFooter>
                   </DialogContent>
@@ -186,3 +208,7 @@ function Pending({ orders }) {
 }
 
 export default Pending;
+
+Pending.propTypes = {
+  orders: PropTypes.array,
+};

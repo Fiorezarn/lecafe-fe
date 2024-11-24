@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import AccordionSkeleton from "./AccordionSkeleton";
 import { DownloadInvoice } from "./Invoice";
 import PaymentInfo from "./PaymentInfo";
+import PropTypes from "prop-types";
 
 function Ordered({ orders }) {
   const { loading } = useSelector((state) => state.order);
@@ -119,3 +120,7 @@ function Ordered({ orders }) {
 }
 
 export default Ordered;
+
+Ordered.propTypes = {
+  orders: PropTypes.array,
+};

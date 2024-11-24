@@ -4,6 +4,7 @@ import { Download } from "lucide-react";
 import { formatDate, formatPrice } from "@/lib/utils";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import PropTypes from "prop-types";
 
 export function DownloadInvoice({ orderData }) {
   const handleDownload = () => {
@@ -96,3 +97,7 @@ export function DownloadInvoice({ orderData }) {
     </Button>
   );
 }
+
+DownloadInvoice.propTypes = {
+  orderData: PropTypes.object,
+};

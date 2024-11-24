@@ -1,7 +1,8 @@
 import { formatPrice } from "@/lib/utils";
 
 function ExpandedRowComponent({ data }) {
-  const orderDetails = JSON.parse(data.OrderDetail[0].od_mn_json);
+  const orderDetail = JSON.parse(data.OrderDetail[0].od_mn_json);
+  const orderDetails = orderDetail.filter((item) => item.id !== "SHIPPING");
 
   return (
     <div className="p-6 bg-white border-t border-gray-200 shadow-md">

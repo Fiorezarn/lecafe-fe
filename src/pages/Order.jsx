@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/navigation/Navbar";
 import { useToast } from "@/hooks/use-toast";
-import { setMessageOrder } from "@/features/order/orderSlice";
+import { setIsOpenModal, setMessageOrder } from "@/features/order/orderSlice";
 import Pending from "@/components/order/Pending";
 import OnGoing from "@/components/order/Ongoing";
 import Ordered from "@/components/order/Ordered";
@@ -16,7 +16,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 function Order() {
   const dispatch = useDispatch();
   const { toast } = useToast();
-  const { orderById, messageOrder, transactions } = useSelector(
+  const { orderById, messageOrder, transactions, codeOrder } = useSelector(
     (state) => state.order
   );
   const { cookie } = useSelector((state) => state.auth);
@@ -37,19 +37,22 @@ function Order() {
   }, [orderIdMidtrans, id]);
 
   useEffect(() => {
-    if (messageOrder) {
-      toast({
-        description: (
-          <div className="flex gap-2 font-bold">
-            <CircleCheckBigIcon className="text-green-600" />
-            <p>{messageOrder}</p>
-          </div>
-        ),
-        className: cn(
-          "top-10 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
-        ),
-      });
-      dispatch(setMessageOrder(null));
+    if (messageOrder && codeOrder) {
+      if (codeOrder === 201 || codeOrder === 200) {
+        toast({
+          description: (
+            <div className="flex gap-2 font-bold">
+              <CircleCheckBigIcon className="text-green-600" />
+              <p>{messageOrder}</p>
+            </div>
+          ),
+          className: cn(
+            "top-10 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+          ),
+        });
+        dispatch(setIsOpenModal(false));
+        dispatch(setMessageOrder(null));
+      }
     }
   }, [messageOrder]);
 
@@ -92,13 +95,13 @@ function Order() {
   }, [transactions, dispatch, location.pathname, navigate]);
 
   useEffect(() => {
-    if (value === "" && id) {
+    if ((value === "" && id) || messageOrder) {
       dispatch({
         type: "order/getOrderByUserId",
         payload: { id, status: "pending" },
       });
     }
-  }, [dispatch, id, value]);
+  }, [dispatch, id, value, messageOrder]);
 
   const handleTabChange = (value) => {
     setValue(value);

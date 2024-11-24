@@ -1,4 +1,3 @@
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Contact, MapPin, Notebook, Phone, WalletCards } from "lucide-react";
 import {
@@ -8,6 +7,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { formatPrice } from "@/lib/utils";
+import PropTypes from "prop-types";
 
 function PaymentInfo({ item, shipping, isPaymentMethod }) {
   return (
@@ -54,20 +54,30 @@ function PaymentInfo({ item, shipping, isPaymentMethod }) {
         <div className="grid grid-cols-[auto_1fr_auto] items-center gap-x-4">
           <WalletCards className="w-5 h-5" />
           <span className="text-earth1 text-sm md:text-base">
-            Delivery Address :
+            {isNaN(Number(item?.or_site))
+              ? "Delivery Address:"
+              : "Table Number:"}
           </span>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                {item?.or_site.substring(0, 25)}...
-              </TooltipTrigger>
-              <TooltipContent>
-                <span className="text-earth text-sm md:text-base">
-                  {item?.or_site}
-                </span>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          {isNaN(Number(item?.or_site)) ? (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger className="text-right text-earth text-sm md:text-base truncate max-w-[200px]">
+                  {item?.or_site.length > 25
+                    ? `${item?.or_site.substring(0, 25)}...`
+                    : item?.or_site}
+                </TooltipTrigger>
+                <TooltipContent side="bottom">
+                  <span className="text-earth text-sm md:text-base">
+                    {item?.or_site}
+                  </span>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          ) : (
+            <span className="text-earth text-sm md:text-base text-right">
+              Table {item?.or_site}
+            </span>
+          )}
         </div>
         <div className="grid grid-cols-[auto_1fr_auto] items-center gap-x-4">
           <Notebook className="w-5 h-5" />
@@ -93,5 +103,11 @@ function PaymentInfo({ item, shipping, isPaymentMethod }) {
     </div>
   );
 }
+
+PaymentInfo.propTypes = {
+  item: PropTypes.object,
+  shipping: PropTypes.array,
+  isPaymentMethod: PropTypes.bool,
+};
 
 export default PaymentInfo;

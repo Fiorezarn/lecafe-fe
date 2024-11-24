@@ -246,10 +246,11 @@ export function OrderSummary() {
         />
       </div>
       <div className="mt-6">
-        <Label className="block font-mono text-lg font-semibold mb-2">
+        <Label htmlFor="phoneNumber" className="text-lg font-semibold">
           Phone Number
         </Label>
         <PhoneInput
+          id="phoneNumber"
           placeholder="Enter phone number"
           value={phoneNumber}
           onChange={setPhoneNumber}
@@ -335,16 +336,16 @@ export function OrderSummary() {
             Please click on the map to select your address or search your
             address
           </span>
-          <label className="block text-lg font-semibold mb-2 mt-4">
+          <Label className="block text-lg font-semibold mb-2 mt-4">
             Address
-          </label>
+          </Label>
           <Textarea
             disabled
             type="text"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             className="w-full p-2 rounded-lg bg-white text-black"
-            placeholder="Enter delivery address"
+            placeholder="Search your address or click on the map to select your address"
           />
         </div>
       )}
@@ -355,7 +356,7 @@ export function OrderSummary() {
           value={note}
           onChange={(e) => setNote(e.target.value)}
           className="w-full p-2 rounded-lg bg-brown-700 text-black"
-          placeholder="Enter Note"
+          placeholder="Enter any additional notes"
         />
       </div>
       <div className="mt-6">

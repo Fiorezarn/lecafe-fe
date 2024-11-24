@@ -66,8 +66,9 @@ export const orderSlice = createSlice({
     },
     fetchCancelTransactionSuccess: (state, action) => {
       state.loading = false;
-      state.transactions = action.payload;
       state.order = action.payload;
+      state.messageOrder = action.payload.message;
+      state.codeOrder = action.payload.code;
     },
     fetchCancelTransactionFailed: (state, action) => {
       state.loading = false;

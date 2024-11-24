@@ -1,5 +1,5 @@
 import DataTableComponent from "@/components/dashboard/DataTables";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { CircleCheckBigIcon, CircleX, Pen, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import ModalMenu from "@/components/dashboard/ModalMenu";
 import {
@@ -24,6 +24,7 @@ import {
   setLimit,
   setSearch,
   setCategory,
+  setMessage,
 } from "@/features/menu/menuSlice";
 import {
   Select,
@@ -51,6 +52,8 @@ function DashboardMenu() {
     search,
     category,
   } = useSelector((state) => state.menu);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
 
   useEffect(() => {
     if (error) {
@@ -93,22 +96,11 @@ function DashboardMenu() {
             "top-10 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
           ),
         });
-      } else {
-        toast({
-          variant: "destructive",
-          description: (
-            <div className="flex items-center gap-2 font-bold">
-              <CircleX className="text-white" />
-              <p>{message}</p>
-            </div>
-          ),
-          className: cn(
-            "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
-          ),
-        });
+        setDeleteOpen(false);
+        setMessage(null);
       }
     }
-  }, [code, message, toast]);
+  }, [code, message]);
 
   const handleEdit = (id) => {
     dispatch(setProductId(id));
@@ -120,9 +112,22 @@ function DashboardMenu() {
     dispatch(setIsOpen(true));
     dispatch(setType("create"));
   };
+  const handleDelete = () => {
+    if (selectedId) {
+      dispatch({ type: "menu/deleteMenu", payload: selectedId });
+      setSelectedId(null);
+      setDeleteOpen(false);
+    }
+  };
 
-  const handleDelete = (id) => {
-    dispatch({ type: "menu/deleteMenu", payload: id });
+  const handleDeleteOpen = (id) => {
+    setSelectedId(id);
+    setDeleteOpen(true);
+  };
+
+  const handleDeleteClose = () => {
+    setDeleteOpen(false);
+    setSelectedId(null);
   };
 
   const handlePageChange = (newPage) => {
@@ -156,7 +161,11 @@ function DashboardMenu() {
       ),
     },
     { name: "Name", selector: (row) => row.mn_name, sortable: true },
-    { name: "Price", selector: (row) => row.mn_price, sortable: true },
+    {
+      name: "Price",
+      selector: (row) => formatPrice(row.mn_price),
+      sortable: true,
+    },
     {
       name: "Category",
       selector: (row) => {
@@ -185,16 +194,21 @@ function DashboardMenu() {
           <Button size="sm" onClick={() => handleEdit(row.mn_id)}>
             <Pen />
           </Button>
-          <Dialog>
+          <Dialog
+            open={deleteOpen}
+            onOpenChange={(open) => {
+              open ? handleDeleteOpen(row.mn_id) : handleDeleteClose();
+            }}
+          >
             <DialogTrigger asChild>
               <Button size="sm" variant="destructive">
                 <Trash2 />
               </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent aria-describedby="dialog-description">
               <DialogHeader>
                 <DialogTitle>
-                  Are you sure you want to delete the data?
+                  Are you sure you want to delete the menu?
                 </DialogTitle>
               </DialogHeader>
               <DialogFooter>
@@ -202,7 +216,7 @@ function DashboardMenu() {
                   <Button className="w-full">Cancel</Button>
                 </DialogClose>
                 <Button
-                  onClick={() => handleDelete(row.mn_id)}
+                  onClick={() => handleDelete()}
                   className="bg-red-600 w-full text-white font-bold"
                   disabled={loading}
                 >
