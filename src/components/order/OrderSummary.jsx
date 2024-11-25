@@ -106,7 +106,6 @@ export function OrderSummary() {
       searchWidget.on("search-complete", function (event) {
         view.graphics.removeAll();
         const results = event.results[0].results;
-        console.log(results);
         setLatLong({
           latitude: results[0].feature.geometry.latitude,
           longitude: results[0].feature.geometry.longitude,
@@ -270,7 +269,6 @@ export function OrderSummary() {
         </Label>
         <Select
           onValueChange={(value) => {
-            console.log(value);
             setOrderType(value);
           }}
         >

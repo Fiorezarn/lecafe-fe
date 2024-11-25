@@ -1,5 +1,5 @@
 import { useToast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import { CircleX, Coffee, MapPin, UtensilsCrossed } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -56,6 +56,7 @@ function ButtonOrderNow({ idMenu }) {
   const [latLong, setLatLong] = useState("");
   const userId = cookie?.us_id;
   const mapDiv = useRef(null);
+  const [feeShipping, setFeeShipping] = useState(0);
 
   const handleOrderNowClick = () => {
     if (!cookie) {
@@ -77,6 +78,26 @@ function ButtonOrderNow({ idMenu }) {
       setLatLong("");
     }
   }, [isDialogOpen]);
+
+  useEffect(() => {
+    if (distance) {
+      if (orderType === "Delivery") {
+        setFeeShipping(Number(distance) * 2000);
+      } else {
+        setFeeShipping(0);
+      }
+    }
+  }, [distance, orderType]);
+
+  useEffect(() => {
+    if (distance) {
+      if (orderType === "Delivery") {
+        setFeeShipping(Number(distance) * 2000);
+      } else {
+        setFeeShipping(0);
+      }
+    }
+  }, [distance, orderType]);
 
   useEffect(() => {
     if (latLong) {
@@ -124,8 +145,8 @@ function ButtonOrderNow({ idMenu }) {
         view.graphics.removeAll();
         const results = event.results[0].results;
         setLatLong({
-          latitude: results[0].feature.attributes.InputY,
-          longitude: results[0].feature.attributes.InputX,
+          latitude: results[0].feature.geometry.latitude,
+          longitude: results[0].feature.geometry.longitude,
         });
         setAddress(searchWidget.searchTerm);
         const graphic = new Graphic({
@@ -189,45 +210,37 @@ function ButtonOrderNow({ idMenu }) {
       });
       return;
     }
-    if (menuById) {
-      const feeShipping =
-        distance && distance?.data !== 0 ? 2000 * distance?.data : 0;
-      const totalPrice =
-        orderType === "Dine-in"
-          ? menuById?.mn_price
-          : menuById?.mn_price + feeShipping;
 
-      const menuJson = JSON.stringify([
-        {
-          id: menuById?.mn_id,
-          name: menuById?.mn_name,
-          image: menuById?.mn_image,
-          price: menuById?.mn_price,
-          quantity: 1,
-        },
-        {
-          id: "SHIPPING",
-          name: "Shipping Fee",
-          price: feeShipping,
-          quantity: 1,
-        },
-      ]);
+    const menuJson = JSON.stringify([
+      {
+        id: menuById?.mn_id,
+        name: menuById?.mn_name,
+        image: menuById?.mn_image,
+        price: menuById?.mn_price,
+        quantity: 1,
+      },
+      {
+        id: "SHIPPING",
+        name: "Shipping Fee",
+        price: feeShipping,
+        quantity: 1,
+      },
+    ]);
 
-      dispatch({
-        type: "order/createOrder",
-        payload: {
-          userId,
-          typeOrder: orderType,
-          site,
-          totalPrice,
-          menuJson,
-          nameRecipient,
-          isOrderNow: true,
-          note,
-          phoneNumber,
-        },
-      });
-    }
+    dispatch({
+      type: "order/createOrder",
+      payload: {
+        userId,
+        typeOrder: orderType,
+        site,
+        totalPrice: menuById?.mn_price + feeShipping,
+        menuJson,
+        nameRecipient,
+        isOrderNow: true,
+        note,
+        phoneNumber,
+      },
+    });
   };
 
   useEffect(() => {
@@ -252,7 +265,7 @@ function ButtonOrderNow({ idMenu }) {
         navigate("/order");
       }
     }
-  }, [codeOrder, messageOrder, navigate, toast, dispatch]);
+  }, [codeOrder, messageOrder]);
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -420,7 +433,21 @@ function ButtonOrderNow({ idMenu }) {
             />
           </div>
         </div>
-
+        <div className="mt-6">
+          <div className="flex justify-between font-bold text-lg my-4">
+            <span className="font-mono">Subtotal</span>
+            <span>{formatPrice(menuById?.mn_price || 0)}</span>
+          </div>
+          <div className="flex justify-between font-bold text-lg my-4">
+            <span className="font-mono">Fee Shipping</span>
+            <span>{formatPrice(feeShipping)}</span>
+          </div>
+          <Separator className="h-1 w-py bg-gray-200" aria-hidden="true" />
+          <div className="flex justify-between font-bold text-lg my-4">
+            <span className="font-mono">Total</span>
+            <span>{formatPrice((menuById?.mn_price || 0) + feeShipping)}</span>
+          </div>
+        </div>
         <DialogFooter className="mt-6">
           <Button
             onClick={handleOrderSubmit}
