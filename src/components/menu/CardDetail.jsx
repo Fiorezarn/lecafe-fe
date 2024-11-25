@@ -142,7 +142,7 @@ function CardDetail() {
             >
               <ShoppingCart />
             </Button>
-            <ButtonOrderNow />
+            <ButtonOrderNow idMenu={Number(id)} />
           </div>
         </div>
       </div>

@@ -42,17 +42,22 @@ export function OrderSummary() {
     (state) => state.order
   );
   const { cookie } = useSelector((state) => state.auth);
+  const [feeShipping, setFeeShipping] = useState(0);
   const userId = cookie?.us_id;
   const subtotal =
     cart?.Menu?.reduce((acc, item) => {
       return acc + (item.mn_price * item.Cart?.cr_quantity || 0);
     }, 0) || 0;
 
-  const feeShipping =
-    distance && distance?.data !== 0 ? 2000 * distance?.data : 0;
-
-  const totalPrice =
-    orderType === "Dine-in" ? subtotal : subtotal + feeShipping;
+  useEffect(() => {
+    if (distance) {
+      if (orderType === "Delivery") {
+        setFeeShipping(Number(distance) * 2000);
+      } else {
+        setFeeShipping(0);
+      }
+    }
+  }, [distance, orderType]);
 
   const mapDiv = useRef(null);
 
@@ -101,9 +106,10 @@ export function OrderSummary() {
       searchWidget.on("search-complete", function (event) {
         view.graphics.removeAll();
         const results = event.results[0].results;
+        console.log(results);
         setLatLong({
-          latitude: results[0].feature.attributes.InputY,
-          longitude: results[0].feature.attributes.InputX,
+          latitude: results[0].feature.geometry.latitude,
+          longitude: results[0].feature.geometry.longitude,
         });
         setAddress(searchWidget.searchTerm);
         const graphic = new Graphic({
@@ -192,7 +198,7 @@ export function OrderSummary() {
         userId,
         typeOrder: orderType,
         site,
-        totalPrice,
+        totalPrice: subtotal + feeShipping,
         menuJson,
         nameRecipient,
         isOrderNow: false,
@@ -375,7 +381,7 @@ export function OrderSummary() {
         <Separator className="h-1 w-py bg-gray-200" aria-hidden="true" />
         <div className="flex justify-between font-bold text-lg my-4">
           <span className="font-mono">Total</span>
-          <span>{formatPrice(totalPrice)}</span>
+          <span>{formatPrice(subtotal + feeShipping)}</span>
         </div>
       </div>
       <Button
