@@ -66,14 +66,7 @@ const fetchPayments = async ({ email, amount, id }) => {
 };
 
 const verifyPayments = async (id) => {
-  const response = await fetch(`${BASE_URL}/order/verify-payment/${id}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  });
-
+  const response = await fetch(`${BASE_URL}/order/verify-payment/${id}`);
   return await response.json();
 };
 
