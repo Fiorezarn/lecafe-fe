@@ -224,7 +224,11 @@ function OnGoing({ orders }) {
                 </div>
                 <div className="mt-4">
                   <h3 className="font-semibold mb-4 text-lg">Order Summary</h3>
-                  <PaymentInfo item={item} shipping={shipping} />
+                  <PaymentInfo
+                    item={item}
+                    shipping={shipping}
+                    isPaymentMethod
+                  />
                 </div>
               </div>
             </div>

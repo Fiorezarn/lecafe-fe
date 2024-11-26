@@ -55,7 +55,7 @@ function AboutUs() {
           <img
             className="w-full max-w-md lg:max-w-lg transform transition-transform duration-500 hover:scale-105 rounded-lg shadow-lg"
             src="https://res.cloudinary.com/dsxnvgy7a/image/upload/v1731802324/Pngtree_closeup_of_male_hand_holding_15669643_rgdla0.png"
-            alt="about us"
+            alt="Close-up"
           />
         </div>
       </div>
