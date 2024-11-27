@@ -133,14 +133,16 @@ function DashboardTracking() {
       <h1 className="text-3xl lg:text-4xl mb-6 lg:mb-10 font-bold mt-10 text-earth">
         Tracking
       </h1>
-      <DataTableComponent
-        columns={columns}
-        data={data}
-        expandable={true}
-        expandedRows={expandedRows}
-        onRowExpand={handleRowExpand}
-        ExpandedComponent={ExpandedRowComponent}
-      />
+      <div className="bg-white rounded-lg shadow">
+        <DataTableComponent
+          columns={columns}
+          data={data}
+          expandable={true}
+          expandedRows={expandedRows}
+          onRowExpand={handleRowExpand}
+          ExpandedComponent={ExpandedRowComponent}
+        />
+      </div>
     </DashboardLayout>
   );
 }

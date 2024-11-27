@@ -8,23 +8,24 @@ import { useDispatch, useSelector } from "react-redux";
 const StatCard = ({ icon: Icon, title, value, bgColor }) => {
   return (
     <div className="transform transition-all duration-300 hover:scale-105">
-      <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-        <div className="p-6">
-          <div className="flex items-center justify-between">
-            <div className={`p-4 ${bgColor} rounded-xl`}>
-              <Icon className="h-8 w-8 text-white" />
+      <div className="bg-white rounded-lg overflow-hidden shadow hover:shadow-md transition-shadow duration-300">
+        <div className="p-3 sm:p-4">
+          <div className="flex items-center space-x-3">
+            <div className={`p-2 ${bgColor} rounded-lg shrink-0`}>
+              <Icon className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider truncate">
+                {title}
+              </h3>
+              <p className="mt-1 text-sm sm:text-base font-semibold text-gray-900 break-words">
+                {typeof value === "number"
+                  ? value.toLocaleString()
+                  : value || "0"}
+              </p>
             </div>
           </div>
-          <div className="mt-4">
-            <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider">
-              {title}
-            </h3>
-            <p className="mt-2 text-3xl font-bold text-gray-900">
-              {value?.toLocaleString() || 0}
-            </p>
-          </div>
         </div>
-        <div className={`h-1 ${bgColor}`} />
       </div>
     </div>
   );
@@ -69,12 +70,12 @@ function Dashboard() {
     <DashboardLayout
       breadcrumbLinks={[{ id: 1, title: "Dashboard", url: "/dashboard" }]}
     >
-      <div className="p-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-8">
+      <div className="p-3 sm:p-6">
+        <h1 className="text-lg sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-6">
           Dashboard Overview
         </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {stats.map((stat, index) => (
             <StatCard
               key={index}

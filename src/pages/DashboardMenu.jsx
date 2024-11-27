@@ -112,6 +112,7 @@ function DashboardMenu() {
     dispatch(setIsOpen(true));
     dispatch(setType("create"));
   };
+
   const handleDelete = () => {
     if (selectedId) {
       dispatch({ type: "menu/deleteMenu", payload: selectedId });
@@ -157,13 +158,28 @@ function DashboardMenu() {
     {
       name: "Image",
       selector: (row) => (
-        <img className="w-20 h-20" src={`${row.mn_image}`} alt={row.mn_name} />
+        <div className="py-2">
+          <img
+            className="w-16 h-16 object-cover rounded-lg"
+            src={`${row.mn_image}`}
+            alt={row.mn_name}
+          />
+        </div>
       ),
+      width: "100px",
     },
-    { name: "Name", selector: (row) => row.mn_name, sortable: true },
+    {
+      name: "Name",
+      selector: (row) => (
+        <div className="font-medium truncate max-w-[150px]">{row.mn_name}</div>
+      ),
+      sortable: true,
+    },
     {
       name: "Price",
-      selector: (row) => formatPrice(row.mn_price),
+      selector: (row) => (
+        <div className="font-medium">{formatPrice(row.mn_price)}</div>
+      ),
       sortable: true,
     },
     {
@@ -179,20 +195,25 @@ function DashboardMenu() {
             : "bg-gray-500";
 
         return (
-          <p
-            className={`capitalize ${bgColor} rounded-lg font-bold text-white px-2 py-1`}
+          <span
+            className={`inline-block capitalize ${bgColor} rounded-full text-xs font-semibold text-white px-2.5 py-1`}
           >
             {row.mn_category}
-          </p>
+          </span>
         );
       },
     },
     {
       name: "Action",
       selector: (row) => (
-        <div className="gap-2 flex justify-center">
-          <Button size="sm" onClick={() => handleEdit(row.mn_id)}>
-            <Pen />
+        <div className="flex gap-1.5">
+          <Button
+            size="sm"
+            variant="outline"
+            className="h-8 w-8 p-0"
+            onClick={() => handleEdit(row.mn_id)}
+          >
+            <Pen className="h-4 w-4" />
           </Button>
           <Dialog
             open={deleteOpen}
@@ -201,23 +222,28 @@ function DashboardMenu() {
             }}
           >
             <DialogTrigger asChild>
-              <Button size="sm" variant="destructive">
-                <Trash2 />
+              <Button size="sm" variant="destructive" className="h-8 w-8 p-0">
+                <Trash2 className="h-4 w-4" />
               </Button>
             </DialogTrigger>
-            <DialogContent aria-describedby="dialog-description">
+            <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
-                <DialogTitle>
-                  Are you sure you want to delete the menu?
-                </DialogTitle>
+                <DialogTitle>Delete Menu Item</DialogTitle>
               </DialogHeader>
-              <DialogFooter>
+              <p className="text-sm text-muted-foreground">
+                Are you sure you want to delete this menu item? This action
+                cannot be undone.
+              </p>
+              <DialogFooter className="flex-col sm:flex-row gap-2">
                 <DialogClose asChild>
-                  <Button className="w-full">Cancel</Button>
+                  <Button variant="outline" className="w-full sm:w-auto">
+                    Cancel
+                  </Button>
                 </DialogClose>
                 <Button
-                  onClick={() => handleDelete()}
-                  className="bg-red-600 w-full text-white font-bold"
+                  onClick={handleDelete}
+                  variant="destructive"
+                  className="w-full sm:w-auto"
                   disabled={loading}
                 >
                   {loading ? "Loading..." : "Delete"}
@@ -227,6 +253,7 @@ function DashboardMenu() {
           </Dialog>
         </div>
       ),
+      width: "120px",
     },
   ];
 
@@ -237,46 +264,58 @@ function DashboardMenu() {
         { id: 2, title: "Menu", url: "/dashboard/menu" },
       ]}
     >
-      <h1 className="text-3xl lg:text-4xl mb-6 lg:mb-10 font-bold mt-10 text-earth">
-        Menu Management
-      </h1>
-      {isOpen && <ModalMenu />}
-      <div className="flex justify-between gap-2">
-        <Button className="bg-green-900 mb-9" onClick={handleCreate}>
-          Create Menu
-        </Button>
-        <div className="flex gap-2">
-          <Select value={category} onValueChange={handleCategorySubmit}>
-            <SelectTrigger className="w-full lg:w-[180px]">
-              <SelectValue placeholder="Select a category" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="all">All</SelectItem>
-                <SelectItem value="coffee">Coffee</SelectItem>
-                <SelectItem value="non-coffee">Non-Coffee</SelectItem>
-                <SelectItem value="food">Food</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          <Input
-            type="text"
-            placeholder="Search..."
-            value={search}
-            onChange={(e) => handleSearch(e)}
-            className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+        <h1 className="text-xl sm:text-2xl font-bold text-earth">
+          Menu Management
+        </h1>
+
+        {isOpen && <ModalMenu />}
+
+        <div className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+          <Button
+            className="bg-green-900 hover:bg-green-800 w-full sm:w-auto"
+            onClick={handleCreate}
+          >
+            Create Menu
+          </Button>
+
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Select value={category} onValueChange={handleCategorySubmit}>
+              <SelectTrigger className="w-full sm:w-[140px]">
+                <SelectValue placeholder="Category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="all">All</SelectItem>
+                  <SelectItem value="coffee">Coffee</SelectItem>
+                  <SelectItem value="non-coffee">Non-Coffee</SelectItem>
+                  <SelectItem value="food">Food</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+
+            <Input
+              type="text"
+              placeholder="Search menu..."
+              value={search}
+              onChange={(e) => handleSearch(e)}
+              className="w-full sm:w-[200px]"
+            />
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow">
+          <DataTableComponent
+            columns={columns}
+            data={data}
+            pagination
+            paginationServer
+            onChangePage={handlePageChange}
+            totalRows={totalItems}
+            onChangeRowsPerPage={handleLimitChange}
           />
         </div>
       </div>
-      <DataTableComponent
-        columns={columns}
-        data={data}
-        pagination
-        paginationServer
-        onChangePage={handlePageChange}
-        totalRows={totalItems}
-        onChangeRowsPerPage={handleLimitChange}
-      />
     </DashboardLayout>
   );
 }

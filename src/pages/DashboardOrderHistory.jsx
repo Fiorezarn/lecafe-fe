@@ -168,14 +168,20 @@ function DashboardOrderHistory() {
           Export CSV
         </Button>
       </div>
-      <DataTableComponent
-        columns={columns}
-        data={data}
-        expandable={true}
-        expandedRows={expandedRows}
-        onRowExpand={handleRowExpand}
-        ExpandedComponent={ExpandedRowComponent}
-      />
+      <div className="bg-white rounded-lg shadow max-w-[154vh]">
+        <DataTableComponent
+          columns={columns}
+          data={data}
+          expandable={true}
+          expandedRows={expandedRows}
+          onRowExpand={handleRowExpand}
+          ExpandedComponent={ExpandedRowComponent}
+          className="min-w-full"
+          responsive={true}
+          fixedHeader={true}
+          fixedHeaderScrollHeight="calc(100vh - 300px)"
+        />
+      </div>
     </DashboardLayout>
   );
 }
