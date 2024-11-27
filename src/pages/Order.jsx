@@ -117,10 +117,10 @@ function Order() {
   return (
     <>
       <Navbar />
-      <div className="p-4 md:p-10 bg-earth5 h-screen">
+      <div className="p-4 md:p-10 bg-earth5 min-h-screen">
         <Tabs
           defaultValue="pending"
-          className="w-full h-full"
+          className="w-full"
           onValueChange={handleTabChange}
         >
           <TabsList className="grid w-full grid-cols-4 font-mono">

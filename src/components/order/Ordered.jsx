@@ -19,7 +19,7 @@ function Ordered({ orders }) {
 
   if (loading) {
     return (
-      <div className="space-y-4">
+      <div className="space-y-4 h-[80vh]">
         {[...Array(3)].map((_, index) => (
           <AccordionSkeleton key={index} />
         ))}
@@ -29,12 +29,14 @@ function Ordered({ orders }) {
 
   if (!orders || orders.length === 0) {
     return (
+      <div className="h-[80vh] items-center flex justify-center">
       <NoData
         title={"No Ordered Orders"}
         paragraph={
           "You currently have no ordered orders. Check back here to track active orders."
         }
       />
+      </div>
     );
   }
 

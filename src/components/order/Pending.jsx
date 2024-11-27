@@ -14,7 +14,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { formatDate } from "@/lib/utils";
+import { formatDate, formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ClockIcon, Loader2, MessageCircleX, Wallet } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -56,7 +56,7 @@ function Pending({ orders }) {
 
   if (loading) {
     return (
-      <div className="space-y-4">
+      <div className="space-y-4 h-[80vh]">
         {[...Array(3)].map((_, index) => (
           <AccordionSkeleton key={index} />
         ))}
@@ -66,12 +66,14 @@ function Pending({ orders }) {
 
   if (!orders || orders.length === 0)
     return (
-      <NoData
-        title={"No Pending Orders"}
-        paragraph={
-          "You currently have no orders in a pending status. All orders have been processed."
-        }
-      />
+      <div className="h-[80vh] items-center flex justify-center">
+        <NoData
+          title={"No Pending Orders"}
+          paragraph={
+            "You currently have no orders in a pending status. All orders have been processed."
+          }
+        />
+      </div>
     );
 
   return orders.map((item, index) => {
@@ -102,26 +104,28 @@ function Pending({ orders }) {
                     <div className="space-y-4">
                       {menus.map((menu, index) => (
                         <div key={index} className="group">
-                          <div className="flex items-center gap-4 p-3 rounded-lg transition-all duration-300">
-                            <div className="relative h-20 w-20 rounded-lg overflow-hidden">
-                              <img
-                                className="h-full w-full object-cover"
-                                src={menu?.image}
-                                alt={menu?.name || "Menu item"}
-                              />
+                          <div className="flex md:flex-row flex-col p-4 rounded-lg md:justify-between md:items-center bg-earth4/30 transition-all duration-300 hover:bg-earth4/50">
+                            <div className="flex items-center gap-4">
+                              <div className="relative h-20 w-20 rounded-lg overflow-hidden">
+                                <img
+                                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                  src={menu?.image}
+                                  alt={menu?.name || "Menu item"}
+                                />
+                              </div>
+                              <div>
+                                <h4 className="text-earth font-medium text-lg md:text-xl truncate max-w-[200px]">
+                                  {menu?.name}
+                                </h4>
+                                <p className="text-earth1 text-sm md:text-base mt-1">
+                                  {formatPrice(menu?.price)} x {menu?.quantity}
+                                </p>
+                              </div>
                             </div>
-                            <div className="flex-1 min-w-0">
-                              <h4 className="font-medium text-sm md:text-base truncate">
-                                {menu?.name}
-                              </h4>
-                              <p className="text-sm">
-                                {menu?.price} x {menu?.quantity}
-                              </p>
-                            </div>
+                            <p className="text-earth2 text-base md:text-lg font-medium flex-shrink-0 text-end">
+                              {formatPrice(menu?.price * menu?.quantity)}
+                            </p>
                           </div>
-                          {index < menus.length - 1 && (
-                            <Separator className="my-4" />
-                          )}
                         </div>
                       ))}
                     </div>

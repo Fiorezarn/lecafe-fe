@@ -134,12 +134,12 @@ function CardList() {
       <div className="flex lg:flex-row flex-col gap-4 lg:justify-between mb-8">
         <Input
           className="form-control font-mono"
-          placeholder="Search..."
+          placeholder="Search Menu..."
           value={search}
           onChange={(e) => handleSearchSubmit(e)}
         />
         <Select value={category} onValueChange={handleCategorySubmit}>
-          <SelectTrigger className="w-full lg:w-[180px]">
+          <SelectTrigger className="w-full lg:w-[180px] font-mono">
             <SelectValue placeholder="Select a category" />
           </SelectTrigger>
           <SelectContent>
@@ -226,7 +226,7 @@ function CardList() {
           </div>
         )}
       </div>
-      <Pagination className="my-16">
+      <Pagination className="my-16 cursor-pointer">
         <PaginationContent>
           <PaginationItem
             className={page === 1 ? "cursor-not-allowed" : "cursor-pointer"}

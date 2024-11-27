@@ -47,7 +47,7 @@ function downloadCSV(array) {
 
   const filename = "OrderHistory.csv";
 
-  if (!csv.match(/^data:text\/csv/i)) {
+  if (!RegExp(/^data:text\/csv/i).exec(csv)) {
     csv = `data:text/csv;charset=utf-8,${csv}`;
   }
 
@@ -71,6 +71,11 @@ function DashboardOrderHistory() {
   const data = orders?.data;
 
   const columns = [
+    {
+      name: "Order ID",
+      selector: (row) => row.or_id,
+      sortable: true,
+    },
     {
       name: "Name",
       selector: (row) => row.or_name_recipient,

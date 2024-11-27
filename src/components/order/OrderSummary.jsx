@@ -102,7 +102,7 @@ export function OrderSummary() {
         position: "top-right",
         index: 2,
       });
-
+      view.ui.move("zoom", "bottom-left");
       searchWidget.on("search-complete", function (event) {
         view.graphics.removeAll();
         const results = event.results[0].results;

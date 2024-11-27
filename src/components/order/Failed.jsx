@@ -65,7 +65,7 @@ function Failed({ orders }) {
                   <div className="space-y-4">
                     {menus.map((menu, index) => (
                       <div key={index} className="group">
-                        <div className="flex items-center justify-between p-4 rounded-lg bg-earth4/30 transition-all duration-300 hover:bg-earth4/50">
+                        <div className="flex md:flex-row flex-col p-4 rounded-lg md:justify-between md:items-center bg-earth4/30 transition-all duration-300 hover:bg-earth4/50">
                           <div className="flex items-center gap-4">
                             <div className="relative h-20 w-20 rounded-lg overflow-hidden">
                               <img
@@ -83,7 +83,7 @@ function Failed({ orders }) {
                               </p>
                             </div>
                           </div>
-                          <p className="text-earth2 text-base md:text-lg font-medium">
+                          <p className="text-earth2 text-base md:text-lg font-medium flex-shrink-0 text-end">
                             {formatPrice(menu?.price * menu?.quantity)}
                           </p>
                         </div>

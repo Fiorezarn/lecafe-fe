@@ -42,8 +42,6 @@ function Subcribe() {
       });
 
       view.graphics.add(pointGraphic);
-
-      return () => view && view.destroy();
     }
   }, []);
   return (
