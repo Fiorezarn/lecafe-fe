@@ -226,7 +226,7 @@ function CardList() {
           </div>
         )}
       </div>
-      <Pagination className="my-16 cursor-pointer">
+      <Pagination className="my-16">
         <PaginationContent>
           <PaginationItem
             className={page === 1 ? "cursor-not-allowed" : "cursor-pointer"}
@@ -240,16 +240,37 @@ function CardList() {
               <ChevronLeft className="text-black" />
             </Button>
           </PaginationItem>
-          {[...Array(menu?.totalPages)].map((_, index) => (
-            <PaginationItem key={index}>
-              <PaginationLink
-                onClick={() => handlePageChange(index + 1)}
-                isActive={index + 1 === page}
-              >
-                {index + 1}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
+          {/* <PaginationItem>
+            <span>
+              Page {page} of {menu?.totalPages}
+            </span>
+          </PaginationItem> */}
+          {(() => {
+            const visiblePages = 3;
+            const totalPages = menu?.totalPages || 1;
+
+            const startPage = Math.max(
+              1,
+              Math.min(page, totalPages - visiblePages + 1)
+            );
+
+            const range = Array.from(
+              { length: Math.min(visiblePages, totalPages) },
+              (_, i) => startPage + i
+            );
+
+            return range.map((pageNum) => (
+              <PaginationItem key={pageNum}>
+                <PaginationLink
+                  onClick={() => handlePageChange(pageNum)}
+                  isActive={pageNum === page}
+                >
+                  {pageNum}
+                </PaginationLink>
+              </PaginationItem>
+            ));
+          })()}
+
           <PaginationItem
             className={
               page === menu?.totalPages
