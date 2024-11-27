@@ -89,7 +89,7 @@ function Testimoni() {
           >
             {testimonials.map((testimonial, index) => (
               <SwiperSlide key={index}>
-                <blockquote className="rounded-lg border-dashed border-[#493628] border-4 bg-gray-50 p-6 shadow-sm sm:p-8 h-[200px] flex flex-col justify-between">
+                <blockquote className="rounded-lg border-dashed border-[#493628] border-4 bg-gray-50 p-6 shadow-sm md:p-8 h-[200px] flex flex-col justify-between">
                   <div>
                     <div className="flex items-center gap-4 mb-4">
                       <img

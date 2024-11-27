@@ -1,8 +1,10 @@
 import { useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 function Hero() {
   const { cookie } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
   return (
     <section
       className="relative h-screen w-full bg-cover bg-center group"
@@ -19,8 +21,11 @@ function Hero() {
           We have the best coffee in town!
         </p>
 
-        <Button className="mt-4 font-mono font-bold bg-earth3 text-black hover:text-white px-4 py-2">
-          Order Now
+        <Button
+          onClick={() => navigate("/menu")}
+          className="mt-4 font-mono font-bold bg-earth3 text-black hover:text-white px-4 py-2"
+        >
+          Explore Now
         </Button>
       </div>
     </section>

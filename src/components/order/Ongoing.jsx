@@ -193,11 +193,11 @@ function OnGoing({ orders }) {
                   </h3>
                   <ScrollArea className="h-[300px] pr-4">
                     <div className="space-y-4">
-                      {menus.map((menu) => (
-                        <div key={menu.id} className="group">
-                          <div className="flex items-center justify-between p-4 rounded-lg bg-earth4/30 transition-all duration-300 hover:bg-earth4/50">
+                      {menus.map((menu, index) => (
+                        <div key={index} className="group">
+                          <div className="flex md:flex-row flex-col p-4 rounded-lg md:justify-between md:items-center bg-earth4/30 transition-all duration-300 hover:bg-earth4/50">
                             <div className="flex items-center gap-4">
-                              <div className="relative h-16 w-16 rounded-lg overflow-hidden">
+                              <div className="relative h-20 w-20 rounded-lg overflow-hidden">
                                 <img
                                   className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                                   src={menu?.image}
@@ -205,15 +205,15 @@ function OnGoing({ orders }) {
                                 />
                               </div>
                               <div>
-                                <h4 className="text-earth font-medium text-sm md:text-base lg:text-lg truncate max-w-[150px]">
+                                <h4 className="text-earth font-medium text-lg md:text-xl truncate max-w-[200px]">
                                   {menu?.name}
                                 </h4>
-                                <p className="text-earth1 text-xs md:text-sm mt-1">
+                                <p className="text-earth1 text-sm md:text-base mt-1">
                                   {formatPrice(menu?.price)} x {menu?.quantity}
                                 </p>
                               </div>
                             </div>
-                            <p className="text-earth2 text-sm md:text-base lg:text-lg font-medium">
+                            <p className="text-earth2 text-base md:text-lg font-medium flex-shrink-0 text-end">
                               {formatPrice(menu?.price * menu?.quantity)}
                             </p>
                           </div>
