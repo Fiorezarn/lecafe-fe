@@ -3,11 +3,12 @@ import DataTableComponent from "@/components/dashboard/DataTables";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { cn, formatDate, formatPrice } from "@/lib/utils";
-import { FaFileCsv } from "react-icons/fa";
+import { FaFileCsv, FaFilePdf } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { CircleCheckBigIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import ExpandedRowComponent from "@/components/dashboard/ExpandedRow";
+import jsPDF from "jspdf";
 
 function convertArrayOfObjectsToCSV(array) {
   const columnDelimiter = ",";
@@ -25,14 +26,20 @@ function convertArrayOfObjectsToCSV(array) {
   let result = keys.join(columnDelimiter) + lineDelimiter;
 
   array.forEach((item) => {
+    let site = item?.or_site || "";
+
+    if (item?.or_type_order === "Delivery") {
+      site = site.split(",").join(" ");
+    }
+
     const row = [
       item?.User?.us_fullname,
       item?.or_status_shipping || "",
       item?.or_status_payment || "",
       item?.or_type_order || "",
-      item?.or_site || "",
+      site,
       formatDate(item?.createdAt) || "",
-      item?.or_total_price || 0,
+      item?.or_total_price,
     ];
     result += row.join(columnDelimiter) + lineDelimiter;
   });
@@ -40,7 +47,51 @@ function convertArrayOfObjectsToCSV(array) {
   return result;
 }
 
+function downloadPDF(array) {
+  const doc = new jsPDF();
+  const tableColumn = [
+    "Name",
+    "Shipping Status",
+    "Payment Status",
+    "Order Type",
+    "Site",
+    "Date",
+    "Total Price",
+  ];
+  const tableRows = [];
+
+  array.forEach((item) => {
+    let site = item?.or_site || "";
+
+    if (item?.or_type_order === "Delivery") {
+      site = site.split(",").join(" ");
+    }
+
+    const row = [
+      item?.User?.us_fullname || "",
+      item?.or_status_shipping || "",
+      item?.or_status_payment || "",
+      item?.or_type_order || "",
+      site,
+      formatDate(item?.createdAt) || "",
+      formatPrice(item?.or_total_price || 0),
+    ];
+    tableRows.push(row);
+  });
+
+  doc.autoTable({
+    head: [tableColumn],
+    body: tableRows,
+    startY: 20,
+  });
+
+  doc.text("Order History", 14, 15);
+  doc.save("OrderHistory.pdf");
+}
+
 function downloadCSV(array) {
+  console.log(array, "ini array");
+
   const link = document.createElement("a");
   let csv = convertArrayOfObjectsToCSV(array);
   if (csv == null) return;
@@ -69,6 +120,7 @@ function DashboardOrderHistory() {
   }, [dispatch]);
 
   const data = orders?.data;
+  console.log(data, "ini data");
 
   const columns = [
     {
@@ -159,16 +211,24 @@ function DashboardOrderHistory() {
       <h1 className="text-3xl lg:text-4xl mb-6 lg:mb-10 font-bold mt-10 text-earth">
         Order History
       </h1>
-      <div className="mb-4">
+      <div className="mb-4 flex gap-4">
         <Button
           className="bg-green-900 text-white font-bold px-4 py-2 rounded"
           onClick={() => downloadCSV(data)}
         >
           <FaFileCsv />
-          Export CSV
+          CSV
+        </Button>
+        <Button
+          variant="destructive"
+          className="text-white font-bold px-4 py-2 rounded"
+          onClick={() => downloadPDF(data)}
+        >
+          <FaFilePdf />
+          PDF
         </Button>
       </div>
-      <div className="bg-white rounded-lg shadow max-w-[154vh]">
+      <div className="bg-black max-w-[80vw] rounded-lg shadow ">
         <DataTableComponent
           columns={columns}
           data={data}
@@ -176,7 +236,6 @@ function DashboardOrderHistory() {
           expandedRows={expandedRows}
           onRowExpand={handleRowExpand}
           ExpandedComponent={ExpandedRowComponent}
-          className="min-w-full"
           responsive={true}
           fixedHeader={true}
           fixedHeaderScrollHeight="calc(100vh - 300px)"

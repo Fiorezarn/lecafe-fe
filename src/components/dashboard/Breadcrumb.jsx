@@ -8,7 +8,7 @@ import {
 
 function BreadcrumbComponent({ links }) {
   return (
-    <Breadcrumb className="flex">
+    <Breadcrumb className="flex items-center">
       {links.map((link, index) => (
         <BreadcrumbList key={index} className="text-white">
           <>

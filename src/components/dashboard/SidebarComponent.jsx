@@ -46,7 +46,7 @@ function SidebarComponent() {
   };
 
   const items = [
-    { title: "Home", url: "/dashboard", icon: Home },
+    { title: "Dashboard", url: "/dashboard", icon: Home },
     { title: "Menu Management", url: "/dashboard/menu", icon: Menu },
     { title: "Tracking", url: "/dashboard/tracking", icon: MapPinHouse },
     { title: "Order History", url: "/dashboard/order", icon: History },

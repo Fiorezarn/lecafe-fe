@@ -57,40 +57,42 @@ function DashboardTracking() {
     {
       name: "Action",
       selector: (row) => (
-        <Dialog>
+        <Dialog className="mt-6">
           <DialogTrigger asChild>
             <Button size="sm" variant="success" className="flex items-center">
               <CheckCircleIcon className="w-4 h-4 mr-2" /> Finish
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="px-6">
             <DialogHeader>
-              <DialogTitle>
+              <DialogTitle className="mt-4">
                 Are you sure you want to mark this order as finished?
               </DialogTitle>
             </DialogHeader>
             <DialogFooter>
-              <DialogClose asChild>
-                <Button className="w-full">Cancel</Button>
-              </DialogClose>
-              <Button
-                onClick={() =>
-                  dispatch({
-                    type: "order/updateStatus",
-                    payload: { id: row.or_id, status: "delivered" },
-                  })
-                }
-                className="bg-green-600 w-full text-white font-bold flex items-center justify-center"
-                disabled={loading}
-              >
-                {loading ? (
-                  "Loading..."
-                ) : (
-                  <>
-                    <CheckCircleIcon className="w-4 h-4 mr-2" /> Finish
-                  </>
-                )}
-              </Button>
+              <div className="flex w-full gap-2">
+                <DialogClose asChild>
+                  <Button className="w-full">Cancel</Button>
+                </DialogClose>
+                <Button
+                  onClick={() =>
+                    dispatch({
+                      type: "order/updateStatus",
+                      payload: { id: row.or_id, status: "delivered" },
+                    })
+                  }
+                  className="bg-green-600 w-full text-white font-bold flex items-center justify-center"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    "Loading..."
+                  ) : (
+                    <>
+                      <CheckCircleIcon className="w-4 h-4 mr-2" /> Finish
+                    </>
+                  )}
+                </Button>
+              </div>
             </DialogFooter>
           </DialogContent>
         </Dialog>

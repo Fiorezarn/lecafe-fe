@@ -8,7 +8,7 @@ function DashboardLayout({ children, breadcrumbLinks }) {
       <SidebarComponent />
       <div className="w-full">
         <div className="w-full h-10 flex items-center gap-6 p-8 bg-earth1">
-          <SidebarTrigger />
+          <SidebarTrigger className="text-white" />
           <BreadcrumbComponent links={breadcrumbLinks} />
         </div>
         <main className="px-10 py-6">{children}</main>

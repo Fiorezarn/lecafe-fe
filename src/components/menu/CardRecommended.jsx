@@ -62,6 +62,11 @@ function CardRecommended() {
     }
   };
 
+  const navigateToDetail = (id) => {
+    window.scrollTo(0, 0);
+    navigate(`/menu/${id}`);
+  };
+
   return (
     <>
       {loading ? (
@@ -78,10 +83,7 @@ function CardRecommended() {
           >
             <div
               className="cursor-pointer"
-              onClick={() => {
-                navigate(`/menu/${item.mn_id}`);
-                dispatch({ type: "menu/getMenuById", payload: item.mn_id });
-              }}
+              onClick={() => navigateToDetail(item.mn_id)}
             >
               <CardHeader className="h-48 overflow-hidden">
                 <img

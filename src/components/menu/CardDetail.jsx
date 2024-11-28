@@ -22,10 +22,8 @@ function CardDetail() {
   const { id } = useParams();
 
   useEffect(() => {
-    if (!menuById) {
-      dispatch({ type: "menu/getMenuById", payload: id });
-    }
-  }, [dispatch]);
+    dispatch({ type: "menu/getMenuById", payload: id });
+  }, [dispatch, id]);
 
   const handleSubmit = () => {
     const menuId = id;

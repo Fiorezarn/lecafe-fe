@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Card,
@@ -112,6 +112,11 @@ function CardList() {
     dispatch(setCategory(value));
   };
 
+  const navigateToDetail = (id) => {
+    window.scrollTo(0, 0);
+    navigate(`/menu/${id}`);
+  };
+
   useEffect(() => {
     if (error) {
       toast({
@@ -133,13 +138,13 @@ function CardList() {
     <div className="flex flex-col">
       <div className="flex lg:flex-row flex-col gap-4 lg:justify-between mb-8">
         <Input
-          className="form-control font-mono"
+          className="form-control w-full lg:w-[15vw] font-mono"
           placeholder="Search Menu..."
           value={search}
           onChange={(e) => handleSearchSubmit(e)}
         />
         <Select value={category} onValueChange={handleCategorySubmit}>
-          <SelectTrigger className="w-full lg:w-[180px] font-mono">
+          <SelectTrigger className="w-full lg:w-[15vw] font-mono">
             <SelectValue placeholder="Select a category" />
           </SelectTrigger>
           <SelectContent>
@@ -177,9 +182,7 @@ function CardList() {
               >
                 <div
                   className="cursor-pointer"
-                  onClick={() => {
-                    navigate(`/menu/${item.mn_id}`);
-                  }}
+                  onClick={() => navigateToDetail(item.mn_id)}
                 >
                   <CardHeader className="h-48 overflow-hidden">
                     <img
@@ -240,11 +243,6 @@ function CardList() {
               <ChevronLeft className="text-black" />
             </Button>
           </PaginationItem>
-          {/* <PaginationItem>
-            <span>
-              Page {page} of {menu?.totalPages}
-            </span>
-          </PaginationItem> */}
           {(() => {
             const visiblePages = 3;
             const totalPages = menu?.totalPages || 1;

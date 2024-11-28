@@ -35,8 +35,8 @@ function DataTableComponent({
 
 export default DataTableComponent;
 DataTableComponent.propTypes = {
-  columns: PropTypes.array.isRequired,
-  data: PropTypes.array.isRequired,
+  columns: PropTypes.array,
+  data: PropTypes.array,
   pagination: PropTypes.bool,
   paginationServer: PropTypes.bool,
   onChangePage: PropTypes.func,

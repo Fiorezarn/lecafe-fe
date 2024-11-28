@@ -12,7 +12,7 @@ function Menu() {
     <>
       <Navbar />
       <BannerSwiper />
-      <div className="px-6 lg:px-28 py-5 bg-earth6">
+      <div className="px-6 lg:px-28 py-5 bg-earth3">
         <div className="flex md:flex-row flex-col rounded-full border-dashed border-2 border-earth justify-center items-center text-earth text-sm lg:text-lg py-2 px-4 space-x-4">
           <h1 className="font-semibold font-mono md:text-xl">
             TYPE OF SERVICES AVAILABLE
@@ -34,7 +34,7 @@ function Menu() {
         </div>
       </div>
 
-      <div className="px-10 lg:px-28 py-10 bg-earth6">
+      <div className="px-10 lg:px-28 py-10 bg-earth3">
         <CardList />
       </div>
       <Footer />
