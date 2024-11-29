@@ -170,16 +170,12 @@ function DashboardMenu() {
     },
     {
       name: "Name",
-      selector: (row) => (
-        <div className="font-medium truncate max-w-[150px]">{row.mn_name}</div>
-      ),
+      selector: (row) => row.mn_name,
       sortable: true,
     },
     {
       name: "Price",
-      selector: (row) => (
-        <div className="font-medium">{formatPrice(row.mn_price)}</div>
-      ),
+      selector: (row) => row.mn_price,
       sortable: true,
     },
     {

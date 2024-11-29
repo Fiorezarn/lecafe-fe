@@ -141,6 +141,7 @@ function DashboardTracking() {
           data={data}
           expandable={true}
           expandedRows={expandedRows}
+          pagination={true}
           onRowExpand={handleRowExpand}
           ExpandedComponent={ExpandedRowComponent}
         />

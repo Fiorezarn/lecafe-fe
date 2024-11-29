@@ -164,8 +164,7 @@ function CardList() {
               <CardSkeleton key={index} />
             ))}
           </div>
-        ) : null}
-        {menu?.totalItems === 0 ? (
+        ) : menu?.totalItems === 0 ? (
           <NoData
             className="text-center"
             title={"No data found"}

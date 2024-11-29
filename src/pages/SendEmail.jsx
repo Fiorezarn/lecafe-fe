@@ -11,7 +11,6 @@ function SendEmail() {
   const queryParams = new URLSearchParams(window.location.search);
   const action = queryParams.get("action");
   const email = queryParams.get("email");
-  console.log(email);
 
   const BASE_URL = import.meta.env.VITE_BASE_URL_BE;
 

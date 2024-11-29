@@ -90,8 +90,6 @@ function downloadPDF(array) {
 }
 
 function downloadCSV(array) {
-  console.log(array, "ini array");
-
   const link = document.createElement("a");
   let csv = convertArrayOfObjectsToCSV(array);
   if (csv == null) return;
@@ -120,7 +118,6 @@ function DashboardOrderHistory() {
   }, [dispatch]);
 
   const data = orders?.data;
-  console.log(data, "ini data");
 
   const columns = [
     {
@@ -237,6 +234,7 @@ function DashboardOrderHistory() {
           onRowExpand={handleRowExpand}
           ExpandedComponent={ExpandedRowComponent}
           responsive={true}
+          pagination={true}
           fixedHeader={true}
           fixedHeaderScrollHeight="calc(100vh - 300px)"
         />

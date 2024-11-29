@@ -109,7 +109,6 @@ export const orderSlice = createSlice({
     },
     fetchCreateDistanceSuccess: (state, action) => {
       state.loading = false;
-      console.log(action.payload.data);
       state.distance = action.payload.data;
     },
     fetchCreateDistanceFailure: (state, action) => {
