@@ -7,7 +7,7 @@ interactive map integration to monitor delivery routes as well as automatic deli
 
 ## Tech Stack
 ![Lecafe](https://github.com/Fiorezarn/lecafe-fe/blob/main/public/stack.png)
-
+![Open in Visual Studio Code](https://img.shields.io/badge/Open%20in%20VS%20Code-blue?logo=visualstudiocode)
 ## Features
 
 | Feature     | Description                                                                                   |
@@ -42,6 +42,7 @@ npm run dev
 
 **Notes:**
 You can go through this link for the [Backend Configuration](https://github.com/Fiorezarn/lecafe-be)
+
 
 
 ## Demo
