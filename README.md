@@ -1,8 +1,14 @@
-# React + Vite
+# Le Café
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Le Cafe is a coffee shop ordering platform that provides two types of services: dine-in and delivery. Our flagship features include
+interactive map integration to monitor delivery routes as well as automatic delivery fee calculation based on distance.
 
-Currently, two official plugins are available:
+![Lecafe](https://res.cloudinary.com/dsxnvgy7a/image/upload/v1733069491/Animated-web-screens-_remix_qklhzu.gif)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
+
+## Features
+
+## Installation
+
+## Demo
