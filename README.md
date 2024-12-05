@@ -35,16 +35,16 @@ Check out the live version of Le Café: 🌐[Le Café Deployment](https://lecafe
 To run this project, you will need to add the following environment variables to your .env file:
 
 ```env
-VITE_BASE_URL_BE=http://your-backend-url
-VITE_CLIENT_KEY_MIDTRANS=YOUR_MIDTRANS_CLIENT_KEY
-VITE_SNAP_URL_MIDTRANS=https://app.sandbox.midtrans.com/snap/snap.js
-VITE_API_KEY_FIREBASE=YOUR_FIREBASE_API_KEY
-VITE_AUTH_DOMAIN_FIREBASE=your-project-id.firebaseapp.com
-VITE_PROJECT_ID_FIREBASE=your-project-id
-VITE_STORAGE_BUCKET_FIREBASE=your-project-id.appspot.com
-VITE_MESSAGING_SENDER_ID_FIREBASE=YOUR_MESSAGING_SENDER_ID
-VITE_APP_ID_FIREBASE=YOUR_FIREBASE_APP_ID
-VITE_GEOCODE_SERVICE_URL=https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer
+VITE_BASE_URL_BE=your_backend_url
+VITE_CLIENT_KEY_MIDTRANS=your_midtrans_client_key
+VITE_SNAP_URL_MIDTRANS=your_snap_url_midtrans
+VITE_API_KEY_FIREBASE=your_firebase_api_key
+VITE_AUTH_DOMAIN_FIREBASE=your_firebase_auth_domain
+VITE_PROJECT_ID_FIREBASE=your_firebase_project_id
+VITE_STORAGE_BUCKET_FIREBASE=your_firebase_storage_bucket
+VITE_MESSAGING_SENDER_ID_FIREBASE=your_firebase_messaging_sender_id
+VITE_APP_ID_FIREBASE=your_firebase_app_id
+VITE_GEOCODE_SERVICE_URL=your_geocode_service_url
 ```
 ## 🚀 Installation
 1. Clone the repository
