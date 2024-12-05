@@ -23,12 +23,12 @@ Check out the live version of Le Café: 🌐[Le Café Deployment](https://lecafe
 
 | Feature     | Description                                                                                   |
 |-------------|-----------------------------------------------------------------------------------------------|
-| **Auth**    | - Register and login with email or Google.<br>- Forgot password functionality.<br>- Email verification.<br>- "Remember Me" feature. |
-| **Cart**    | - Add items to the cart.<br>- Remove items from the cart.<br>- Update item quantities in the cart. |
-| **Order**   | - Place orders.<br>- Check order status in real-time.<br>- Download invoices.                |
-| **Maps**    | - Calculate shipping fees using the Haversine formula.<br>- Map-based address selection.<br>- Route tracking for deliveries. |
-| **Payment** | - Integration with Midtrans payment gateway.                                                 |
-| **Admin**   | - Full CRUD operations for managing menus.<br>- Monitor and manage orders.<br>- View order history and export orders.<br>- Access a dashboard with analytics. |
+| **🔐 Auth**    | - 📝 Register and login with email or Google.<br>- 🔑 Forgot password functionality.<br>- ✉️ Email verification.<br>- 🍪 "Remember Me" feature. |
+| **🛒 Cart**    | - ➕ Add items to the cart.<br>- ➖ Remove items from the cart.<br>- 🔄 Update item quantities in the cart. |
+| **📦 Order**   | - 📝 Place orders.<br>- 🕒 Check order status in real-time.<br>- 📄 Download invoices.                |
+| **🗺️ Maps**    | - 💰 Calculate shipping fees using the Haversine formula.<br>- 📍 Map-based address selection.<br>- 🚚 Route tracking for deliveries. |
+| **💳 Payment** | - 🔗 Integration with Midtrans payment gateway.                                                 |
+| **👨‍💼 Admin**   | - ✏️ Full CRUD operations for managing menus.<br>- 👀 Monitor and manage orders.<br>- 📊 View order history and export orders.<br>- 📈 Access a dashboard with analytics. |
 
 ## 🔐 Environment Variables
 
