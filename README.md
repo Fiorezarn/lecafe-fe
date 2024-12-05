@@ -4,6 +4,8 @@
 Le Cafe is a coffee shop ordering platform that provides two types of services: dine-in and delivery. Our flagship features include
 interactive map integration to monitor delivery routes as well as automatic delivery fee calculation based on distance.
 
+## Demo
+https://github.com/user-attachments/assets/13c592eb-c72b-4fff-af9f-33db95cca9b7
 
 ## Tech Stack
 ![Lecafe](https://github.com/Fiorezarn/lecafe-fe/blob/main/public/stack.png)
@@ -42,7 +44,3 @@ npm run dev
 
 **Notes:**
 You can go through this link for the [Backend Configuration](https://github.com/Fiorezarn/lecafe-be)
-
-
-
-## Demo
