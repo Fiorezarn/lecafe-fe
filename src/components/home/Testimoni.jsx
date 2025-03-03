@@ -7,7 +7,7 @@ import { IoStar } from "react-icons/io5";
 
 const testimonials = [
   {
-    name: "Muhammad Fauzan",
+    name: "Alifia Asri",
     image:
       "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1180&q=80",
     rating: 6,
